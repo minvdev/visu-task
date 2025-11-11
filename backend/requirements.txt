@@ -6,3 +6,4 @@ SQLAlchemy==2.0.44
 psycopg2-binary==2.9.11
 passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.5.0
+alembic==1.17.1
