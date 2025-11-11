@@ -14,8 +14,3 @@ def register():
 @router.get("/login")
 def login():
     return {"test": "login"}
-
-
-@router.get("/logout")
-def logout():
-    return {"test": "logout"}
