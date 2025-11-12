@@ -12,7 +12,7 @@ from .schemas import token as token_schema
 
 
 # --- 1. Password hashing ---
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")
 
 
 def get_password_hash(password: str) -> str:
