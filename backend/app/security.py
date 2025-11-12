@@ -32,14 +32,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Create a new access token (JWT)."""
     to_encode = data.copy()
+    default_delta_exp = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(
-            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    def calc_expires(delta: timedelta):
+        return datetime.now(timezone.utc) + delta
 
-    to_encode["exp"] = expire
+    to_encode["exp"] = calc_expires(expires_delta or default_delta_exp)
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
