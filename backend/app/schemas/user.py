@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
+from .board import BoardBase
 
 
 class UserCreate(BaseModel):
@@ -11,6 +12,7 @@ class User(BaseModel):
     id: int
     username: str
     email: EmailStr
+    boards: list[BoardBase] = []
 
     class Config:
         from_attributes = True

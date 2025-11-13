@@ -10,7 +10,7 @@ from alembic import context
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from app.db.database import Base
-from app.models import user
+from app.models import user, board
 from app.core.config import settings
 
 # this is the Alembic Config object, which provides
