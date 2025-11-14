@@ -14,6 +14,7 @@ router = APIRouter(
 CurrentUserDep = Depends(security.get_current_user)
 
 
+# --- HELPER FUNCTIONS ---
 def get_board_or_404(
     board_id: int,
     db: Session,
@@ -39,6 +40,7 @@ def get_board_or_404(
     return board
 
 
+# --- CRUD ROUTES FOR BOARDS ---
 @router.post("/", response_model=schemas.Board, status_code=status.HTTP_201_CREATED)
 def create_board(
     board_data: schemas.BoardCreate,
