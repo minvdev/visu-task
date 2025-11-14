@@ -13,3 +13,6 @@ class Board(Base):
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="boards")
+
+    lists = relationship("List", back_populates="board",
+                         cascade="all, delete-orphan")
