@@ -10,6 +10,14 @@ class BoardUser(BaseModel):
         from_attributes = True
 
 
+class BoardList(BaseModel):
+    name: str
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
 class BoardBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     description: str | None = Field(None, max_length=255)
@@ -28,6 +36,7 @@ class Board(BoardBase):
     id: int
     user_id: int
     user: BoardUser
+    lists: list[BoardList] = []
 
     class Config:
         from_attributes = True
