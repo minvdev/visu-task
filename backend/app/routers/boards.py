@@ -8,7 +8,7 @@ from ..models import User, Board, List
 
 router = APIRouter(
     prefix="/boards",
-    tags=["Board"]
+    tags=["Boards"]
 )
 
 CurrentUserDep = Depends(security.get_current_user)
