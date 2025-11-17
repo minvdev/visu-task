@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..db.database import get_db
 from .. import schemas
 from .. import security
-from ..models import User, Board, List
+from ..models import User, Board, List, Card
 
 router = APIRouter(
     prefix="/boards",
@@ -71,6 +71,40 @@ def get_list_or_404(
         )
 
     return found_list
+
+
+def get_card_or_404(
+    board_id: int,
+    list_id: int,
+    card_id: int,
+    db: Session,
+    current_user: User
+) -> Card:
+    """
+    Search for the card of the given `card_id` and verifies:
+    - If exists a list with the given `list_id` and belongs to the board (using `get_list_or_404`).
+    - If the board with `board_id` exists and have permission to modify it (using `get_board_or_404` that is implicity included in `get_list_or_404` call).
+    - If exists a card with the given `card_id` and belongs to the list.
+
+    Raise 404 if any (card, list or board) is not found or if does not belong to the list and board respectively.
+    Check `get_list_or_404` and `get_board_or_404` for more details.
+    """
+    found_list = get_list_or_404(board_id, list_id, db, current_user)
+
+    found_card = db.query(Card).filter(Card.id == card_id).first()
+    if not found_card:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"Card with id {card_id} not found."
+        )
+
+    if found_card.list_id != found_list.id:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"Card with id {card_id} does not belong to list with id {list_id}."
+        )
+
+    return found_card
 
 
 # --- CRUD ROUTES FOR BOARDS ---
@@ -231,6 +265,98 @@ def delete_list(
     list_to_delete = get_list_or_404(board_id, list_id, db, current_user)
 
     db.delete(list_to_delete)
+    db.commit()
+
+    return
+
+
+# --- CRUD ROUTES FOR CARDS ---
+@router.post("/{board_id}/lists/{list_id}/cards", response_model=schemas.Card, status_code=status.HTTP_201_CREATED)
+def create_card(
+    board_id: int,
+    list_id: int,
+    card_data: schemas.CardCreate,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Create a new card.
+    The new card will be automatically assigned to the list with the given `list_id`.
+    Only the owner of the board with the given `board_id` can add a new card.
+    """
+    board_list = get_list_or_404(board_id, list_id, db, current_user)
+    new_card = Card(
+        **card_data.model_dump(),
+        list=board_list
+    )
+
+    db.add(new_card)
+    db.commit()
+    db.refresh(new_card)
+    return new_card
+
+
+@router.get("/{board_id}/lists/{list_id}/cards", response_model=list[schemas.Card])
+def get_list_cards(
+    board_id: int,
+    list_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get all the cards of the list.
+    Only the owner of the board with the given `board_id` can get it
+    """
+    board_list = get_list_or_404(board_id, list_id, db, current_user)
+    return board_list.cards
+
+
+@router.patch("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card)
+def update_card(
+    board_id: int,
+    list_id: int,
+    card_id: int,
+    card_data: schemas.CardUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Update an existing card with the send fields.
+    Only the owner of the board with the given `board_id` can update it.
+    """
+
+    card_to_update = get_card_or_404(
+        board_id, list_id, card_id, db, current_user)
+
+    update_data = card_data.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(card_to_update, key, value)
+
+    db.add(card_to_update)
+    db.commit()
+    db.refresh(card_to_update)
+
+    return card_to_update
+
+
+@router.delete("/{board_id}/lists/{list_id}/cards/{card_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_card(
+    board_id: int,
+    list_id: int,
+    card_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Deletes an existing card.
+    Only the owner of the board with the given `board_id` can delete it.
+    """
+
+    card_to_delete = get_card_or_404(
+        board_id, list_id, card_id, db, current_user)
+
+    db.delete(card_to_delete)
     db.commit()
 
     return
