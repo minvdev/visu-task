@@ -12,3 +12,6 @@ class List(Base):
 
     board_id = Column(Integer, ForeignKey("boards.id"), nullable=False)
     board = relationship("Board", back_populates="lists")
+
+    cards = relationship("Card", back_populates="list",
+                         cascade="all, delete-orphan")
