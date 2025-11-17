@@ -11,3 +11,7 @@ from .board import Board
 from .list import ListCreate
 from .list import ListUpdate
 from .list import List
+
+from .card import CardCreate
+from .card import CardUpdate
+from .card import Card
