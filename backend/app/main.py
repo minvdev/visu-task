@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import auth, boards
+from .routers import auth, boards, inbox
 
 
 app = FastAPI(
@@ -10,3 +10,4 @@ app = FastAPI(
 
 app.include_router(auth.router)
 app.include_router(boards.router)
+app.include_router(inbox.router)
