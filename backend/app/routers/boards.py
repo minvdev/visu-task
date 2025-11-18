@@ -3,15 +3,13 @@ from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from .. import schemas
-from .. import security
+from ..security import CurrentUserDep
 from ..models import User, Board, List, Card
 
 router = APIRouter(
     prefix="/boards",
     tags=["Boards"]
 )
-
-CurrentUserDep = Depends(security.get_current_user)
 
 
 # --- HELPER FUNCTIONS ---
