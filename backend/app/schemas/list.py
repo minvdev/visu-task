@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from .common import BoardSubschema, CardSubschema
 
 
 class ListBase(BaseModel):
@@ -16,8 +17,8 @@ class ListUpdate(BaseModel):
 class List(ListBase):
     id: int
     board_id: int
-    board: ListBoard
-    cards: list[Card] = []
+    board: BoardSubschema
+    cards: list[CardSubschema] = []
 
     class Config:
         from_attributes = True
