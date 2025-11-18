@@ -16,14 +16,6 @@ class CardUpdate(BaseModel):
     is_done: bool | None = None
 
 
-class List(BaseModel):
-    id: int
-    name: str
-
-    class Config:
-        from_attributes = True
-
-
 class Card(CardBase):
     is_done: bool
     id: int

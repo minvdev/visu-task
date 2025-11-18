@@ -1,23 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-class BoardUser(BaseModel):
-    id: int
-    username: str
-    email: str
-
-    class Config:
-        from_attributes = True
-
-
-class BoardList(BaseModel):
-    name: str
-    id: int
-
-    class Config:
-        from_attributes = True
-
-
 class BoardBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     description: str | None = Field(None, max_length=255)
