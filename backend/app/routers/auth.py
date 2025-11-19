@@ -6,6 +6,8 @@ from ..schemas.token import Token as token_schema
 from ..db.database import get_db
 from .. import security
 from ..models.user import User
+from ..models.board import Board
+from ..models.list import List
 
 router = APIRouter(
     prefix="/auth",
@@ -49,10 +51,21 @@ def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
         password_hash=pasword_hash,
     )
 
-    # Store user in db
-    db.add(user)
+    inbox_board = Board(
+        name="Inbox",
+        description="Your deafult inbox board.",
+        is_inbox=True,
+        user=user
+    )
+
+    incoming_list = List(
+        name="Incoming",
+        board=inbox_board
+    )
+
+    db.add_all([user, inbox_board, incoming_list])
     db.commit()
-    db.refresh(user)  # Ensures that the returned user have an id
+    db.refresh(user)
 
     return user
 

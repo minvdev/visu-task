@@ -3,15 +3,13 @@ from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from .. import schemas
-from .. import security
+from ..security import CurrentUserDep
 from ..models import User, Board, List, Card
 
 router = APIRouter(
     prefix="/boards",
     tags=["Boards"]
 )
-
-CurrentUserDep = Depends(security.get_current_user)
 
 
 # --- HELPER FUNCTIONS ---
@@ -131,12 +129,18 @@ def create_board(
 
 @router.get("/", response_model=list[schemas.Board])
 def get_user_boards(
+    db: Session = Depends(get_db),
     current_user: User = CurrentUserDep
 ):
     """
     Get all the boards of the authenticated user.
     """
-    return current_user.boards
+    boards = db.query(Board).filter(
+        Board.user_id == current_user.id,
+        Board.is_inbox == False
+    ).all()
+
+    return boards
 
 
 @router.patch("/{board_id}", response_model=schemas.Board)
@@ -152,6 +156,12 @@ def update_board(
     """
 
     board = get_board_or_404(board_id, db, current_user)
+
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The inbox data cannot be modified."
+        )
 
     update_data = board_data.model_dump(exclude_unset=True)
 
@@ -178,6 +188,12 @@ def delete_board(
 
     board = get_board_or_404(board_id, db, current_user)
 
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The inbox cannot be deleted."
+        )
+
     db.delete(board)
     db.commit()
 
@@ -198,6 +214,13 @@ def create_list(
     Only the owner of the board with the given `board_id` can add the new list.
     """
     board = get_board_or_404(board_id, db, current_user)
+
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You cannot create a new list in the Inbox."
+        )
+
     new_list = List(
         **list_data.model_dump(),
         board=board
@@ -238,6 +261,13 @@ def update_list(
 
     list_to_update = get_list_or_404(board_id, list_id, db, current_user)
 
+    board: Board = list_to_update.board
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The inbox list data cannot be modified."
+        )
+
     update_data = list_data.model_dump(exclude_unset=True)
 
     for key, value in update_data.items():
@@ -263,6 +293,13 @@ def delete_list(
     """
 
     list_to_delete = get_list_or_404(board_id, list_id, db, current_user)
+
+    board: Board = list_to_delete.board
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The inbox list cannot be deleted."
+        )
 
     db.delete(list_to_delete)
     db.commit()
