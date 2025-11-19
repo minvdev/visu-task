@@ -14,3 +14,6 @@ class User(Base):
 
     boards = relationship("Board", back_populates="user",
                           cascade="all, delete-orphan")
+
+    def __str__(self):
+        return f'<{self.__class__.__name__}: {self.username}>'
