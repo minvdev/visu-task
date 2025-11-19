@@ -15,3 +15,6 @@ class Card(Base):
 
     list_id = Column(Integer, ForeignKey("lists.id"), nullable=False)
     list = relationship("List", back_populates="cards")
+
+    def __str__(self):
+        return f'<{self.__class__.__name__}: {self.name}>'

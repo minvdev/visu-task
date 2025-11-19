@@ -17,3 +17,6 @@ class Board(Base):
 
     lists = relationship("List", back_populates="board",
                          cascade="all, delete-orphan")
+
+    def __str__(self):
+        return f'<{self.__class__.__name__}: {self.name}>'
