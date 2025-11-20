@@ -12,6 +12,7 @@ class Card(Base):
     name = Column(String(100), nullable=False)
     text = Column(String(255), nullable=True)
     is_done = Column(Boolean, nullable=False, index=True, default=False)
+    position = Column(Integer, nullable=False, index=True, default=1)
 
     list_id = Column(Integer, ForeignKey("lists.id"), nullable=False)
     list = relationship("List", back_populates="cards")
