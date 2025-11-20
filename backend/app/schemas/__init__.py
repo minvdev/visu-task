@@ -14,4 +14,5 @@ from .list import List
 
 from .card import CardCreate
 from .card import CardUpdate
+from .card import CardMove
 from .card import Card
