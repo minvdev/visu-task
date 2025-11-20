@@ -17,6 +17,11 @@ class CardUpdate(BaseModel):
     is_done: bool | None = None
 
 
+class CardMove(BaseModel):
+    destination_list_id: int = Field(
+        ..., description="The ID of the list to which you want to move the card.")
+
+
 class Card(CardBase):
     is_done: bool
     id: int
