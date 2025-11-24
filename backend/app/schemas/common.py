@@ -37,6 +37,7 @@ class CardSubschema(BaseModel):
     name: str
     text: str | None
     is_done: bool
+    position: int
 
     class Config:
         from_attributes = True
