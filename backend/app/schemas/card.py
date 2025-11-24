@@ -26,6 +26,7 @@ class CardMove(BaseModel):
 
 class Card(CardBase):
     is_done: bool
+    position: int
     id: int
     list_id: int
     list: ListSubschema
