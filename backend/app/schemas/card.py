@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from .common import ListSubschema
 
 
@@ -31,5 +31,4 @@ class Card(CardBase):
     list_id: int
     list: ListSubschema
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

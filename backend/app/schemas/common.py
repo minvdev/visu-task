@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 """
 This file contains all the necessary subschemas to be maintained from a single location.
@@ -11,8 +11,7 @@ class UserSubschema(BaseModel):
     username: str
     email: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BoardSubschema(BaseModel):
@@ -20,16 +19,14 @@ class BoardSubschema(BaseModel):
     name: str
     description: str | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ListSubschema(BaseModel):
     id: int
     name: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CardSubschema(BaseModel):
@@ -39,5 +36,4 @@ class CardSubschema(BaseModel):
     is_done: bool
     position: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
