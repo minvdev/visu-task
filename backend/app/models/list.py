@@ -14,7 +14,8 @@ class List(Base):
     board = relationship("Board", back_populates="lists")
 
     cards = relationship("Card", back_populates="list",
-                         cascade="all, delete-orphan")
+                         cascade="all, delete-orphan",
+                         order_by="Card.position ASC, Card.name ASC")
 
     def __str__(self):
         return f'<{self.__class__.__name__}: {self.name}>'
