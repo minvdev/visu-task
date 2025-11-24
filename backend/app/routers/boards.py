@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from ..db.database import get_db
@@ -322,9 +323,17 @@ def create_card(
     Only the owner of the board with the given `board_id` can add a new card.
     """
     board_list = get_list_or_404(board_id, list_id, db, current_user)
+
+    max_position = db.query(func.max(Card.position)).filter(
+        Card.list_id == list_id
+    ).scalar()
+
+    position = (max_position or 0) + 1
+
     new_card = Card(
         **card_data.model_dump(),
-        list=board_list
+        list=board_list,
+        position=position,
     )
 
     db.add(new_card)
