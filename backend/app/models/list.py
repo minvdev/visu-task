@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
 from ..db.database import Base
+from ..models.card import Card
 
 
 class List(Base):
@@ -15,7 +16,7 @@ class List(Base):
 
     cards = relationship("Card", back_populates="list",
                          cascade="all, delete-orphan",
-                         order_by="Card.position ASC, Card.name ASC")
+                         order_by=[Card.position.asc(), Card.name.asc()])
 
     def __str__(self):
         return f'<{self.__class__.__name__}: {self.name}>'
