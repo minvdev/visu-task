@@ -37,3 +37,11 @@ class CardSubschema(BaseModel):
     position: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class TagSubschema(BaseModel):
+    id: int
+    name: str | None
+    color: str
+
+    model_config = ConfigDict(from_attributes=True)
