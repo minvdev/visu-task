@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from ..db.database import get_db
 from .. import schemas
 from ..security import CurrentUserDep
-from ..models import User, Board, List, Card
+from ..models import User, Board, List, Card, Tag
+from ..core.config import settings
 
 router = APIRouter(
     prefix="/boards",
@@ -72,6 +73,39 @@ def get_list_or_404(
     return found_list
 
 
+def get_tag_or_404(
+    board_id: int,
+    tag_id: int,
+    db: Session,
+    current_user: User
+) -> Tag:
+    """
+    Search for the tag of the given `tag_id` and verifies:
+    - If the board with `board_id` exists and have permission to modify it (using `get_board_or_404`).
+    - If exists a tag with the given `tag_id`.
+    - If the tag belongs to the board.
+
+    Raise 404 if tag or board is not found or if does not belong to the board.
+    Check `get_board_or_404` for more details.
+    """
+    board = get_board_or_404(board_id, db, current_user)
+
+    found_tag = db.query(Tag).filter(Tag.id == tag_id).first()
+    if not found_tag:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"Tag with id {tag_id} not found."
+        )
+
+    if board.id != found_tag.board_id:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=f"Tag with id {tag_id} does not belong to board with id {board_id}."
+        )
+
+    return found_tag
+
+
 def get_card_or_404(
     board_id: int,
     list_id: int,
@@ -122,7 +156,10 @@ def create_board(
         user=current_user
     )
 
-    db.add(board)
+    tags = [Tag(color=color, board=board)
+            for color in settings.DEFAULT_TAGS_COLORS]
+
+    db.add_all([board, *tags])
     db.commit()
     db.refresh(board)
     return board
@@ -403,6 +440,98 @@ def delete_card(
         board_id, list_id, card_id, db, current_user)
 
     db.delete(card_to_delete)
+    db.commit()
+
+    return
+
+
+# --- CRUD ROUTES FOR TAGS ---
+@router.post("/{board_id}/tags/", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED)
+def create_tag(
+    board_id: int,
+    tag_data: schemas.TagCreate,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Create a new tag.
+    The new tag will be automatically assigned to the board with the given `board_id`.
+    Only the owner of the board with the given `board_id` can add the new tag.
+    """
+    board = get_board_or_404(board_id, db, current_user)
+
+    if board.is_inbox:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You cannot create a new tag in the Inbox."
+        )
+
+    new_tag = Tag(
+        **tag_data.model_dump(),
+        board=board
+    )
+
+    db.add(new_tag)
+    db.commit()
+    db.refresh(new_tag)
+    return new_tag
+
+
+@router.get("/{board_id}/tags/", response_model=list[schemas.Tag])
+def get_board_tags(
+    board_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get all the tags of the board.
+    Only the owner of the board with the given `board_id` can get it
+    """
+    board = get_board_or_404(board_id, db, current_user)
+    return board.tags
+
+
+@router.patch("/{board_id}/tags/{tag_id}", response_model=schemas.Tag)
+def update_tag(
+    board_id: int,
+    tag_id: int,
+    tag_data: schemas.TagUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Update an existing tag with the send fields.
+    Only the owner of the board with the given `board_id` can update it.
+    """
+
+    tag_to_update = get_tag_or_404(board_id, tag_id, db, current_user)
+    update_data = tag_data.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(tag_to_update, key, value)
+
+    db.add(tag_to_update)
+    db.commit()
+    db.refresh(tag_to_update)
+
+    return tag_to_update
+
+
+@router.delete("/{board_id}/tags/{tag_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_tag(
+    board_id: int,
+    tag_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Deletes an existing tag.
+    Only the owner of the board with the given `board_id` can delete it.
+    """
+
+    tag_to_delete = get_tag_or_404(board_id, tag_id, db, current_user)
+
+    db.delete(tag_to_delete)
     db.commit()
 
     return
