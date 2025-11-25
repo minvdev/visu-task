@@ -3,7 +3,7 @@ from sqlalchemy import update, and_, func
 from sqlalchemy.orm import Session, joinedload
 
 from ..security import CurrentUserDep
-from ..models import User, Card, List, Board
+from ..models import User, Card, List, Board, Tag
 from ..db.database import get_db
 from .. import schemas
 
@@ -134,6 +134,91 @@ def move_card(
     card.position = new_card_position
 
     db.add(card)
+    db.commit()
+    db.refresh(card)
+
+    return card
+
+
+@router.post("/{card_id}/tags/{tag_id}", response_model=schemas.Card, status_code=status.HTTP_201_CREATED)
+def attach_tag(
+    card_id: int,
+    tag_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Associate an existing tag with a card.
+    """
+    card = db.query(Card).options(
+        joinedload(Card.list), joinedload(Card.tags)
+    ).join(Card.list).join(List.board).filter(
+        Card.id == card_id,
+        Board.user_id == current_user.id,
+        Board.is_inbox == False
+    ).first()
+
+    if not card:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Card not found"
+        )
+
+    tag = db.query(Tag).filter(
+        Tag.id == tag_id,
+        Tag.board_id == card.list.board_id
+    ).first()
+
+    if not tag:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tag not found"
+        )
+
+    if tag not in card.tags:
+        card.tags.append(tag)
+        db.commit()
+        db.refresh(card)
+
+    return card
+
+
+@router.delete("/{card_id}/tags/{tag_id}", response_model=schemas.Card)
+def detach_tag(
+    card_id: int,
+    tag_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Removes an existing tag from a card.
+    """
+    card = db.query(Card).options(
+        joinedload(Card.list), joinedload(Card.tags)
+    ).join(Card.list).join(List.board).filter(
+        Card.id == card_id,
+        Board.user_id == current_user.id,
+        Board.is_inbox == False
+    ).first()
+
+    if not card:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Card not found"
+        )
+
+    tag = db.query(Tag).filter(
+        Tag.id == tag_id,
+        Tag.board_id == card.list.board_id
+    ).first()
+
+    if not tag or not tag in card.tags:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tag not found"
+        )
+
+    card.tags.remove(tag)
     db.commit()
     db.refresh(card)
 

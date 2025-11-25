@@ -16,3 +16,7 @@ from .card import CardCreate
 from .card import CardUpdate
 from .card import CardMove
 from .card import Card
+
+from .tag import TagCreate
+from .tag import TagUpdate
+from .tag import Tag

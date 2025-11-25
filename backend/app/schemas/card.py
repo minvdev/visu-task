@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from .common import ListSubschema
+from .common import ListSubschema, TagSubschema
 
 
 class CardBase(BaseModel):
@@ -29,6 +29,7 @@ class Card(CardBase):
     position: int
     id: int
     list_id: int
+    tags: list[TagSubschema] = []
     list: ListSubschema
 
     model_config = ConfigDict(from_attributes=True)
