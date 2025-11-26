@@ -1,4 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
+from datetime import datetime
+
 from .common import ListSubschema, TagSubschema
 
 
@@ -15,6 +17,7 @@ class CardUpdate(BaseModel):
     name: str | None = Field(None, min_length=1, max_length=100)
     text: str | None = Field(None, max_length=255)
     is_done: bool | None = None
+    due_date: datetime | None = None
 
 
 class CardMove(BaseModel):
@@ -27,6 +30,7 @@ class CardMove(BaseModel):
 class Card(CardBase):
     is_done: bool
     position: int
+    due_date: datetime | None = None
     id: int
     list_id: int
     tags: list[TagSubschema] = []
