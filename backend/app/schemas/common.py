@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict
+from datetime import datetime
 
 """
 This file contains all the necessary subschemas to be maintained from a single location.
@@ -35,6 +36,7 @@ class CardSubschema(BaseModel):
     text: str | None
     is_done: bool
     position: int
+    due_date: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
 
