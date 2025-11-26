@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from ..db.database import Base
@@ -13,6 +13,7 @@ class Card(Base):
     text = Column(String(255), nullable=True)
     is_done = Column(Boolean, nullable=False, index=True, default=False)
     position = Column(Integer, nullable=False, index=True, default=1)
+    due_date = Column(DateTime, nullable=True)
 
     list_id = Column(Integer, ForeignKey("lists.id"), nullable=False)
     list = relationship("List", back_populates="cards")
