@@ -24,3 +24,6 @@ class Tag(Base):
     board = relationship("Board", back_populates="tags")
 
     cards = relationship("Card", secondary=card_tags, back_populates="tags")
+
+    def __str__(self):
+        return f'<{self.__class__}: {self.name if self.name else self.color}>'
