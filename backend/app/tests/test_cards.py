@@ -1,3 +1,51 @@
+# --- CARD ISOLATED OPERATIONS ---
+
+def test_card_due_date(client, auth_headers):
+    # 1. Setup: Create Board + List + Card
+    # Create Board
+    board = client.post(
+        "/boards/", json={"name": "House"}, headers=auth_headers).json()
+    board_id = board["id"]
+
+    # Create List
+    list = client.post(f"/boards/{board_id}/lists",
+                       json={"name": "Daily tasks"}, headers=auth_headers).json()
+    list_id = list["id"]
+
+    def fetch_card(card_id):
+        """
+        Return the fetched card with the 'card_id' from a get request to "/boards/{board_id}/lists/{list_id}/cards".
+        """
+        cards = client.get(
+            f"/boards/{board_id}/lists/{list_id}/cards", headers=auth_headers).json()
+        return [card for card in cards if card["id"] == card_id][0]
+
+    # Create Card, due_date has not been set
+    card_id = client.post(f"/boards/{board_id}/lists/{list_id}/cards",
+                          json={"name": "Simple task"}, headers=auth_headers).json()["id"]
+    card = fetch_card(card_id)
+    assert not card["due_date"]
+
+    # set due_date
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"due_date": "2025-11-30T23:59:59"}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert card["due_date"] == "2025-11-30T23:59:59"
+
+    # Test that 'exclude_unset=True' works correctly
+    # changing another field and checking that the date is not deleted.
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"description": "The due date must remain set when we send an update request without the due_date field"}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert card["due_date"] == "2025-11-30T23:59:59"
+
+    # removed the due_date
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"due_date": None}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert not card["due_date"]
+
+
 # --- MOVE TESTS (Drag & Drop) ---
 
 def test_move_card_same_list(client, auth_headers):
