@@ -1,3 +1,9 @@
+from sqlalchemy.orm import joinedload
+
+from ..models import Board, List, Card, Tag
+from .conftest import check_models_count, check_board_count
+
+
 # --- BOARDS TESTS ---
 
 def test_create_and_get_board(client, auth_headers, db_session):
@@ -74,6 +80,51 @@ def test_inbox_board_protection(client, auth_headers, db_session):
     # Attempt to Delete Inbox -> 403 Forbidden
     res = client.delete(f"/boards/{inbox_id}", headers=auth_headers)
     assert res.status_code == 403
+
+
+def test_board_cascade(client, auth_headers, db_session, fill_data):
+    """
+    Tests the CASCADE DELETE functionality of the Board model.
+
+    Scenario:
+    1. Setup: Environment with 3 Boards, 10 Tags, 4 Lists, and 9 Cards.
+       - Target: 'First Board' [ID 2] (contains 2 Lists, 3 Cards, 5 Tags).
+    2. Action: Delete 'First Board'.
+    3. Verify: 
+       - The target board and all its descendants are removed.
+       - 'Inbox' and 'Second Board' remain intact.
+       - Final counts: 2 Boards, 5 Tags, 2 Lists, and 6 Cards.
+    """
+    db = db_session
+
+    expected_models_count = {Board: 3, Tag: 10, List: 4, Card: 9}
+    check_models_count(db, expected_models_count)
+
+    board_to_delete_id = db.query(Board).filter(
+        Board.name == "First Board").first().id
+
+    expected_board_count = {
+        "board_count": 1,
+        "tag_count": 5,
+        "list_count": 2,
+        "card_count": 3,
+    }
+    check_board_count(db, board_id=board_to_delete_id, **expected_board_count)
+
+    response = client.delete(
+        f"/boards/{board_to_delete_id}", headers=auth_headers)
+    assert response.status_code == 204
+
+    expected_board_count = {
+        "board_count": 0,
+        "tag_count": 0,
+        "list_count": 0,
+        "card_count": 0,
+    }
+    check_board_count(db, board_id=board_to_delete_id, **expected_board_count)
+
+    expected_models_count = {Board: 2, Tag: 5, List: 2, Card: 6}
+    check_models_count(db, expected_models_count)
 
 
 # --- LISTS TESTS ---
@@ -160,6 +211,55 @@ def test_inbox_list_protection(client, auth_headers, db_session):
     assert res.status_code == 403
 
 
+def test_list_cascade(client, auth_headers, db_session, fill_data):
+    """
+    Tests the CASCADE DELETE functionality of the List model.
+
+    Scenario:
+    1. Setup: Environment with 3 Boards, 10 Tags, 4 Lists, and 9 Cards.
+       - Target: 'List 2' (Second list of 'First Board') [ID 3] (contains 2 Cards).
+    2. Action: Delete 'List 2'.
+    3. Verify: 
+       - The target list and all its cards are removed.
+       - The target list's parent (board) remain intact.
+       - The target list's parent (board) has its tags intact.
+       - 'Inbox' and 'Second Board' remain intact.
+       - Final counts: 3 Boards, 10 Tags, 3 Lists, and 7 Cards.
+    """
+    db = db_session
+
+    expected_models_count = {Board: 3, Tag: 10, List: 4, Card: 9}
+    check_models_count(db, expected_models_count)
+
+    list_to_delete = db.query(List).options(
+        joinedload(List.board)
+    ).filter(
+        List.name == "List 2"
+    ).first()
+
+    parent_board_id = list_to_delete.board_id
+
+    expected_board_count = {
+        "board_count": 1,
+        "tag_count": 5,
+        "list_count": 2,
+        "card_count": 3,
+    }
+    check_board_count(db, board_id=parent_board_id, **expected_board_count)
+
+    response = client.delete(
+        f"/boards/{parent_board_id}/lists/{list_to_delete.id}", headers=auth_headers)
+    assert response.status_code == 204
+
+    expected_board_count["list_count"] = 1
+    expected_board_count["card_count"] = 1
+    check_board_count(db, board_id=parent_board_id, **expected_board_count)
+
+    expected_models_count[List] = 3
+    expected_models_count[Card] = 7
+    check_models_count(db, expected_models_count)
+
+
 # --- CARDS TESTS ---
 
 def test_create_and_get_cards(client, auth_headers):
@@ -224,3 +324,109 @@ def test_update_and_delete_card(client, auth_headers):
     res = client.get(
         f"/boards/{board_id}/lists/{list_id}/cards", headers=auth_headers)
     assert len(res.json()) == 0
+
+
+def test_card_cascade(client, auth_headers, db_session, fill_data):
+    """
+    Tests the CASCADE DELETE functionality of the Card model.
+
+    Scenario:
+    1. Setup: Environment with 3 Boards, 10 Tags, 4 Lists, and 9 Cards.
+       - Target: 'Task 5' ('First Board' -> 'List 2' -> 'Task 5', the first card).
+    2. Action: Delete 'Task 5'.
+    3. Verify: 
+       - The target card.
+       - The target card's parent (list) remain intact.
+       - The board and tags are intact too.
+       - 'Inbox' and 'Second Board' remain intact.
+       - Final counts: 3 Boards, 10 Tags, 4 Lists, and 8 Cards.
+    """
+    db = db_session
+
+    expected_models_count = {Board: 3, Tag: 10, List: 4, Card: 9}
+    check_models_count(db, expected_models_count)
+
+    card_to_delete = db.query(Card).options(
+        joinedload(Card.list)
+    ).filter(
+        Card.name == "Task 5"
+    ).first()
+    parent_list_id = card_to_delete.list.id
+    parent_board_id = card_to_delete.list.board_id
+
+    expected_board_count = {
+        "board_count": 1,
+        "tag_count": 5,
+        "list_count": 2,
+        "card_count": 3,
+    }
+    check_board_count(db, board_id=parent_board_id, **expected_board_count)
+
+    response = client.delete(
+        f"/boards/{parent_board_id}/lists/{parent_list_id}/cards/{card_to_delete.id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 204
+
+    expected_board_count["card_count"] = 2
+    check_board_count(db, board_id=parent_board_id, **expected_board_count)
+
+    expected_models_count[Card] = 8
+    check_models_count(db, expected_models_count)
+
+
+# --- CARDS TESTS ---
+
+def test_tag_cascade(client, auth_headers, db_session, fill_data):
+    """
+    Tests the CASCADE DELETE functionality of the Tag model.
+
+    Scenario:
+    1. Setup: Environment with 3 Boards, 10 Tags, 4 Lists, and 9 Cards.
+       - Assign the five tags of the board to the cards of the board.
+       - Target: The first tag of 'First Board'.
+    2. Action: Delete The first tag of 'First Board'.
+    3. Verify: 
+       - The target tag and all its links are removed.
+       - The board, lists and cards remains intact.
+       - Only the card <-> tag ​​relationship should be removed
+       - Final counts: 3 Boards, 9 Tags, 4 Lists, and 9 Cards.
+    """
+    db = db_session
+
+    board = db.query(Board).options(
+        joinedload(Board.tags)).filter(
+        Board.name == "First Board").first()
+
+    board_id = board.id
+    tag_id = board.tags[0].id
+
+    board_cards = db.query(Card).join(Card.list).filter(
+        List.board_id == board_id).all()
+    board_tags = db.query(Tag).filter(Tag.board_id == board_id).all()
+
+    for card in board_cards:
+        for tag in board_tags:
+            card.tags.append(tag)
+    db.commit()
+
+    expected_models_count = {Board: 3, Tag: 10, List: 4, Card: 9}
+    check_models_count(db, expected_models_count)
+
+    expected_board_count = {
+        "board_count": 1,
+        "tag_count": 5,
+        "list_count": 2,
+        "card_count": 3,
+    }
+    check_board_count(db, board_id=board_id, **expected_board_count)
+
+    response = client.delete(
+        f"/boards/{board_id}/tags/{tag_id}", headers=auth_headers)
+    assert response.status_code == 204
+
+    expected_board_count["tag_count"] = 4
+    check_board_count(db, board_id=board_id, **expected_board_count)
+
+    expected_models_count[Tag] = 9
+    check_models_count(db, expected_models_count)
