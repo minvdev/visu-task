@@ -375,6 +375,97 @@ def test_card_cascade(client, auth_headers, db_session, fill_data):
 
 # --- CARDS TESTS ---
 
+def test_create_and_get_tags(client, auth_headers):
+    # 1. Setup: Create board
+    board_id = client.post(
+        "/boards/", json={"name": "List Test Board"}, headers=auth_headers).json()["id"]
+
+    # 2. Check if the default tag creation works
+    response = client.get(f"/boards/{board_id}/tags", headers=auth_headers)
+    assert response.status_code == 200
+    tags_count = len(response.json())
+    assert tags_count > 0
+
+    # 3. Create Tag
+    response = client.post(
+        f"/boards/{board_id}/tags",
+        json={"color": "#ffffff", "name": "Important"},
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+    created_tag_id = response.json()["id"]
+
+    # 4. Get Board Tags
+    response = client.get(f"/boards/{board_id}/tags", headers=auth_headers)
+    assert response.status_code == 200
+    fetched_tags = response.json()
+    assert len(fetched_tags) == tags_count + 1
+
+    fetched_tag = [tag for tag in fetched_tags if tag["id"]
+                   == created_tag_id][0]
+
+    assert fetched_tag["name"] == "Important"
+    assert fetched_tag["color"] == "#ffffff"
+
+
+def test_update_and_delete_tag(client, auth_headers):
+    # 1. Setup: Create board
+    board_id = client.post(
+        "/boards/",
+        json={"name": "List Test Board"},
+        headers=auth_headers
+    ).json()["id"]
+
+    default_tags_count = len(client.get(
+        f"/boards/{board_id}/tags", headers=auth_headers).json())
+
+    tag_id = client.post(
+        f"/boards/{board_id}/tags",
+        json={"color": "#ffffff", "name": "Important"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Update List
+    all_tags = client.patch(
+        f"/boards/{board_id}/tags/{tag_id}",
+        json={"name": "Super Important"},
+        headers=auth_headers
+    )
+    assert all_tags.status_code == 200
+    assert all_tags.json()["name"] == "Super Important"
+
+    # 3. Delete List
+    all_tags = client.delete(
+        f"/boards/{board_id}/tags/{tag_id}", headers=auth_headers)
+    assert all_tags.status_code == 204
+
+    # 4. Verify
+    all_tags = client.get(
+        f"/boards/{board_id}/tags", headers=auth_headers).json()
+    assert len(all_tags) == default_tags_count
+
+
+def test_inbox_tag_protection(client, auth_headers, db_session):
+    """
+    Verifies special rules for Inbox with tags.
+    """
+    # Get Inbox and its 'Incoming' list
+    inbox = client.get("/inbox/", headers=auth_headers).json()
+    inbox_id = inbox["id"]
+
+    # The Inbox should not have tags associated
+    inbox_tags = inbox["tags"]
+    assert len(inbox_tags) == 0
+
+    # 1. Attempt to Create a new tag in the Inbox -> 403
+    response = client.post(
+        f"/boards/{inbox_id}/tags",
+        json={"color": "#ff0000",  "name": "Forbidden Tag"},
+        headers=auth_headers
+    )
+    assert response.status_code == 403
+
+
 def test_tag_cascade(client, auth_headers, db_session, fill_data):
     """
     Tests the CASCADE DELETE functionality of the Tag model.

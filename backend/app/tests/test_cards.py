@@ -1,3 +1,51 @@
+# --- CARD ISOLATED OPERATIONS ---
+
+def test_card_due_date(client, auth_headers):
+    # 1. Setup: Create Board + List + Card
+    # Create Board
+    board = client.post(
+        "/boards/", json={"name": "House"}, headers=auth_headers).json()
+    board_id = board["id"]
+
+    # Create List
+    list = client.post(f"/boards/{board_id}/lists",
+                       json={"name": "Daily tasks"}, headers=auth_headers).json()
+    list_id = list["id"]
+
+    def fetch_card(card_id):
+        """
+        Return the fetched card with the 'card_id' from a get request to "/boards/{board_id}/lists/{list_id}/cards".
+        """
+        cards = client.get(
+            f"/boards/{board_id}/lists/{list_id}/cards", headers=auth_headers).json()
+        return [card for card in cards if card["id"] == card_id][0]
+
+    # Create Card, due_date has not been set
+    card_id = client.post(f"/boards/{board_id}/lists/{list_id}/cards",
+                          json={"name": "Simple task"}, headers=auth_headers).json()["id"]
+    card = fetch_card(card_id)
+    assert not card["due_date"]
+
+    # set due_date
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"due_date": "2025-11-30T23:59:59"}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert card["due_date"] == "2025-11-30T23:59:59"
+
+    # Test that 'exclude_unset=True' works correctly
+    # changing another field and checking that the date is not deleted.
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"text": "The due date must remain set when we send an update request without the due_date field"}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert card["due_date"] == "2025-11-30T23:59:59"
+
+    # removed the due_date
+    client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
+                 json={"due_date": None}, headers=auth_headers)
+    card = fetch_card(card_id)
+    assert not card["due_date"]
+
+
 # --- MOVE TESTS (Drag & Drop) ---
 
 def test_move_card_same_list(client, auth_headers):
@@ -157,3 +205,156 @@ def test_move_card_security(client, auth_headers):
         headers=headers_hacker
     )
     assert res.status_code == 403
+
+
+# --- TAG ASSIGN TESTS ---
+
+def test_attach_tag(client, auth_headers):
+    # 1. Setup: Board + List
+    board_id = client.post(
+        "/boards/",
+        json={"name": "Daily"},
+        headers=auth_headers
+    ).json()["id"]
+    list_id = client.post(
+        f"/boards/{board_id}/lists",
+        json={"name": "Job"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Create Card
+    card_id = client.post(
+        f"/boards/{board_id}/lists/{list_id}/cards",
+        json={"name": "My Task"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 3. Create Tag
+    tag_id = client.post(
+        f"/boards/{board_id}/tags",
+        json={"color": "#ff0000", "name": "Important"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 4. Attach the tag with the card
+    response = client.post(
+        f"cards/{card_id}/tags/{tag_id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+
+    # 5. Check if the tag was attached
+    cards = client.get(
+        f"/boards/{board_id}/lists/{list_id}/cards",
+        headers=auth_headers
+    ).json()
+    card = [card for card in cards if card["id"] == card_id][0]
+
+    card_tags = card["tags"]
+    assert len(card_tags) == 1
+    assert card_tags[0]["color"] == "#ff0000"
+    assert card_tags[0]["name"] == "Important"
+
+
+def test_detach_tag(client, auth_headers):
+    # 1. Setup: Board + List
+    board_id = client.post(
+        "/boards/",
+        json={"name": "Daily"},
+        headers=auth_headers
+    ).json()["id"]
+    list_id = client.post(
+        f"/boards/{board_id}/lists",
+        json={"name": "Job"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Setup: Card + Tag
+    card_id = client.post(
+        f"/boards/{board_id}/lists/{list_id}/cards",
+        json={"name": "My Task"},
+        headers=auth_headers
+    ).json()["id"]
+    tag_id = client.post(
+        f"/boards/{board_id}/tags",
+        json={"color": "#ff0000", "name": "Important"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 3. Attach the tag with the card
+    response = client.post(
+        f"cards/{card_id}/tags/{tag_id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+
+    # 4. Check if the tag was attached
+    cards = client.get(
+        f"/boards/{board_id}/lists/{list_id}/cards",
+        headers=auth_headers
+    ).json()
+    card = [card for card in cards if card["id"] == card_id][0]
+
+    card_tags = card["tags"]
+    assert len(card_tags) == 1
+    assert card_tags[0]["color"] == "#ff0000"
+    assert card_tags[0]["name"] == "Important"
+
+    # 5. Detach the tag
+    response = client.delete(
+        f"cards/{card_id}/tags/{tag_id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+
+    # 6. Check if the tag was attached
+    cards = client.get(
+        f"/boards/{board_id}/lists/{list_id}/cards",
+        headers=auth_headers
+    ).json()
+    card = [card for card in cards if card["id"] == card_id][0]
+
+    card_tags = card["tags"]
+    assert len(card_tags) == 0
+
+
+def test_attach_tag_cross_board(client, auth_headers):
+    # 1. Setup for card creation: Board + List
+    card_board_id = client.post(
+        "/boards/",
+        json={"name": "Board for card"},
+        headers=auth_headers
+    ).json()["id"]
+    card_list_id = client.post(
+        f"/boards/{card_board_id}/lists",
+        json={"name": "Job"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Setup for tag creation: Board
+    tag_board_id = client.post(
+        "/boards/",
+        json={"name": "Board for tag"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Create Card
+    card_id = client.post(
+        f"/boards/{card_board_id}/lists/{card_list_id}/cards",
+        json={"name": "My Task"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 3. Create Tag
+    tag_id = client.post(
+        f"/boards/{tag_board_id}/tags",
+        json={"color": "#ff0000", "name": "Important"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 4. Try to attach the tag with the card
+    response = client.post(
+        f"cards/{card_id}/tags/{tag_id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 404
