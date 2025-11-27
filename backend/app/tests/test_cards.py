@@ -35,7 +35,7 @@ def test_card_due_date(client, auth_headers):
     # Test that 'exclude_unset=True' works correctly
     # changing another field and checking that the date is not deleted.
     client.patch(f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
-                 json={"description": "The due date must remain set when we send an update request without the due_date field"}, headers=auth_headers)
+                 json={"text": "The due date must remain set when we send an update request without the due_date field"}, headers=auth_headers)
     card = fetch_card(card_id)
     assert card["due_date"] == "2025-11-30T23:59:59"
 
