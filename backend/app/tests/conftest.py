@@ -152,3 +152,45 @@ def fill_data(client, auth_headers):
                  f"Task {i}" for i in range(cards_count, cards_count+3)])
 
     client.headers = default_headers
+
+
+# --- Helpers ---
+
+def check_models_count(db, models_count: dict):
+    """
+    This helpers take each model of `models_count` and assert that the database have the associated count of this item.
+
+    :param models_count: Dict with the models objects to be checked as keys and the expected count as values.
+    :type models_count: dict[SQLAlchemyModel: int]
+    """
+    for model, count in models_count.items():
+        retrieved_models = db.query(model.id).all()
+        assert len(retrieved_models) == count
+
+
+def check_board_count(db, *, board_id, board_count, list_count=None, tag_count=None, card_count=None):
+    """
+    Assert expected counts for a board and its related entities in the database.
+    Args:
+        db: SQLAlchemy Session used to run queries.
+        board: Board instance whose related objects are checked.
+        board_count (int): Expected number of Board rows with board.id.
+        list_count (Optional[int]): If provided, expected number of List rows with board_id == board.id.
+        tag_count (Optional[int]): If provided, expected number of Tag rows with board_id == board.id.
+        card_count (Optional[int]): If provided, expected number of Card rows joined through List for the board.
+    """
+    boards = db.query(Board).filter(Board.id == board_id).all()
+    assert len(boards) == board_count
+
+    if tag_count:
+        tags = db.query(Tag).filter(Tag.board_id == board_id).all()
+        assert len(tags) == tag_count
+
+    if list_count:
+        lists = db.query(List).filter(List.board_id == board_id).all()
+        assert len(lists) == list_count
+
+    if card_count:
+        cards = db.query(Card).join(Card.list).filter(
+            List.board_id == board_id).all()
+        assert len(cards) == card_count
