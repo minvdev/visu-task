@@ -1,13 +1,32 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    ports:
+      - "8080:8000"
+    
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/visutask_db
+      - SECRET_KEY=${SECRET_KEY:-supersecretkey}
+    depends_on:
+      - db
+    
+    # volumes:
+    #   - .:/app
+    
+    command: ./boot.sh
+
   db:
     image: postgres:15-alpine
     
     container_name: visutask_db
 
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: test123
-      POSTGRES_DB: visutask_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     
     ports:
       - "5433:5432"
