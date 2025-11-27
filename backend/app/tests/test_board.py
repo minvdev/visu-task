@@ -179,8 +179,6 @@ def test_create_and_get_cards(client, auth_headers):
     )
     assert res.status_code == 201
     card_data = res.json()
-    from json import dumps
-    print(dumps(card_data, ensure_ascii=False, indent=2))
     assert card_data["name"] == "My Task"
     assert card_data["position"] == 1  # Default auto-positioning
 

@@ -146,7 +146,6 @@ def test_move_card_security(client, auth_headers):
                 "email": "hacker@ex.com", "password": "123456789"})
     token_hacker = client.post(
         "/auth/login", data={"username": "hacker", "password": "123456789"}).json()
-    print(token_hacker)
     token_hacker = token_hacker["access_token"]
     headers_hacker = {"Authorization": f"Bearer {token_hacker}"}
 
