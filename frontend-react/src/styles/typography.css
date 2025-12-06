@@ -1,0 +1,32 @@
+:root {
+	/* --- 1. Font Family --- */
+	--font-sans: ui-sans-serif, system-ui, -apple-system,
+		BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+		Arial, sans-serif;
+
+	/* --- 2. TAMAÑOS --- */
+
+	/* Para etiquetas pequeñas (Tags, Fechas) */
+	--text-xs: 0.75rem; /* 12px */
+	--text-sm: 0.875rem; /* 14px */
+
+	/* Texto base (Cuerpo de las tarjetas) */
+	--text-base: 1rem; /* 16px */
+
+	/* Títulos de listas y secciones */
+	--text-lg: 1.125rem; /* 18px */
+	--text-xl: 1.25rem; /* 20px */
+
+	/* Títulos grandes de página */
+	--text-2xl: 1.5rem; /* 24px */
+	--text-3xl: 1.875rem; /* 30px */
+
+	/* --- 3. PESOS (Grosor) --- */
+	--font-normal: 400;
+	--font-medium: 500;
+	--font-bold: 700;
+
+	/* --- 4. ALTURA DE LÍNEA (Line Height) --- */
+	--leading-tight: 1.25; /* Para títulos grandes */
+	--leading-normal: 1.5; /* Para párrafos */
+}

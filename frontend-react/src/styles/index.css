@@ -1,0 +1,11 @@
+@import "./reset.css";
+@import "./theme.css";
+@import "./typography.css";
+@import "./spacing.css";
+
+body {
+	font-family: var(--font-sans);
+	background-color: var(--bg-app);
+	color: var(--text-primary);
+	-webkit-font-smoothing: antialiased;
+}

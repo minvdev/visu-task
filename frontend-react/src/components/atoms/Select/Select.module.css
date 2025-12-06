@@ -1,0 +1,42 @@
+.wrapper {
+	position: relative;
+	width: 100%;
+}
+
+.select {
+	width: 100%;
+	appearance: none;
+	background-color: var(--bg-card);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-sm);
+	padding: var(--space-2) var(--space-10) var(--space-2)
+		var(--space-4);
+	font-family: var(--font-sans);
+	font-size: var(--text-base);
+	color: var(--text-main);
+	cursor: pointer;
+	transition: border-color 200ms, box-shadow 200ms;
+}
+
+.select:focus {
+	outline: 2px solid var(--color-primary);
+	box-shadow: 0 0 0 var(--space-1) var(--brand-100);
+}
+
+.select:disabled {
+	background-color: var(--gray-100);
+	color: var(--text-secondary);
+	cursor: not-allowed;
+}
+
+.arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 1rem;
+	width: 0.8rem;
+	height: 0.5rem;
+	background-color: var(--text-secondary);
+	clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+	pointer-events: none;
+}
