@@ -1,7 +1,0 @@
-.label {
-	display: block;
-	font-size: var(--text-sm);
-	font-weight: var(--font-medium);
-	line-height: var(--leading-normal);
-	margin-left: var(--space-1);
-}
