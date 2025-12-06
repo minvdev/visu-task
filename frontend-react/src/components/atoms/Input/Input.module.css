@@ -1,0 +1,18 @@
+.input {
+	width: 100%;
+	border: none;
+	padding: var(--space-3);
+	transition: background-color 200ms ease-out;
+	font-size: var(--text-base);
+	background-color: var(--bg-input);
+	border-radius: var(--radius-sm);
+}
+
+.input:hover {
+	background-color: var(--bg-input-hover);
+}
+
+.input:focus {
+	background-color: var(--bg-input);
+	outline: 2px ridge var(--border-focus);
+}
