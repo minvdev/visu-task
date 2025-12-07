@@ -1,0 +1,16 @@
+.container {
+	background-color: var(--bg-card);
+	padding: var(--space-2) var(--space-6) var(--space-6)
+		var(--space-6);
+	border-radius: var(--radius-m);
+
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--space-8) * 1.4);
+
+	box-shadow: var(--shadow-lg);
+}
+
+.molecule {
+	margin-top: calc(var(--space-5) * -1);
+}
