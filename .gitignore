@@ -1,3 +1,5 @@
 __pycache__
 /.env
 .vscode
+frontend-react/.vite
+frontend-react/node_modules
