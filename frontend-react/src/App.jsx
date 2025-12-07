@@ -1,5 +1,4 @@
 import { AuthProvider } from "./context/AuthContext";
-import LoginView from "./pages/LoginView";
 import BaseView from "./pages/BaseView/BaseView";
 import {
 	BrowserRouter,
@@ -12,14 +11,7 @@ function App() {
 		<BrowserRouter>
 			<AuthProvider>
 				<Routes>
-					<Route
-						path="/"
-						element={
-							<BaseView>
-								<LoginView />
-							</BaseView>
-						}
-					/>
+					<Route path="/" element={<BaseView></BaseView>} />
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>
