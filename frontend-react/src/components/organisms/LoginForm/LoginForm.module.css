@@ -1,0 +1,52 @@
+.form {
+	padding: var(--space-8);
+	background-color: #fff;
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-lg);
+	max-width: 400px;
+}
+
+@media (max-width: 799px), (min-width: 600px) {
+	.form {
+		width: 80%;
+	}
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.errorAlert {
+	background-color: var(--color-danger);
+	color: var(--text-on-brand);
+	margin: var(--space-2) 0;
+	padding: var(--space-1);
+	border-radius: var(--radius-sm);
+	text-transform: uppercase;
+	font-weight: var(--font-medium);
+}
+
+.fieldsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.actions {
+	margin-top: var(--space-8);
+}
+
+.submitBtn {
+	width: 100%;
+}
+
+.link {
+	color: var(--color-primary);
+	font-weight: var(--);
+}
+
+.link:hover {
+	color: var(--color-primary-hover);
+	text-decoration: underline;
+}
