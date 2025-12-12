@@ -31,8 +31,8 @@
 
 	/* Radius */
 	--radius-sm: 2px;
-	--radius-m: 6px;
-	--radius-l: 10px;
+	--radius-md: 6px;
+	--radius-lg: 10px;
 	--radius-xl: 14px;
 
 	/* Acciones - Primario */
