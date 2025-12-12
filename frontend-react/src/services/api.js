@@ -31,8 +31,10 @@ export const apiFetch = async (endpoint, options = {}) => {
 		);
 
 		if (response.status === 401) {
-			window.location.href = "/";
-			localStorage.removeItem("token");
+			if (!isLogin) {
+				localStorage.removeItem("token");
+				window.location.href = "/";
+			}
 			throw new Error(
 				isLogin
 					? "Usuario o contraseña incorrecta"
