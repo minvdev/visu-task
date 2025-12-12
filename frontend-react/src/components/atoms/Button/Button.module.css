@@ -1,10 +1,13 @@
 .button {
 	border: none;
 	cursor: pointer;
-	padding: var(--space-3) var(--space-2);
+	padding: var(--space-3);
 	transition: background-color 200ms ease-in;
 	font-size: var(--text-base);
-	font-weight: var(--font-bold);
+	font-weight: 600;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont,
+		Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+		"Helvetica Neue", sans-serif;
 }
 
 .primary {
@@ -20,4 +23,11 @@
 .primary:active {
 	background-color: var(--color-primary-active);
 	transform: scale(1.02);
+}
+
+.primary:disabled {
+	cursor: not-allowed;
+	background-color: var(--color-primary-disabled);
+	transform: none;
+	transition: none;
 }
