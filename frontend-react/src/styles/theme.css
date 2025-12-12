@@ -39,6 +39,7 @@
 	--color-primary: var(--brand-500);
 	--color-primary-hover: var(--brand-600);
 	--color-primary-active: var(--brand-700);
+	--color-primary-disabled: var(--brand-300);
 
 	/* Acciones - Peligro */
 	--color-danger: var(--danger-500);
