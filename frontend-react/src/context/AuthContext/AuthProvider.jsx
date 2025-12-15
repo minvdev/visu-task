@@ -27,10 +27,17 @@ export const AuthProvider = ({ children }) => {
 		checkAuth();
 	}, []);
 
-	const login = (token, userData) => {
+	const login = async (token) => {
 		localStorage.setItem("token", token);
-		setUser(userData);
-		setIsAuthenticated(true);
+
+		try {
+			const userData = await apiFetch("/users/me");
+			setUser(userData);
+			setIsAuthenticated(true);
+		} catch (error) {
+			console.log(`Error loading user in login: ${error}`);
+			logout();
+		}
 	};
 
 	const logout = () => {

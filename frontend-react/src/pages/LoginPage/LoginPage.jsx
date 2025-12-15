@@ -26,7 +26,7 @@ export const LoginPage = () => {
 				body: formData,
 			});
 
-			login(data.access_token);
+			await login(data.access_token);
 			navigate("/dashboard");
 		} catch (error) {
 			console.log(error);
