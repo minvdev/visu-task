@@ -10,6 +10,14 @@
 		"Helvetica Neue", sans-serif;
 }
 
+.button-md {
+	padding: var(--space-2) var(--space-3);
+}
+
+.button-sm {
+	padding: var(--space-1) var(--space-2);
+}
+
 .primary {
 	background-color: var(--color-primary);
 	color: white;
@@ -28,6 +36,28 @@
 .primary:disabled {
 	cursor: not-allowed;
 	background-color: var(--color-primary-disabled);
+	transform: none;
+	transition: none;
+}
+
+.danger {
+	background-color: var(--color-danger);
+	color: white;
+	border-radius: var(--radius-sm);
+}
+
+.danger:hover {
+	background-color: var(--color-danger-hover);
+}
+
+.danger:active {
+	background-color: var(--color-danger-active);
+	transform: scale(1.02);
+}
+
+.danger:disabled {
+	cursor: not-allowed;
+	background-color: var(--color-danger-disabled);
 	transform: none;
 	transition: none;
 }
