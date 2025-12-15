@@ -23,6 +23,11 @@ function App() {
 					/>
 
 					<Route
+						path="/"
+						element={<Navigate to="/dashboard" />}
+					/>
+
+					<Route
 						element={
 							<ProtectedRoute>
 								<MainLayout />
