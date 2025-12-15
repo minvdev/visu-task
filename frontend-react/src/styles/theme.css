@@ -45,6 +45,7 @@
 	--color-danger: var(--danger-500);
 	--color-danger-hover: var(--danger-600);
 	--color-danger-active: var(--danger-700);
+	--color-danger-disabled: var(--danger-300);
 
 	/* Acciones - Éxito */
 	--color-success: var(--success-500);
