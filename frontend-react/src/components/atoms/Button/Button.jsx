@@ -13,7 +13,7 @@ export const Button = ({
 		<button
 			type={type}
 			className={`${styles.button} ${styles[variant]} ${
-				className || ""
+				className ? styles[className] : ""
 			}`}
 			onClick={onClick}
 			disabled={disabled}
