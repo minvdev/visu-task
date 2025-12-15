@@ -4,10 +4,8 @@
 	/* Fondos */
 	--bg-app: var(--gray-50);
 	--bg-card: var(--gray-100);
-	--bg-card: #fff;
 	--bg-input: #ffffff;
-	--bg-input: var(--gray-100);
-	--bg-input-hover: var(--gray-200);
+	--bg-input-hover: var(--gray-50);
 	--bg-overlay: rgba(0, 0, 0, 0.5);
 
 	--bg-board: var(--gray-100);
