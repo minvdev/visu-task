@@ -2,17 +2,32 @@
 	width: 100%;
 	border: none;
 	padding: var(--space-3);
-	transition: background-color 200ms ease-out;
 	font-size: var(--text-base);
-	background-color: var(--bg-input);
 	border-radius: var(--radius-sm);
+	background-color: inherit;
+	outline: none;
 }
 
-.input:hover {
+.input-default {
+	background-color: var(--bg-input);
+	outline: 1px ridge var(--border);
+	transition: background-color 200ms ease-out;
+}
+
+.input-md {
+	padding: var(--space-2);
+}
+
+.input-sm {
+	padding: var(--space-1);
+}
+
+.input-default:hover {
 	background-color: var(--bg-input-hover);
+	outline: 1px ridge var(--border-light);
 }
 
-.input:focus {
+.input-default:focus {
 	background-color: var(--bg-input);
 	outline: 2px ridge var(--border-focus);
 }

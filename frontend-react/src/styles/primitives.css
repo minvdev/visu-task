@@ -25,6 +25,7 @@
 	/* --- PELIGRO / ERROR (Rojo) --- */
 	--danger-50: #fef2f2;
 	--danger-100: #fee2e2;
+	--danger-300: #fca5a5;
 	--danger-500: #ef4444; /* Rojo estándar */
 	--danger-600: #dc2626; /* Rojo hover */
 	--danger-700: #b91c1c; /* Rojo active */
