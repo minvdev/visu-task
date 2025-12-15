@@ -14,6 +14,8 @@ export const Navbar = () => {
 		setSearchQuery(event.target.value);
 	};
 
+	const displayName = user?.username || "Usuario";
+
 	return (
 		<nav className={styles.navbar}>
 			<div className={styles.logo}>
@@ -37,7 +39,7 @@ export const Navbar = () => {
 					alt="User avatar"
 					className="no-border"
 				>
-					<p>{user.username || "Usuario"}</p>
+					<p>{displayName}</p>
 				</IconWrapper>
 
 				<Button
