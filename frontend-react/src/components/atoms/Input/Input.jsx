@@ -5,12 +5,14 @@ export const Input = ({
 	value = "",
 	onChange,
 	placeholder,
-	className,
+	className = "input-default",
 	...props
 }) => {
 	return (
 		<input
-			className={`${styles.input} ${className || ""}`}
+			className={`${styles.input} ${
+				className ? styles[className] : ""
+			}`}
 			type={type}
 			onChange={onChange}
 			placeholder={placeholder}
