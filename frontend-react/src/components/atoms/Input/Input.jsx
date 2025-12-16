@@ -6,8 +6,8 @@ export const Input = ({
 	value = "",
 	onChange,
 	placeholder,
-	variants = [],
-	className = "input-default",
+	variants = ["input-default"],
+	className,
 	...props
 }) => {
 	return (

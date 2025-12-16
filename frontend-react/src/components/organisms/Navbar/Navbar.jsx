@@ -26,7 +26,7 @@ export const Navbar = () => {
 				<IconWrapper src="src/assets/icons/search.svg">
 					<Input
 						placeholder="Buscar"
-						className="input-sm"
+						variants={["input-sm"]}
 						value={searchQuery}
 						onChange={handleSearchChange}
 					/>
@@ -37,15 +37,14 @@ export const Navbar = () => {
 				<IconWrapper
 					src="src/assets/icons/user.svg"
 					alt="User avatar"
-					className="no-border"
+					variants={["no-border"]}
 				>
 					<p>{displayName}</p>
 				</IconWrapper>
 
 				<Button
 					onClick={logout}
-					variant="danger"
-					className="button-sm"
+					variants={["danger", "button-sm"]}
 				>
 					Salir
 				</Button>
