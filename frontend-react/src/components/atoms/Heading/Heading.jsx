@@ -1,4 +1,5 @@
 import styles from "./Heading.module.css";
+import clsx from "clsx";
 
 export const Heading = ({
 	level = 1,
@@ -12,9 +13,12 @@ export const Heading = ({
 
 	return (
 		<Tag
-			className={`${styles.heading} ${
-				styles[`h${safeLevel}`]
-			} ${styles[variant]} ${className || ""}`}
+			className={clsx(
+				styles.heading,
+				styles[`h${safeLevel}`],
+				styles[variant],
+				className
+			)}
 			{...props}
 		>
 			{children}
