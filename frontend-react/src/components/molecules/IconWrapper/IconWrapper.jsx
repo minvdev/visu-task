@@ -5,11 +5,18 @@ import { Image } from "../../atoms/Image/Image";
 export const IconWrapper = ({
 	src,
 	children,
+	variants = [],
 	className,
 	...props
 }) => {
 	return (
-		<div className={clsx(styles.wrapper, className)}>
+		<div
+			className={clsx(
+				styles.wrapper,
+				variants.map((variant) => styles[variant]),
+				className
+			)}
+		>
 			<Image src={src} {...props} />
 			{children}
 		</div>

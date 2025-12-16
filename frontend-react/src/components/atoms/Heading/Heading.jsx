@@ -4,7 +4,7 @@ import clsx from "clsx";
 export const Heading = ({
 	level = 1,
 	children,
-	variant = "primary",
+	variants = ["primary"],
 	className,
 	...props
 }) => {
@@ -16,7 +16,7 @@ export const Heading = ({
 			className={clsx(
 				styles.heading,
 				styles[`h${safeLevel}`],
-				styles[variant],
+				variants.map((variant) => styles[variant]),
 				className
 			)}
 			{...props}

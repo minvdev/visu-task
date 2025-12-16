@@ -6,12 +6,17 @@ export const Input = ({
 	value = "",
 	onChange,
 	placeholder,
+	variants = [],
 	className = "input-default",
 	...props
 }) => {
 	return (
 		<input
-			className={clsx(styles.input, className)}
+			className={clsx(
+				styles.input,
+				variants.map((variant) => styles[variant]),
+				className
+			)}
 			type={type}
 			onChange={onChange}
 			placeholder={placeholder}
