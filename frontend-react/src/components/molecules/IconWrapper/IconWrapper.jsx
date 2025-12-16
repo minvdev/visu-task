@@ -1,4 +1,5 @@
 import styles from "./IconWrapper.module.css";
+import clsx from "clsx";
 import { Image } from "../../atoms/Image/Image";
 
 export const IconWrapper = ({
@@ -8,11 +9,7 @@ export const IconWrapper = ({
 	...props
 }) => {
 	return (
-		<div
-			className={`${styles.wrapper} ${
-				className ? styles[className] : ""
-			}`}
-		>
+		<div className={clsx(styles.wrapper, className)}>
 			<Image src={src} {...props} />
 			{children}
 		</div>

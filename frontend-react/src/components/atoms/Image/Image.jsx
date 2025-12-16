@@ -1,13 +1,12 @@
 import styles from "./Image.module.css";
+import clsx from "clsx";
 
 export const Image = ({ src, alt = "", className }) => {
 	const img = (
 		<img
 			src={src}
 			alt={alt}
-			className={`${styles.image} ${
-				className ? styles[className] : ""
-			}`}
+			className={clsx(styles.image, className)}
 		/>
 	);
 

@@ -1,4 +1,5 @@
 import styles from "./Input.module.css";
+import clsx from "clsx";
 
 export const Input = ({
 	type = "text",
@@ -10,9 +11,7 @@ export const Input = ({
 }) => {
 	return (
 		<input
-			className={`${styles.input} ${
-				className ? styles[className] : ""
-			}`}
+			className={clsx(styles.input, className)}
 			type={type}
 			onChange={onChange}
 			placeholder={placeholder}
