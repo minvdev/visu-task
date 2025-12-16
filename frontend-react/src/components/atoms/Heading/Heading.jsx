@@ -1,9 +1,10 @@
 import styles from "./Heading.module.css";
+import clsx from "clsx";
 
 export const Heading = ({
 	level = 1,
 	children,
-	variant = "primary",
+	variants = ["primary"],
 	className,
 	...props
 }) => {
@@ -12,9 +13,12 @@ export const Heading = ({
 
 	return (
 		<Tag
-			className={`${styles.heading} ${
-				styles[`h${safeLevel}`]
-			} ${styles[variant]} ${className || ""}`}
+			className={clsx(
+				styles.heading,
+				styles[`h${safeLevel}`],
+				variants.map((variant) => styles[variant]),
+				className
+			)}
 			{...props}
 		>
 			{children}

@@ -1,4 +1,5 @@
 import styles from "./Label.module.css";
+import clsx from "clsx";
 
 export const Label = ({
 	htmlFor,
@@ -9,7 +10,7 @@ export const Label = ({
 	return (
 		<label
 			htmlFor={htmlFor}
-			className={`${styles.label} ${className || ""}`}
+			className={clsx(styles.label, className)}
 			{...props}
 		>
 			{children}

@@ -1,18 +1,22 @@
 import styles from "./Input.module.css";
+import clsx from "clsx";
 
 export const Input = ({
 	type = "text",
 	value = "",
 	onChange,
 	placeholder,
-	className = "input-default",
+	variants = ["input-default"],
+	className,
 	...props
 }) => {
 	return (
 		<input
-			className={`${styles.input} ${
-				className ? styles[className] : ""
-			}`}
+			className={clsx(
+				styles.input,
+				variants.map((variant) => styles[variant]),
+				className
+			)}
 			type={type}
 			onChange={onChange}
 			placeholder={placeholder}
