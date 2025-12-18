@@ -17,6 +17,10 @@
 	margin-bottom: 1rem;
 }
 
+.noMargin {
+	margin: 0;
+}
+
 .errorAlert {
 	background-color: var(--color-danger);
 	color: var(--text-on-brand);
