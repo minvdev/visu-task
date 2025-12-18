@@ -10,6 +10,7 @@ class Board(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     description = Column(String(255), nullable=True)
+    image_url = Column(String(255), nullable=True)
     is_inbox = Column(Boolean, nullable=False, default=False)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
