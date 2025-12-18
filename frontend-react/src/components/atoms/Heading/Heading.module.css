@@ -3,10 +3,6 @@
 	line-height: var(--leading-tight);
 }
 
-.noMargin {
-	margin: none;
-}
-
 .primary {
 	color: var(--text-title);
 }
