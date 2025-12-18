@@ -31,7 +31,7 @@ export const RegisterForm = ({
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>
 			<div className={styles.header}>
-				<Heading level={2} variants={["noMargin"]}>
+				<Heading level={2} className={styles.noMargin}>
 					VisuTask
 				</Heading>
 				<p className={styles.subtitle}>
