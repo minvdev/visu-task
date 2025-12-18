@@ -1,0 +1,27 @@
+.cardContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 300px);
+	gap: var(--space-4);
+}
+
+.board {
+	transition: opacity 200ms ease-in transform 100ms ease-in;
+}
+
+.board:hover {
+	opacity: 0.8;
+	transform: scale(1.02);
+}
+
+.board:active {
+	opacity: 1;
+	transform: scale(0.98);
+}
+
+.popoverContainer {
+	position: relative;
+}
+
+.createBoard {
+	cursor: pointer;
+}
