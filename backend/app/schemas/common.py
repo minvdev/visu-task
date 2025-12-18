@@ -19,6 +19,7 @@ class BoardSubschema(BaseModel):
     id: int
     name: str
     description: str | None
+    image_url: str | None
 
     model_config = ConfigDict(from_attributes=True)
 

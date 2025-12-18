@@ -2,21 +2,8 @@
 	display: block;
 	max-width: 100%;
 	height: auto;
-	object-fit: none;
 }
 
-.img-cover {
-	object-fit: cover;
-}
-
-.img-contain {
-	object-fit: contain;
-}
-
-.img-fill {
-	object-fit: fill;
-}
-
-.img-scale-down {
-	object-fit: scale-down;
+.defaultFilter {
+	filter: invert(0.2);
 }

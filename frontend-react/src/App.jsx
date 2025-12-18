@@ -4,6 +4,8 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage/RegisterPage";
 import { Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/utility/ProtectedRoute";
+import { DashboardPage } from "./pages/DashboardPage/DashboardPage";
+import { BoardPage } from "./pages/BoardPage/BoardPage";
 import {
 	BrowserRouter,
 	Routes,
@@ -36,7 +38,12 @@ function App() {
 					>
 						<Route
 							path="/dashboard"
-							element={<h1>Dashboard</h1>}
+							element={<DashboardPage />}
+						/>
+
+						<Route
+							path="/boards/:boardSlug"
+							element={<BoardPage />}
 						/>
 					</Route>
 				</Routes>
