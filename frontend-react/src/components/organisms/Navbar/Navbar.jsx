@@ -5,6 +5,8 @@ import { Button } from "../../atoms/Button/Button";
 import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
+import searchIcon from "../../../assets/icons/search.svg";
+import userIcon from "../../../assets/icons/user.svg";
 
 export const Navbar = () => {
 	const { logout, user } = useAuth();
@@ -23,7 +25,7 @@ export const Navbar = () => {
 			</div>
 
 			<div className={styles.searchBar}>
-				<IconWrapper src="src/assets/icons/search.svg">
+				<IconWrapper src={searchIcon}>
 					<Input
 						placeholder="Buscar"
 						variants={["input-sm"]}
@@ -35,7 +37,7 @@ export const Navbar = () => {
 
 			<div className={styles.actions}>
 				<IconWrapper
-					src="src/assets/icons/user.svg"
+					src={userIcon}
 					alt="User avatar"
 					variants={["no-border"]}
 				>
