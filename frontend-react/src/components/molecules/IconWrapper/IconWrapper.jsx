@@ -17,7 +17,11 @@ export const IconWrapper = ({
 				className
 			)}
 		>
-			<Image src={src} {...props} />
+			<Image
+				src={src}
+				{...props}
+				variants={["defaultFilter"]}
+			/>
 			{children}
 		</div>
 	);
