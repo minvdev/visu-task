@@ -4,10 +4,11 @@ import { apiFetch } from "../../services/api";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
-	const { login } = useAuth();
+	const { login, isAuthenticated } = useAuth();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -37,6 +38,8 @@ export const LoginPage = () => {
 			setIsLoading(false);
 		}
 	};
+
+	if (isAuthenticated) return <Navigate to="/" />;
 
 	return (
 		<div className={styles.pageContainer}>
