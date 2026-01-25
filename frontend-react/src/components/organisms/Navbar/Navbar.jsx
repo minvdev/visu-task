@@ -1,12 +1,12 @@
 import { Heading } from "../../atoms/Heading/Heading";
-import { IconWrapper } from "../../molecules/IconWrapper/IconWrapper";
 import { Input } from "../../atoms/Input/Input";
 import { Button } from "../../atoms/Button/Button";
 import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
-import searchIcon from "../../../assets/icons/search.svg";
-import userIcon from "../../../assets/icons/user.svg";
+import clsx from "clsx";
+import { SearchIcon } from "../../../assets/icons/SearchIcon/SearchIcon";
+import { UserIcon } from "../../../assets/icons/UserIcon/UserIcon";
 
 export const Navbar = () => {
 	const { logout, user } = useAuth();
@@ -24,25 +24,21 @@ export const Navbar = () => {
 				<Heading level={3}>VisuTask</Heading>
 			</div>
 
-			<div className={styles.searchBar}>
-				<IconWrapper src={searchIcon}>
-					<Input
-						placeholder="Buscar"
-						variants={["input-sm"]}
-						value={searchQuery}
-						onChange={handleSearchChange}
-					/>
-				</IconWrapper>
+			<div
+				className={clsx(styles.searchBar, styles.wrapper)}
+			>
+				<SearchIcon />
+				<Input
+					placeholder="Buscar"
+					variants={["input-sm"]}
+					value={searchQuery}
+					onChange={handleSearchChange}
+				/>
 			</div>
 
-			<div className={styles.actions}>
-				<IconWrapper
-					src={userIcon}
-					alt="User avatar"
-					variants={["no-border"]}
-				>
-					<p>{displayName}</p>
-				</IconWrapper>
+			<div className={clsx(styles.actions, styles.wrapper)}>
+				<UserIcon />
+				<span>{displayName}</span>
 
 				<Button
 					onClick={logout}
