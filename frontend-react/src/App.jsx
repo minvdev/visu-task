@@ -42,7 +42,7 @@ function App() {
 						/>
 
 						<Route
-							path="/boards/:boardSlug"
+							path="/boards/:boardId"
 							element={<BoardPage />}
 						/>
 					</Route>
