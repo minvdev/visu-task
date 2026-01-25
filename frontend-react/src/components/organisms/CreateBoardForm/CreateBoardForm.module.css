@@ -13,6 +13,7 @@
 }
 
 .cancelBtn {
+	display: flex;
 	padding: 0;
 	position: absolute;
 	top: var(--space-4);
@@ -23,7 +24,8 @@
 	transition: transform 300ms ease;
 }
 
-.cancelImg {
+.cancelIcon {
+	color: #000;
 	width: 25px;
 	height: 25px;
 }
@@ -73,13 +75,13 @@
 	transform: scale(0.98);
 }
 
-.check {
+.checkIcon {
 	height: 20px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
-	filter: invert(1);
+	color: #fff;
 }
 
 .image {

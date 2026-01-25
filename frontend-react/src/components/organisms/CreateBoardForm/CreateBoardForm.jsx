@@ -6,8 +6,8 @@ import { Image } from "../../atoms/Image/Image";
 import { FormField } from "../../molecules/FormField/FormField";
 import { Input } from "../../atoms/Input/Input";
 import { useState } from "react";
-import cancelIcon from "../../../assets/icons/cancel.svg";
-import checkIcon from "../../../assets/icons/check.svg";
+import { CancelIcon } from "../../../assets/icons/CancelIcon/CancelIcon";
+import { CheckIcon } from "../../../assets/icons/CheckIcon/CheckIcon";
 
 export const CreateBoardForm = ({
 	onSubmit,
@@ -16,7 +16,7 @@ export const CreateBoardForm = ({
 }) => {
 	const [title, setTitle] = useState("");
 	const [selectedImageId, setSelectedImageId] = useState(
-		backgrounds[0].id
+		backgrounds[0].id,
 	);
 
 	const handleSubmit = (e) => {
@@ -44,10 +44,7 @@ export const CreateBoardForm = ({
 					onClick={onCancel}
 					className={styles.cancelBtn}
 				>
-					<Image
-						src={cancelIcon}
-						className={styles.cancelImg}
-					/>
+					<CancelIcon className={styles.cancelIcon} />
 				</Button>
 			</div>
 
@@ -56,7 +53,7 @@ export const CreateBoardForm = ({
 					<div
 						className={clsx(
 							styles.backgroundPicker,
-							styles.marginTop
+							styles.marginTop,
 						)}
 					>
 						<div className={styles.backgroundList}>
@@ -66,14 +63,13 @@ export const CreateBoardForm = ({
 									className={clsx(
 										styles.imageContainer,
 										selectedImageId === bg.id &&
-											styles.selected
+											styles.selected,
 									)}
 									key={bg.id}
 								>
 									{selectedImageId === bg.id && (
-										<Image
-											className={styles.check}
-											src={checkIcon}
+										<CheckIcon
+											className={styles.checkIcon}
 										/>
 									)}
 
