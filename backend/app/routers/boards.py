@@ -259,9 +259,16 @@ def create_list(
             detail="You cannot create a new list in the Inbox."
         )
 
+    max_position = db.query(func.max(List.position)).filter(
+        List.board_id == board_id
+    ).scalar()
+
+    position = (max_position or 0) + 1
+
     new_list = List(
         **list_data.model_dump(),
-        board=board
+        board=board,
+        position=position
     )
 
     db.add(new_list)
