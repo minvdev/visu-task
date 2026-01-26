@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=schemas.Board)
+@router.get("/", response_model=schemas.Inbox)
 def get_inbox(
     db: Session = Depends(get_db),
     current_user: User = CurrentUserDep
