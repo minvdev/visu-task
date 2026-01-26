@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
 from ..db.database import Base
+from ..models.list import List
 
 
 class Board(Base):
@@ -17,7 +18,8 @@ class Board(Base):
     user = relationship("User", back_populates="boards")
 
     lists = relationship("List", back_populates="board",
-                         cascade="all, delete-orphan")
+                         cascade="all, delete-orphan",
+                         order_by=[List.position.asc(), List.name.asc()])
 
     tags = relationship("Tag", back_populates="board",
                         cascade="all, delete-orphan")
