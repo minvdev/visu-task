@@ -4,3 +4,121 @@
 	height: 100%;
 	gap: var(--space-3);
 }
+
+.inboxBoardContainer {
+	background-color: var(--bg-inbox);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-sm);
+	display: flex;
+	flex-direction: column;
+}
+
+.mainBoardContainer {
+	border-radius: var(--radius-lg);
+	position: relative;
+	z-index: 0;
+	box-shadow: var(--shadow-sm);
+	display: flex;
+	flex-direction: column;
+
+	overflow: hidden;
+}
+
+.backgroundImage {
+	border-radius: inherit;
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.boardTab {
+	border-top-left-radius: var(--radius-lg);
+	border-top-right-radius: var(--radius-lg);
+	padding: var(--space-3);
+	background-color: var(--white-alpha-40);
+	flex-shrink: 0;
+	display: flex;
+	gap: var(--space-2);
+	align-items: center;
+}
+
+.inboxIcon {
+	margin-left: var(--space-2);
+	height: 18px;
+}
+
+.boardTabHeading {
+	padding: var(--space-1);
+	margin: 0;
+	border-radius: var(--radius-sm);
+}
+
+.boardContent {
+	padding: var(--space-3);
+	box-shadow: var(--shadow-lg);
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+	min-height: 0;
+	overflow: auto;
+}
+
+.inboxBoardContent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.mainBoardContent {
+	display: flex;
+	gap: var(--space-3);
+}
+
+.column {
+	width: 300px;
+	height: min-content;
+}
+
+.addColumnBtn {
+	height: min-content;
+}
+
+.addColumn.addColumn {
+	background-color: hsla(0, 0%, 100%, 0.6);
+	color: var(--text-secondary);
+	padding: var(--space-3) var(--space-4);
+	animation: addColumnIn 100ms ease-in;
+	transform-origin: top;
+}
+@keyframes addColumnIn {
+	from {
+		opacity: 0;
+		transform: scaleY(1.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+}
+
+.hoverOverlay:hover {
+	background-color: hsla(0, 0%, 0%, 0.08);
+}
+.hoverOverlay {
+	transition: background-color 85ms ease;
+}
+
+.addTask {
+	width: 100%;
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	border: 0;
+	padding: 0;
+	border-radius: var(--radius-md);
+}
