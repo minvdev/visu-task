@@ -30,10 +30,10 @@ export const DashboardPage = () => {
 		fetchBoards();
 	}, []);
 
-	const hanldeCreateBoard = async ({ title, imageId }) => {
+	const handleCreateBoard = async ({ title, imageId }) => {
 		try {
 			const selectedBackground = backgrounds.find(
-				(bg) => bg.id === imageId
+				(bg) => bg.id === imageId,
 			);
 
 			await apiFetch("/boards", {
@@ -92,7 +92,7 @@ export const DashboardPage = () => {
 							}}
 						>
 							<CreateBoardForm
-								onSubmit={hanldeCreateBoard}
+								onSubmit={handleCreateBoard}
 								onCancel={() => {
 									setIsCreatePopoverOpen(false);
 								}}
