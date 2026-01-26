@@ -1,6 +1,6 @@
 .navbar {
 	width: 100%;
-	padding: var(--space-2);
+	padding: var(--space-1) var(--space-6);
 
 	display: grid;
 	grid-template-areas: "logo searchBar actions";
@@ -40,4 +40,6 @@
 	display: flex;
 	gap: var(--space-4);
 	align-items: center;
+	padding: 0;
+	border: none;
 }

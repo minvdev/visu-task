@@ -1,6 +1,7 @@
 import { Heading } from "../../atoms/Heading/Heading";
 import { Input } from "../../atoms/Input/Input";
 import { Button } from "../../atoms/Button/Button";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
@@ -20,9 +21,9 @@ export const Navbar = () => {
 
 	return (
 		<nav className={styles.navbar}>
-			<div className={styles.logo}>
+			<Link to="/dashboard" className={styles.logo}>
 				<Heading level={3}>VisuTask</Heading>
-			</div>
+			</Link>
 
 			<div
 				className={clsx(styles.searchBar, styles.wrapper)}
@@ -33,6 +34,7 @@ export const Navbar = () => {
 					variants={["input-sm"]}
 					value={searchQuery}
 					onChange={handleSearchChange}
+					name="searchBarInput"
 				/>
 			</div>
 
