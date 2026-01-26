@@ -327,37 +327,39 @@ export const BoardPage = () => {
 						styles.mainBoardContent,
 					)}
 				>
-					{board.lists.map((column) => (
-						<Column
-							className={styles.column}
-							id={column.id}
-							key={column.id}
-							columnTasks={column.cards}
-							onColumnUpdate={(id, body) =>
-								handleColumnUpdate(board, id, body)
-							}
-							onColumnDelete={(id) =>
-								handleColumnDelete(board, id)
-							}
-							onTaskUpdate={(columnId, taskId, body) =>
-								handleTaskUpdate(
-									board,
-									columnId,
-									taskId,
-									body,
-								)
-							}
-							onTaskDelete={(columnId, taskId) =>
-								handleTaskDelete(board, columnId, taskId)
-							}
-							onTaskEdit={() => handleTaskEdit()}
-							onTaskCreate={(id, body) =>
-								handleTaskCreate(board, id, body)
-							}
-						>
-							{column.name}
-						</Column>
-					))}
+					{board.lists
+						.sort((a, b) => a.position - b.position)
+						.map((column) => (
+							<Column
+								className={styles.column}
+								id={column.id}
+								key={column.id}
+								columnTasks={column.cards}
+								onColumnUpdate={(id, body) =>
+									handleColumnUpdate(board, id, body)
+								}
+								onColumnDelete={(id) =>
+									handleColumnDelete(board, id)
+								}
+								onTaskUpdate={(columnId, taskId, body) =>
+									handleTaskUpdate(
+										board,
+										columnId,
+										taskId,
+										body,
+									)
+								}
+								onTaskDelete={(columnId, taskId) =>
+									handleTaskDelete(board, columnId, taskId)
+								}
+								onTaskEdit={() => handleTaskEdit()}
+								onTaskCreate={(id, body) =>
+									handleTaskCreate(board, id, body)
+								}
+							>
+								{column.name}
+							</Column>
+						))}
 
 					{isAddColumnFormOpen ? (
 						<CreateColumnForm
