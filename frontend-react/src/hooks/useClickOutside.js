@@ -2,11 +2,15 @@ import { useEffect } from "react";
 
 export const useClickOutside = (ref, handler) => {
 	useEffect(() => {
+		const refs = Array.isArray(ref) ? ref : [ref];
 		const listener = (event) => {
-			if (
-				!ref.current ||
-				ref.current.contains(event.target)
-			) {
+			const isClickInside = refs.some(
+				(ref) =>
+					!ref.current ||
+					ref.current.contains(event.target),
+			);
+
+			if (isClickInside) {
 				return;
 			}
 

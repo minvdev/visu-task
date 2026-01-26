@@ -1,12 +1,11 @@
 import styles from "./DashboardPage.module.css";
 import { Heading } from "../../components/atoms/Heading/Heading";
-import { Board } from "../../components/molecules/Board/Board";
+import { BoardCard } from "../../components/molecules/BoardCard/BoardCard";
 import { Popover } from "../../components/atoms/Popover/Popover";
 import { CreateBoardForm } from "../../components/organisms/CreateBoardForm/CreateBoardForm";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../../services/api";
 import { useEffect, useState } from "react";
-import { slugify } from "../../utils/slugify";
 import { backgrounds } from "../../constants/defaultBoardBackgrounds";
 
 export const DashboardPage = () => {
@@ -31,10 +30,10 @@ export const DashboardPage = () => {
 		fetchBoards();
 	}, []);
 
-	const hanldeCreateBoard = async ({ title, imageId }) => {
+	const handleCreateBoard = async ({ title, imageId }) => {
 		try {
 			const selectedBackground = backgrounds.find(
-				(bg) => bg.id === imageId
+				(bg) => bg.id === imageId,
 			);
 
 			await apiFetch("/boards", {
@@ -62,13 +61,10 @@ export const DashboardPage = () => {
 				{boards.map((board) => (
 					<Link
 						replace
-						to={{
-							pathname: `/boards/${slugify(board.name)}`,
-							search: `?id=${board.id}`,
-						}}
+						to={{ pathname: `/boards/${board.id}` }}
 						key={board.id}
 					>
-						<Board
+						<BoardCard
 							src={board.image_url}
 							name={board.name}
 							className={styles.board}
@@ -83,7 +79,7 @@ export const DashboardPage = () => {
 							setIsCreatePopoverOpen(true);
 						}}
 					>
-						<Board
+						<BoardCard
 							name="Nuevo Tablero"
 							className={styles.board}
 						/>
@@ -96,7 +92,7 @@ export const DashboardPage = () => {
 							}}
 						>
 							<CreateBoardForm
-								onSubmit={hanldeCreateBoard}
+								onSubmit={handleCreateBoard}
 								onCancel={() => {
 									setIsCreatePopoverOpen(false);
 								}}

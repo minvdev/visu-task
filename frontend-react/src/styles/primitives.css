@@ -3,6 +3,7 @@
 	/* texto, bordes y fondos. */
 	--gray-50: #f9fafb;
 	--gray-100: #f3f4f6; /* Fondos de página */
+	--gray-150: #f0f1f3;
 	--gray-200: #e5e7eb; /* Bordes suaves */
 	--gray-300: #d1d5db; /* Bordes fuertes */
 	--gray-400: #9ca3af; /* Iconos inactivos */
@@ -18,6 +19,7 @@
 	--brand-100: #dbeafe;
 	--brand-200: #bfdbfe;
 	--brand-300: #93c5fd;
+	--brand-400: #60a5fa;
 	--brand-500: #3b82f6; /* Tu color principal estándar */
 	--brand-600: #2563eb; /* hover color */
 	--brand-700: #1d4ed8; /* active color */

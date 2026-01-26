@@ -1,0 +1,88 @@
+.column {
+	position: relative;
+	background-color: var(--bg-column);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-lg);
+	flex-shrink: 0;
+}
+
+.tab {
+	padding: var(--space-3);
+	padding-bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: start;
+	gap: var(--space-2);
+}
+
+.heading {
+	margin: 0;
+	padding: var(--space-1) var(--space-3);
+	flex: 1;
+
+	border-radius: var(--radius-sm);
+}
+.heading:focus {
+	outline: 2px red ridge;
+}
+
+.toggleContainer {
+	position: relative;
+}
+
+.optionsToggler.optionsToggler {
+	padding: var(--space-2);
+	border-radius: var(--radius-lg);
+	flex-shrink: 0;
+}
+
+.optionsIcon {
+	width: var(--space-4);
+	height: var(--space-4);
+	color: inherit;
+}
+
+.popover {
+	padding: 0;
+	box-shadow: none;
+	border: none;
+	color: var(--text-secondary);
+	border-radius: var(--radius-lg);
+}
+
+.popoverRight {
+	top: 100%;
+	left: 0;
+	margin-top: var(--space-2);
+}
+
+.popoverBottom {
+	top: 100%;
+	right: 0;
+	margin-top: var(--space-2);
+}
+
+.content {
+	padding: var(--space-3);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.addTask {
+	color: var(--text-secondary);
+	background-color: var(--bg-column);
+	box-shadow: none;
+	width: 100%;
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+.addTaskImageWrapper {
+	border: 0;
+	padding: 0;
+}

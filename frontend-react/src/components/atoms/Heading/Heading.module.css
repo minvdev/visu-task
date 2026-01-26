@@ -20,10 +20,15 @@
 
 .h3 {
 	font-size: var(--text-xl);
-	font-weight: var(--font-medium);
+	font-weight: var(--font-bold);
 }
 
 .h4 {
 	font-size: var(--text-lg);
+	font-weight: var(--font-medium);
+}
+
+.h5 {
+	font-size: var(--text-md);
 	font-weight: var(--font-medium);
 }
