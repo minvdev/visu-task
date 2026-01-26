@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from .common import UserSubschema, ListSubschema, TagSubschema
+from .common import UserSubschema, ListSubschema, TagSubschema, InboxList
 
 
 class BoardBase(BaseModel):
@@ -24,5 +24,15 @@ class Board(BoardBase):
     user: UserSubschema
     tags: list[TagSubschema] = []
     lists: list[ListSubschema] = []
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class Inbox(BoardBase):
+    id: int
+    user_id: int
+    user: UserSubschema
+    tags: list[TagSubschema] = []
+    lists: list[InboxList] = []
 
     model_config = ConfigDict(from_attributes=True)

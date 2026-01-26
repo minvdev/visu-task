@@ -42,6 +42,14 @@ class CardSubschema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class InboxList(BaseModel):
+    id: int
+    name: str
+    cards: list[CardSubschema] = []
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class TagSubschema(BaseModel):
     id: int
     name: str | None

@@ -7,6 +7,7 @@ from .token import TokenData
 from .board import BoardCreate
 from .board import BoardUpdate
 from .board import Board
+from .board import Inbox
 
 from .list import ListCreate
 from .list import ListUpdate
