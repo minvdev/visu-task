@@ -1,0 +1,19 @@
+.task {
+	background-color: var(--bg-task);
+	padding: var(--space-2) var(--space-3);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-md);
+	transition: border 85ms ease;
+	flex-shrink: 0;
+}
+.task:hover {
+	outline: 2px solid var(--color-primary-hover);
+}
+
+.addTaskVariant {
+	transition: filter 85ms ease;
+}
+.addTaskVariant:hover {
+	filter: brightness(0.92);
+	outline: none;
+}
