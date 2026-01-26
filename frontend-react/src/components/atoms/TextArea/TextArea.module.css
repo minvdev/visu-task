@@ -1,0 +1,28 @@
+.textarea {
+	width: 100%;
+	border: none;
+	padding: var(--space-3);
+	background-color: transparent;
+	border-radius: var(--radius-sm);
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	color: inherit;
+	resize: none;
+	outline: 1px ridge var(--border);
+
+	field-sizing: content;
+	min-height: 1lh;
+	max-width: 100%;
+}
+
+.textarea:hover {
+	background-color: var(--bg-input-hover);
+	outline: 1px ridge var(--border-light);
+}
+
+.textarea:focus {
+	box-shadow: var(--shadow-lg);
+	background-color: var(--bg-input);
+	outline: 2px ridge var(--border-focus);
+}
