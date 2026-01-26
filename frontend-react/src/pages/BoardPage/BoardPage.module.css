@@ -1,0 +1,6 @@
+.mainContainer {
+	display: grid;
+	grid-template-columns: 20% 5fr;
+	height: 100%;
+	gap: var(--space-3);
+}
