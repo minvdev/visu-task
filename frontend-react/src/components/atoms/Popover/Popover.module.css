@@ -5,7 +5,7 @@
 	z-index: 50;
 	background-color: #fff;
 	border-radius: var(--radius-md);
-	box-shadow: var(--shadow-md);
+	box-shadow: var(--shadow-lg);
 	border: 1px solid var(--border-light);
 
 	min-width: 250px;

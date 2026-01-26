@@ -7,13 +7,16 @@ export const Popover = ({
 	onClose,
 	className,
 	children,
+	rightClass = null,
+	bottomClass = null,
+	ignoreElements = [],
 }) => {
 	const popoverRef = useRef(null);
 	const [positionClass, setPositionClass] = useState(
-		styles.right
+		rightClass || styles.right,
 	);
 
-	useClickOutside(popoverRef, onClose);
+	useClickOutside([popoverRef, ...ignoreElements], onClose);
 
 	useLayoutEffect(() => {
 		if (!popoverRef.current) return;
@@ -22,19 +25,20 @@ export const Popover = ({
 		const viewportWidth = window.innerWidth;
 
 		const setClass = () => {
-			if (rect.right > viewportWidth) {
-				setPositionClass(styles.bottom);
+			// 24px accounts for the main container's padding to prevent overflow
+			if (rect.right + 24 > viewportWidth) {
+				setPositionClass(bottomClass || styles.bottom);
 			}
 		};
 		setClass();
-	}, []);
+	}, [bottomClass]);
 
 	return (
 		<div
 			className={clsx(
 				styles.popover,
 				positionClass,
-				className
+				className,
 			)}
 			ref={popoverRef}
 		>
