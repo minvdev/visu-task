@@ -10,6 +10,7 @@ class List(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
+    position = Column(Integer, nullable=False, index=True, default=1)
 
     board_id = Column(Integer, ForeignKey("boards.id"), nullable=False)
     board = relationship("Board", back_populates="lists")
