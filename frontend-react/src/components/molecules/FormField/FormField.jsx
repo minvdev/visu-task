@@ -6,9 +6,10 @@ export const FormField = ({
 	htmlFor,
 	error,
 	children,
+	className,
 }) => {
 	return (
-		<div className={styles.wrapper}>
+		<div className={className}>
 			<Label htmlFor={htmlFor} className={styles.label}>
 				{label}
 			</Label>
