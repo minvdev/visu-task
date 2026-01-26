@@ -6,7 +6,6 @@ import { CreateBoardForm } from "../../components/organisms/CreateBoardForm/Crea
 import { Link } from "react-router-dom";
 import { apiFetch } from "../../services/api";
 import { useEffect, useState } from "react";
-import { slugify } from "../../utils/slugify";
 import { backgrounds } from "../../constants/defaultBoardBackgrounds";
 
 export const DashboardPage = () => {
@@ -62,10 +61,7 @@ export const DashboardPage = () => {
 				{boards.map((board) => (
 					<Link
 						replace
-						to={{
-							pathname: `/boards/${slugify(board.name)}`,
-							search: `?id=${board.id}`,
-						}}
+						to={{ pathname: `/boards/${board.id}` }}
 						key={board.id}
 					>
 						<BoardCard
