@@ -1,9 +1,9 @@
-import styles from "./Board.module.css";
+import styles from "./BoardCard.module.css";
 import clsx from "clsx";
 import { Image } from "../../atoms/Image/Image";
 import { Heading } from "../../atoms/Heading/Heading";
 
-export const Board = ({
+export const BoardCard = ({
 	src,
 	name,
 	className,

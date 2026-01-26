@@ -1,6 +1,6 @@
 import styles from "./DashboardPage.module.css";
 import { Heading } from "../../components/atoms/Heading/Heading";
-import { Board } from "../../components/molecules/Board/Board";
+import { BoardCard } from "../../components/molecules/BoardCard/BoardCard";
 import { Popover } from "../../components/atoms/Popover/Popover";
 import { CreateBoardForm } from "../../components/organisms/CreateBoardForm/CreateBoardForm";
 import { Link } from "react-router-dom";
@@ -68,7 +68,7 @@ export const DashboardPage = () => {
 						}}
 						key={board.id}
 					>
-						<Board
+						<BoardCard
 							src={board.image_url}
 							name={board.name}
 							className={styles.board}
@@ -83,7 +83,7 @@ export const DashboardPage = () => {
 							setIsCreatePopoverOpen(true);
 						}}
 					>
-						<Board
+						<BoardCard
 							name="Nuevo Tablero"
 							className={styles.board}
 						/>
