@@ -16,6 +16,7 @@ class ListUpdate(BaseModel):
 
 class List(ListBase):
     id: int
+    position: int
     board_id: int
     board: BoardSubschema
     cards: list[CardSubschema] = []

@@ -27,6 +27,7 @@ class BoardSubschema(BaseModel):
 class ListSubschema(BaseModel):
     id: int
     name: str
+    position: int
 
     model_config = ConfigDict(from_attributes=True)
 
