@@ -1,0 +1,48 @@
+.form {
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.inputSection {
+	display: flex;
+	align-items: start;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.formField {
+	width: 100%;
+}
+
+.badge {
+	padding: var(--space-2);
+}
+.expired {
+	color: var(--danger-500);
+	background-color: var(--danger-50);
+}
+.upcoming {
+	color: var(--warning-500);
+	background-color: var(--warning-50);
+}
+.deadline {
+	color: var(--success-500);
+	background-color: var(--success-50);
+}
+
+.actionsSection {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-2);
+}
+.actionBtn {
+	background-color: var(--bg-card);
+}
+
+footer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
