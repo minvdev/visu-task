@@ -1,0 +1,101 @@
+.form {
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.tagsSection {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.tagContainer {
+	display: flex;
+}
+
+.checkbox {
+	align-self: center;
+	flex-shrink: 0;
+	height: 16px;
+	width: 16px;
+
+	cursor: pointer;
+	background-color: #fff;
+	background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+	appearance: none;
+	border: 1px solid var(--text-secondary);
+	border-radius: var(--radius-sm);
+}
+.checkbox:hover {
+	background-image:
+		linear-gradient(var(--black-alpha-10)),
+		url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+.checkbox:checked {
+	background-color: var(--color-primary);
+	border: 1px solid var(--color-primary);
+}
+.checkbox:focus-visible {
+	outline: 2px solid var(--color-primary);
+}
+
+.tagWrapper {
+	display: flex;
+	gap: var(--space-1);
+	width: 100%;
+	margin-left: var(--space-2);
+}
+
+.tag {
+	width: 100%;
+	display: inline-block;
+	height: 32px;
+	line-height: 32px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 0 var(--space-3);
+	color: var(--black-alpha-60);
+	background-color: var(--bg-tag, var(--bg-card));
+	border-radius: var(--radius-md);
+}
+.tag:hover {
+	background-image: linear-gradient(var(--white-alpha-20));
+}
+
+.editButton {
+	display: flex;
+	justify-self: center;
+	align-self: center;
+	border-radius: var(--radius-md);
+	color: #000;
+	padding: var(--space-1);
+	flex-shrink: 0;
+	height: 32px;
+	width: 32px;
+}
+.editButton:hover {
+	background-color: var(--black-alpha-10);
+}
+.icon {
+	color: #000;
+	width: 16px;
+	height: 16px;
+}
+
+.addTagBtn {
+	background-color: var(--bg-card);
+
+	display: flex;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-4);
+	border-radius: var(--radius-md);
+
+	font-weight: var(--font-medium);
+}
+.addTagBtn:hover {
+	background-color: var(--black-alpha-10);
+}
