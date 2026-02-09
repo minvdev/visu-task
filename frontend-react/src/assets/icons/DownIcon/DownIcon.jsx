@@ -1,0 +1,5 @@
+export const DownIcon = ({ className }) => {
+	return (
+		<svg width="16" height="16" fill="currentColor" className={className} viewBox="0 0 24 24"><path fillRule="evenodd" d="M4.293 8.293a1 1 0 0 1 1.414 0L12 14.586l6.293-6.293a1 1 0 1 1 1.414 1.414l-7 7a1 1 0 0 1-1.414 0l-7-7a1 1 0 0 1 0-1.414" clipRule="evenodd"/></svg>
+	);
+};
