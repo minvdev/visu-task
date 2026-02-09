@@ -32,3 +32,8 @@
 	font-size: var(--text-md);
 	font-weight: var(--font-medium);
 }
+
+.h6 {
+	font-size: var(--text-sm);
+	font-weight: var(--font-medium);
+}

@@ -2,12 +2,32 @@
 	border: none;
 	cursor: pointer;
 	padding: var(--space-3);
-	transition: background-color 200ms ease-in;
 	font-size: var(--text-base);
 	font-weight: 600;
-	font-family: system-ui, -apple-system, BlinkMacSystemFont,
-		Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-		"Helvetica Neue", sans-serif;
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		"Open Sans",
+		"Helvetica Neue",
+		sans-serif;
+}
+.button:hover {
+	background-image: linear-gradient(var(--black-alpha-10));
+}
+.button:active {
+	background-image: linear-gradient(var(--black-alpha-20));
+	transform: scale(1.02);
+}
+.button:disabled {
+	cursor: not-allowed;
+	background-image: linear-gradient(var(--white-alpha-40));
+	transform: none;
+	transition: none;
 }
 
 .button-md {
@@ -24,40 +44,8 @@
 	border-radius: var(--radius-sm);
 }
 
-.primary:hover {
-	background-color: var(--color-primary-hover);
-}
-
-.primary:active {
-	background-color: var(--color-primary-active);
-	transform: scale(1.02);
-}
-
-.primary:disabled {
-	cursor: not-allowed;
-	background-color: var(--color-primary-disabled);
-	transform: none;
-	transition: none;
-}
-
 .danger {
 	background-color: var(--color-danger);
 	color: white;
 	border-radius: var(--radius-sm);
-}
-
-.danger:hover {
-	background-color: var(--color-danger-hover);
-}
-
-.danger:active {
-	background-color: var(--color-danger-active);
-	transform: scale(1.02);
-}
-
-.danger:disabled {
-	cursor: not-allowed;
-	background-color: var(--color-danger-disabled);
-	transform: none;
-	transition: none;
 }

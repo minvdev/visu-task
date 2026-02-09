@@ -4,6 +4,7 @@
 	padding: var(--space-3);
 	font-size: var(--text-base);
 	border-radius: var(--radius-sm);
+	font: var(--font-sans);
 	background-color: inherit;
 	outline: none;
 }

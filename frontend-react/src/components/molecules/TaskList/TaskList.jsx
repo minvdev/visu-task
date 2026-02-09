@@ -59,7 +59,7 @@ export const TaskList = ({
 						</EditableText>
 
 						<ButtonBase
-							onClick={() => onTaskEdit()}
+							onClick={() => onTaskEdit(task.id)}
 							className={styles.editBtn}
 						>
 							<EditIcon />

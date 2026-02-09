@@ -16,6 +16,9 @@ export const Popover = ({
 		rightClass || styles.right,
 	);
 
+	if (!Array.isArray(ignoreElements))
+		ignoreElements = [ignoreElements];
+
 	useClickOutside([popoverRef, ...ignoreElements], onClose);
 
 	useLayoutEffect(() => {

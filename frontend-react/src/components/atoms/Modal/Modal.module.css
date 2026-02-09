@@ -1,0 +1,13 @@
+.dialog {
+	border: none;
+	margin-top: var(--space-12);
+	border-radius: var(--radius-lg);
+
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.75);
+}

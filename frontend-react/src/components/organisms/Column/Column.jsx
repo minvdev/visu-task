@@ -116,7 +116,7 @@ export const Column = ({
 					onTaskDelete={(taskId) =>
 						onTaskDelete(id, taskId)
 					}
-					onTaskEdit={onTaskEdit}
+					onTaskEdit={(taskId) => onTaskEdit(id, taskId)}
 				/>
 
 				{isCreateTaskFormOpen ? (

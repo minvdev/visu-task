@@ -1,0 +1,43 @@
+.header {
+	display: grid;
+	--iconBtnWidth: calc(
+		2 * var(--space-1) + var(--icon-size, 26px)
+	);
+	grid-template-columns:
+		var(--iconBtnWidth)
+		1fr var(--iconBtnWidth);
+	gap: var(--space-2);
+	align-items: center;
+	justify-content: center;
+}
+
+.heading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	grid-column: 2 / span 1;
+	margin: 0;
+}
+
+.button {
+	margin-top: var(--button-margin);
+	justify-self: center;
+	align-self: center;
+	border-radius: 50%;
+	color: #000;
+	padding: var(--space-1);
+}
+.button:hover {
+	background-color: var(--black-alpha-10);
+	background-image: none;
+}
+
+.icon {
+	height: var(--icon-size, 26px);
+	width: var(--icon-size, 26px);
+	color: inherit;
+}
+.stroke {
+	stroke: #000;
+	stroke-width: 0.2;
+}

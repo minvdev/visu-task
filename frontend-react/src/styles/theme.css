@@ -12,6 +12,7 @@
 	--bg-inbox-tab: var(--brand-200);
 
 	--bg-column: var(--gray-150);
+	--bg-column-hover: var(--gray-250);
 
 	--bg-task: var(--gray-50);
 	--bg-new-task: var(--gray-100);
