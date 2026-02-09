@@ -30,7 +30,6 @@ class Board(BoardBase):
 
 class Inbox(BoardBase):
     id: int
-    position: int
     user_id: int
     user: UserSubschema
     tags: list[TagSubschema] = []
