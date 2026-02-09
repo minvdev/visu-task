@@ -21,6 +21,7 @@ export const EditableText = ({
 	inputName = "",
 	multiline = false,
 	maxInputLength = 0,
+	placeholder,
 }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [tempValue, setTempValue] = useState(null);
@@ -70,6 +71,7 @@ export const EditableText = ({
 						"borderRadius",
 						"boxShadow",
 						"outline",
+						"overflow",
 					].map((prop) => [prop, computed[prop]]),
 				),
 			);
@@ -90,6 +92,22 @@ export const EditableText = ({
 		setTempValue(newValue);
 	};
 
+	const getChildren = () => {
+		const isHTML = isValidElement(children);
+
+		if (isHTML) {
+			if (savedValue)
+				return cloneElement(children, {}, savedValue);
+
+			return (
+				(children?.props?.children && children) ||
+				placeholder
+			);
+		}
+
+		return savedValue || children || placeholder;
+	};
+
 	useEffect(() => {
 		if (isEditing && inputRef.current) {
 			inputRef.current.select();
@@ -108,6 +126,7 @@ export const EditableText = ({
 				value={tempValue}
 				onChange={handleInputChange}
 				autoFocus
+				placeholder={placeholder}
 			/>
 		);
 	}
@@ -118,9 +137,7 @@ export const EditableText = ({
 			onClick={handleClick}
 			type="button"
 		>
-			{savedValue && isValidElement(children)
-				? cloneElement(children, {}, savedValue)
-				: children}
+			{getChildren()}
 		</button>
 	);
 };
