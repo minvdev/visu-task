@@ -15,6 +15,7 @@ import { EditableText } from "../../components/molecules/EditableText/EditableTe
 import { Column } from "../../components/organisms/Column/Column";
 import { CreateColumnForm } from "../../components/organisms/CreateColumnForm/CreateColumnForm";
 import { Image } from "../../components/atoms/Image/Image";
+import { TaskModal } from "../../components/molecules/TaskModal/TaskModal";
 
 import { boardTransformers } from "../../constants/boardTransformers";
 import { InboxIcon } from "../../assets/icons/InboxIcon/InboxIcon";
@@ -32,6 +33,28 @@ export const BoardPage = () => {
 		isAddInboxTaskFormOpen,
 		setIsAddInboxTaskFormOpen,
 	] = useState(false);
+	const [activeTask, setActiveTask] = useState(null);
+
+	const handleLoadModal = async (
+		boardId,
+		columnId,
+		taskId,
+	) => {
+		try {
+			const tasks = await apiFetch(
+				`/boards/${boardId}/lists/${columnId}/cards`,
+			);
+			const task = tasks.filter((t) => t.id === taskId)[0];
+			if (!task)
+				throw new Error(
+					`Task with id '${taskId}' not found`,
+				);
+			setActiveTask(task);
+		} catch (error) {
+			console.log("Error loading task: ", error);
+			throw error;
+		}
+	};
 
 	const handleBoardUpdate = async (body) => {
 		try {
@@ -165,8 +188,6 @@ export const BoardPage = () => {
 		}
 	};
 
-	const handleTaskEdit = async () => {};
-
 	const handleTaskUpdate = async (
 		board,
 		columnId,
@@ -186,8 +207,35 @@ export const BoardPage = () => {
 				updatedTask,
 			);
 			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+			return updatedTask;
 		} catch (error) {
 			console.log("Error saving task:", error);
+			throw error;
+		}
+	};
+
+	const handleToggleTaskTag = async (
+		board,
+		columnId,
+		taskId,
+		body,
+		inInbox = false,
+	) => {
+		try {
+			const updatedTask = await apiFetch(
+				`/cards/${taskId}/tags/${body.id}`,
+				{ method: body.attach ? "POST" : "DELETE" },
+			);
+			const newBoard = boardTransformers.updateTask(
+				board,
+				columnId,
+				taskId,
+				updatedTask,
+			);
+			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+			return updatedTask;
+		} catch (error) {
+			console.log("Error attaching/detaching tag:", error);
 			throw error;
 		}
 	};
@@ -288,6 +336,13 @@ export const BoardPage = () => {
 
 					{inbox?.lists && inbox.lists[0]?.cards && (
 						<TaskList
+							onTaskEdit={(taskId) =>
+								handleLoadModal(
+									inbox.id,
+									inbox.lists[0].id,
+									taskId,
+								)
+							}
 							tasks={inbox?.lists[0]?.cards}
 							onTaskUpdate={(taskId, body) =>
 								handleTaskUpdate(
@@ -352,7 +407,9 @@ export const BoardPage = () => {
 								onTaskDelete={(columnId, taskId) =>
 									handleTaskDelete(board, columnId, taskId)
 								}
-								onTaskEdit={() => handleTaskEdit()}
+								onTaskEdit={(columnId, taskId) =>
+									handleLoadModal(boardId, columnId, taskId)
+								}
 								onTaskCreate={(id, body) =>
 									handleTaskCreate(board, id, body)
 								}
@@ -395,6 +452,54 @@ export const BoardPage = () => {
 					src={board.image_url}
 				/>
 			</div>
+
+			{activeTask && (
+				<TaskModal
+					task={activeTask}
+					board={board}
+					onClose={() => setActiveTask(null)}
+					onTaskUpdate={async (body) => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						const updatedTask = await handleTaskUpdate(
+							currentBoard,
+							activeTask.list_id,
+							activeTask.id,
+							body,
+							isInbox,
+						);
+						setActiveTask(updatedTask);
+					}}
+					onTaskDelete={() => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						handleTaskDelete(
+							currentBoard,
+							activeTask.list_id,
+							activeTask.id,
+							isInbox,
+						);
+					}}
+					onToggleTaskTag={async (body) => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						const updatedTask = await handleToggleTaskTag(
+							currentBoard,
+							activeTask.list_id,
+							activeTask.id,
+							body,
+							isInbox,
+						);
+						setActiveTask(updatedTask);
+					}}
+				/>
+			)}
 		</div>
 	);
 };
