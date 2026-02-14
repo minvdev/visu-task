@@ -3,3 +3,4 @@ __pycache__
 .vscode
 frontend-react/.vite
 frontend-react/node_modules
+.python-version
