@@ -4,3 +4,4 @@ __pycache__
 frontend-react/.vite
 frontend-react/node_modules
 .python-version
+*.sql
