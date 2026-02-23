@@ -66,8 +66,8 @@ export const TaskModal = ({
 		onTaskUpdate({ name });
 	};
 
-	const handleDescriptionChange = (description) => {
-		onTaskUpdate({ description });
+	const handleDescriptionChange = (text) => {
+		onTaskUpdate({ text });
 	};
 
 	const handleDateUpdate = async (due_date) => {
