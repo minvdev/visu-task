@@ -65,13 +65,15 @@ export const Column = ({
 		<div className={clsx(className, styles.column)}>
 			<div className={styles.tab}>
 				<EditableText
+					component={Heading}
+					componentProps={{ level: 5 }}
+					className={styles.heading}
 					multiline={true}
+					maxInputLength={100}
 					inputName={`columnInput${id}`}
 					onSave={(name) => onColumnUpdate(id, { name })}
 				>
-					<Heading level={5} className={styles.heading}>
-						{children}
-					</Heading>
+					{children}
 				</EditableText>
 
 				<div className={styles.toggleContainer}>

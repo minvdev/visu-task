@@ -361,18 +361,15 @@ export const BoardPage = () => {
 			<div className={styles.mainBoardContainer}>
 				<div className={styles.boardTab}>
 					<EditableText
+						component={Heading}
+						componentProps={{ level: 3 }}
+						className={styles.boardTabHeading}
+						displayClass={styles.hoverOverlay}
+						maxInputLength={100}
 						inputName="boardInput"
 						onSave={(name) => handleBoardUpdate({ name })}
 					>
-						<Heading
-							level={3}
-							className={clsx(
-								styles.boardTabHeading,
-								styles.hoverOverlay,
-							)}
-						>
-							{board.name}
-						</Heading>
+						{board.name}
 					</EditableText>
 				</div>
 

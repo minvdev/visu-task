@@ -11,8 +11,14 @@
 	position: relative;
 }
 
-.taskText {
+.taskText.taskText {
 	padding: 0 var(--space-1);
+	margin: 0;
+	font-size: var(--text-sm);
+}
+.taskText:focus.taskText:focus {
+	outline: none;
+	border-radius: var(--radius-lg);
 }
 
 /* Starts Checkbox hide/show */

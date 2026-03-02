@@ -210,17 +210,18 @@ export const TaskModal = ({
 						/>
 
 						<EditableText
-							className={styles.editableText}
+							component={Heading}
+							componentProps={{ level: 1 }}
+							className={clsx(
+								styles.editableText,
+								styles.taskName,
+							)}
 							inputName={`Task input ${task.id}`}
 							onSave={handleNameChange}
 							multiline={true}
+							maxInputLength={100}
 						>
-							<Heading
-								className={styles.taskName}
-								level={1}
-							>
-								{task.name}
-							</Heading>
+							{task.name}
 						</EditableText>
 					</section>
 
