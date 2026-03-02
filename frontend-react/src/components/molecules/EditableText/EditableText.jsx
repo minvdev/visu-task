@@ -1,15 +1,7 @@
 import styles from "./EditableText.module.css";
 import clsx from "clsx";
 
-import {
-	useState,
-	useRef,
-	useEffect,
-	isValidElement,
-	cloneElement,
-} from "react";
-import { useClickOutside } from "../../../hooks/useClickOutside";
-import { useKeyPress } from "../../../hooks/useKeyPress";
+import { useState, useRef, useEffect } from "react";
 
 import { Input } from "../../atoms/Input/Input";
 import { TextArea } from "../../atoms/TextArea/TextArea";
@@ -17,127 +9,114 @@ import { TextArea } from "../../atoms/TextArea/TextArea";
 export const EditableText = ({
 	children,
 	className,
+	component = "div",
+	componentProps = {},
+	displayClass,
 	onSave,
 	inputName = "",
 	multiline = false,
 	maxInputLength = 0,
-	placeholder,
+	placeholder = "",
+	isEditing: controlledEditing = null,
+	onRequestEdit,
+	onEditingChange,
 }) => {
-	const [isEditing, setIsEditing] = useState(false);
-	const [tempValue, setTempValue] = useState(null);
-	const [prevValue, setPrevValue] = useState(null);
-	const [savedValue, setSavedValue] = useState(null);
-	const [inheritedStyles, setInheritedStyles] = useState(
-		new Object(),
+	const Component = component;
+	const InputComponent = multiline ? TextArea : Input;
+
+	const [tempValue, setTempValue] = useState(
+		children || "",
 	);
+	const [internalEditing, setInternalEditing] =
+		useState(false);
+
+	const isEditing = controlledEditing ?? internalEditing;
+
 	const inputRef = useRef(null);
 
-	const closeEditor = async () => {
-		const newValue = tempValue.trim();
-		if (newValue && newValue !== prevValue) {
-			await onSave(newValue);
-			setSavedValue(newValue);
-		}
-		setIsEditing(false);
+	const handleClick = () => {
+		onRequestEdit && onRequestEdit();
+
+		if (controlledEditing === null)
+			setInternalEditing(true);
 	};
 
-	useClickOutside(inputRef, closeEditor);
-	useKeyPress("Escape", isEditing, closeEditor);
-	useKeyPress("Enter", isEditing, closeEditor);
-
-	const handleClick = (e) => {
-		setTempValue(e.currentTarget.textContent);
-		setPrevValue(e.currentTarget.textContent);
-		if (
-			e.currentTarget &&
-			e.currentTarget?.firstChild instanceof HTMLElement
-		) {
-			const computed =
-				window.getComputedStyle(
-					e.currentTarget?.firstChild,
-				) || {};
-			setInheritedStyles(
-				Object.fromEntries(
-					[
-						"fontSize",
-						"fontWeight",
-						"fontFamily",
-						"lineHeight",
-						"color",
-						"letterSpacing",
-						"margin",
-						"padding",
-						"border",
-						"borderRadius",
-						"boxShadow",
-						"outline",
-						"overflow",
-					].map((prop) => [prop, computed[prop]]),
-				),
-			);
-		}
-		setIsEditing(true);
-	};
-
-	const handleInputChange = (e) => {
+	const handleChange = (e) => {
 		const newValue = e.target.value;
-
 		if (
 			maxInputLength > 0 &&
 			newValue.length > maxInputLength
 		) {
 			return;
 		}
-
 		setTempValue(newValue);
 	};
 
-	const getChildren = () => {
-		const isHTML = isValidElement(children);
+	const handleKeyDown = (e) => {
+		if (["Enter", "Escape"].includes(e.key))
+			e.currentTarget.blur();
+	};
 
-		if (isHTML) {
-			if (savedValue)
-				return cloneElement(children, {}, savedValue);
-
-			return (
-				(children?.props?.children && children) ||
-				placeholder
-			);
+	const handleBlur = () => {
+		const formattedInput = tempValue.trim();
+		setTempValue(formattedInput);
+		if (formattedInput !== children) {
+			onSave(formattedInput);
 		}
 
-		return savedValue || children || placeholder;
+		if (controlledEditing !== null) {
+			onEditingChange && onEditingChange(false);
+		} else setInternalEditing(false);
 	};
 
 	useEffect(() => {
-		if (isEditing && inputRef.current) {
-			inputRef.current.select();
+		if (isEditing) {
+			inputRef.current?.select();
 		}
-	}, [isEditing, children]);
-
-	if (isEditing) {
-		const InputComponent = multiline ? TextArea : Input;
-
-		return (
-			<InputComponent
-				name={inputName}
-				ref={inputRef}
-				className={styles.input}
-				style={inheritedStyles}
-				value={tempValue}
-				onChange={handleInputChange}
-				autoFocus
-				placeholder={placeholder}
-			/>
-		);
-	}
+	}, [isEditing]);
 
 	return (
-		<button
-			className={clsx(className, styles.button)}
-			onClick={handleClick}
-			type="button"
-		>
-			{getChildren()}
-		</button>
+		<div className={styles.wrapper}>
+			<Component
+				{...componentProps}
+				className={clsx(
+					className,
+					displayClass,
+					styles.grid,
+					styles.display,
+					isEditing ? styles.inactive : styles.active,
+				)}
+				onClick={handleClick}
+				checked={isEditing}
+			>
+				{tempValue || placeholder}
+			</Component>
+
+			<Component
+				{...componentProps}
+				className={clsx(
+					className,
+					styles.mockComponent,
+					styles.grid,
+				)}
+				checked={isEditing}
+			>
+				<InputComponent
+					className={clsx(
+						className,
+						styles.common,
+						styles.input,
+						isEditing ? styles.active : styles.inactive,
+					)}
+					id={inputName}
+					value={tempValue}
+					onChange={handleChange}
+					onKeyDown={handleKeyDown}
+					onBlur={handleBlur}
+					ref={inputRef}
+					checked={isEditing}
+				/>
+			</Component>
+		</div>
 	);
 };
