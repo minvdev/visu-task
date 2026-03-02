@@ -19,11 +19,12 @@
 	margin: 0;
 	padding: var(--space-1) var(--space-3);
 	flex: 1;
+	outline: none;
 
 	border-radius: var(--radius-sm);
 }
 .heading:focus {
-	outline: 2px red ridge;
+	outline: 2px ridge var(--color-primary-hover);
 }
 
 .toggleContainer {

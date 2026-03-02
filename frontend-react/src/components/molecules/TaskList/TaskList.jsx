@@ -43,19 +43,17 @@ export const TaskList = ({
 							)}
 						/>
 						<EditableText
-							className={styles.editableText}
+							component={"p"}
+							className={clsx(
+								styles.taskText,
+								task?.is_done && styles.checked,
+							)}
 							inputName={`taskInput${task.id}`}
 							onSave={handleTaskTextEdit(task.id)}
 							multiline={true}
+							maxInputLength={100}
 						>
-							<p
-								className={clsx(
-									styles.taskText,
-									task?.is_done && styles.checked,
-								)}
-							>
-								{task.name}
-							</p>
+							{task.name}
 						</EditableText>
 
 						<ButtonBase

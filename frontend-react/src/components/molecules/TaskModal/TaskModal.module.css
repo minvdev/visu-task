@@ -105,14 +105,13 @@
 	margin-top: var(--space-2);
 }
 
-.editableText {
-	user-select: none;
-}
-
-.taskName {
+.editableText.editableText {
 	margin: 0;
 	padding: 0 var(--space-1);
+	user-select: none;
 	overflow: hidden;
+	outline: none;
+	border-radius: var(--radius-lg);
 }
 
 .toggleWrapper {

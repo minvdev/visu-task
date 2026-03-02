@@ -1,21 +1,35 @@
-.input {
-	width: auto;
-	field-sizing: content;
-	min-width: 2ch;
-	max-width: 100%;
+.wrapper {
+	display: grid;
+}
+.grid {
+	grid-row: 1;
+	grid-column: 1;
 }
 
-.button {
-	border: none;
-	cursor: pointer;
-	background: none;
-	padding: 0;
+.inactive {
+	opacity: 0;
+	background: transparent;
+	z-index: -1;
+}
+.active {
+	z-index: 1;
+}
+
+.mockComponent.mockComponent {
 	margin: 0;
+	padding: 0;
+	transform: none;
+}
+
+.common.common {
+	field-sizing: content;
+	max-width: 100%;
+	min-width: 2ch;
+}
+
+.input {
 	font: inherit;
-	color: inherit;
-	outline: none;
-	text-align: inherit;
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
+}
+.display {
+	appearance: auto;
 }
