@@ -7,6 +7,7 @@ import {
 	useState,
 	useMemo,
 } from "react";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 
 import { Modal } from "../../atoms/Modal/Modal";
 import { ButtonBase } from "../../atoms/ButtonBase/ButtonBase";
@@ -43,6 +44,9 @@ export const TaskModal = ({
 		useState(false);
 	const [isTagPopoverOpen, setIsTagPopoverOpen] =
 		useState(false);
+
+	const containerRef = useRef(null);
+	useClickOutside(containerRef, onClose);
 
 	const allTags = board.tags.map((tag) => ({
 		...tag,
@@ -133,7 +137,7 @@ export const TaskModal = ({
 			onClose={onClose}
 			className={clsx(styles.modal, className)}
 		>
-			<div>
+			<div ref={containerRef}>
 				<div className={styles.tab}>
 					<ButtonBase
 						className={styles.listBtn}
