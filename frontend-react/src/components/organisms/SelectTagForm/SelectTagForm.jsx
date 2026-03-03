@@ -44,7 +44,6 @@ export const SelectTagForm = ({
 								className={styles.tag}
 							>
 								{tag.name}
-								{tag.id}
 							</label>
 
 							<ButtonBase
