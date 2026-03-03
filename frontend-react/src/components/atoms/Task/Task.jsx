@@ -6,15 +6,17 @@ export const Task = ({
 	children,
 	style,
 	isAddTaskVariant = false,
+	...props
 }) => {
 	return (
 		<div
 			className={clsx(
 				className,
 				styles.task,
-				isAddTaskVariant && styles.addTaskVariant
+				isAddTaskVariant && styles.addTaskVariant,
 			)}
 			style={style}
+			{...props}
 		>
 			{children}
 		</div>
