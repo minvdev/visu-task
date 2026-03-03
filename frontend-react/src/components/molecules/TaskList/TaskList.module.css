@@ -9,6 +9,7 @@
 	align-items: center;
 	gap: var(--space-2);
 	position: relative;
+	cursor: pointer;
 }
 
 .taskText.taskText {

@@ -115,6 +115,7 @@ export const EditableText = ({
 					onBlur={handleBlur}
 					ref={inputRef}
 					checked={isEditing}
+					onClick={(e) => e.stopPropagation()}
 				/>
 			</Component>
 		</div>

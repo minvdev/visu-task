@@ -19,7 +19,8 @@ export const TaskList = ({
 }) => {
 	const [editingId, setEditingId] = useState(null);
 
-	const handleToggleCheckbox = (id, is_done) => () => {
+	const handleToggleCheckbox = (id, is_done) => (e) => {
+		e.stopPropagation();
 		onTaskUpdate(id, { is_done });
 	};
 
@@ -27,8 +28,13 @@ export const TaskList = ({
 		onTaskUpdate(id, { name });
 	};
 
-	const handleDisplayClick = (id) => () => {
+	const handleEditRequest = (id) => () => {
 		onTaskEdit(id);
+	};
+
+	const handleButtonClick = (id) => (e) => {
+		e.stopPropagation();
+		setEditingId(id);
 	};
 
 	if (!tasks) return;
@@ -38,7 +44,11 @@ export const TaskList = ({
 			{tasks
 				.sort((a, b) => a.position - b.position)
 				.map((task) => (
-					<Task key={task.id} className={styles.task}>
+					<Task
+						key={task.id}
+						className={styles.task}
+						onClick={handleEditRequest(task.id)}
+					>
 						<Checkbox
 							className={clsx(
 								styles.checkbox,
@@ -61,7 +71,7 @@ export const TaskList = ({
 							multiline={true}
 							maxInputLength={100}
 							isEditing={editingId === task.id}
-							onRequestEdit={handleDisplayClick(task.id)}
+							onRequestEdit={handleEditRequest(task.id)}
 							onEditingChange={(val) => {
 								if (!val) setEditingId(null);
 							}}
@@ -70,9 +80,7 @@ export const TaskList = ({
 						</EditableText>
 
 						<ButtonBase
-							onClick={() => {
-								setEditingId(task.id);
-							}}
+							onClick={handleButtonClick(task.id)}
 							className={styles.editBtn}
 						>
 							<EditIcon />
