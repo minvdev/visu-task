@@ -25,6 +25,7 @@ import { ThreeDotsIcon } from "../../../assets/icons/ThreeDotsIcon/ThreeDotsIcon
 import { CancelIcon } from "../../../assets/icons/CancelIcon/CancelIcon";
 import { DescriptionIcon } from "../../../assets/icons/DescriptionIcon/DescriptionIcon";
 import { PlusIcon } from "../../../assets/icons/PlusIcon/PlusIcon";
+import { CreateTagForm } from "../../organisms/CreateTagForm/CreateTagForm";
 
 export const TaskModal = ({
 	task,
@@ -33,6 +34,7 @@ export const TaskModal = ({
 	onTaskUpdate,
 	onTaskDelete,
 	onToggleTaskTag,
+	onTagCreate,
 	className,
 }) => {
 	const dialogRef = useRef(null);
@@ -42,6 +44,10 @@ export const TaskModal = ({
 		useState(false);
 	const [isDatePopoverOpen, setIsDatePopoverOpen] =
 		useState(false);
+	const [
+		isCreateTagPopoverOpen,
+		setIsCreateTagPopoverOpen,
+	] = useState(false);
 	const [isTagPopoverOpen, setIsTagPopoverOpen] =
 		useState(false);
 
@@ -262,6 +268,29 @@ export const TaskModal = ({
 											"Añadir etiqueta"}
 									</div>
 								</ButtonBase>
+								{isCreateTagPopoverOpen && (
+									<Popover
+										onClose={() =>
+											setIsCreateTagPopoverOpen(false)
+										}
+										className={clsx(
+											styles.popover,
+											styles.tagPopover,
+										)}
+										bottomClass={styles.popoverLeft}
+									>
+										<CreateTagForm
+											onSubmit={(o) => {
+												onTagCreate(o);
+												setIsTagPopoverOpen(true);
+											}}
+											onClose={() =>
+												setIsCreateTagPopoverOpen(false)
+											}
+											className={styles.form}
+										/>
+									</Popover>
+								)}
 								{isTagPopoverOpen && (
 									<Popover
 										onClose={() =>
@@ -278,6 +307,9 @@ export const TaskModal = ({
 											onToggleTaskTag={onToggleTaskTag}
 											onClose={() =>
 												setIsTagPopoverOpen(false)
+											}
+											onOpenCreateTag={() =>
+												setIsCreateTagPopoverOpen(true)
 											}
 											className={styles.form}
 										/>
