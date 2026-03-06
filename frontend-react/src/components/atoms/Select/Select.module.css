@@ -8,7 +8,7 @@
 	appearance: none;
 	background-color: var(--bg-card);
 	border: 1px solid var(--border-light);
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xs);
 	padding: var(--space-2) var(--space-10) var(--space-2)
 		var(--space-4);
 	font-family: var(--font-sans);

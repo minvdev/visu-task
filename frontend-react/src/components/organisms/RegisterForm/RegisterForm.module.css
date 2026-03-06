@@ -26,7 +26,7 @@
 	color: var(--text-on-brand);
 	margin: var(--space-2) 0;
 	padding: var(--space-1);
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xs);
 	text-transform: uppercase;
 	font-weight: var(--font-medium);
 }

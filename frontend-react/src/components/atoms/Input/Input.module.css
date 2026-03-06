@@ -3,7 +3,7 @@
 	border: none;
 	padding: var(--space-3);
 	font-size: var(--text-base);
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xs);
 	font: var(--font-sans);
 	background-color: inherit;
 	outline: none;
