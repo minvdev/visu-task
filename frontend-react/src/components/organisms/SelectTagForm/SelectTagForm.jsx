@@ -11,6 +11,7 @@ export const SelectTagForm = ({
 	onToggleTaskTag,
 	onClose,
 	onEdit,
+	onOpenCreateTag,
 	className,
 }) => {
 	const handleSelect = async (tag) => {
@@ -18,6 +19,11 @@ export const SelectTagForm = ({
 			id: tag.id,
 			attach: !tag.checked,
 		});
+	};
+
+	const handleCreateTag = () => {
+		onClose();
+		onOpenCreateTag();
 	};
 
 	return (
@@ -58,7 +64,10 @@ export const SelectTagForm = ({
 			</section>
 
 			<footer>
-				<ButtonBase className={styles.addTagBtn}>
+				<ButtonBase
+					className={styles.addTagBtn}
+					onClick={handleCreateTag}
+				>
 					Crear una etiqueta nueva
 				</ButtonBase>
 			</footer>
