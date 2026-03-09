@@ -70,6 +70,13 @@ export const EditableText = ({
 	};
 
 	useEffect(() => {
+		const setInitialValues = async () => {
+			setTempValue(children || "");
+		};
+		setInitialValues();
+	}, [children]);
+
+	useEffect(() => {
 		if (isEditing) {
 			inputRef.current?.select();
 		}
