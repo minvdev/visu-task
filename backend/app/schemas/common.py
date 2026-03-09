@@ -1,3 +1,4 @@
+from __future__ import annotations
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
@@ -40,6 +41,7 @@ class CardSubschema(BaseModel):
     is_done: bool
     position: int
     due_date: datetime | None
+    tags: list[TagSubschema]
 
     model_config = ConfigDict(from_attributes=True)
 
