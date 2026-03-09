@@ -453,7 +453,7 @@ def delete_card(
 
 
 # --- CRUD ROUTES FOR TAGS ---
-@router.post("/{board_id}/tags/", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED)
+@router.post("/{board_id}/tags", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED)
 def create_tag(
     board_id: int,
     tag_data: schemas.TagCreate,
@@ -484,7 +484,7 @@ def create_tag(
     return new_tag
 
 
-@router.get("/{board_id}/tags/", response_model=list[schemas.Tag])
+@router.get("/{board_id}/tags", response_model=list[schemas.Tag])
 def get_board_tags(
     board_id: int,
     db: Session = Depends(get_db),
