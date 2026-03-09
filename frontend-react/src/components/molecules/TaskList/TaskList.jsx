@@ -55,9 +55,9 @@ export const TaskList = ({
 						className={styles.task}
 						onClick={handleEditRequest(task.id)}
 					>
-						<div className={styles.tagsContainer}>
-							{task.tags &&
-								task.tags.map((tag) => (
+						{task.tags && task.tags.length > 0 && (
+							<div className={styles.tagsContainer}>
+								{task.tags.map((tag) => (
 									<div
 										style={{ backgroundColor: tag.color }}
 										className={clsx(
@@ -74,7 +74,8 @@ export const TaskList = ({
 										</span>
 									</div>
 								))}
-						</div>
+							</div>
+						)}
 
 						<ButtonBase
 							onClick={handleEditClick(task.id)}
