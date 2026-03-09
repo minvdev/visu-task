@@ -6,9 +6,84 @@
 
 .task {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	gap: var(--space-2);
 	position: relative;
+	cursor: pointer;
+}
+
+.tagsContainer {
+	display: flex;
+	gap: var(--space-1);
+	flex-wrap: wrap;
+	overflow: visible;
+}
+
+.tag {
+	display: inline-flex;
+	width: 40px;
+	height: 8px;
+	border-radius: var(--radius-xl);
+	flex-shrink: 0;
+	transition:
+		width 300ms ease,
+		padding 300ms ease,
+		height 500ms ease,
+		border-radius 500ms ease;
+}
+
+.detailedTag {
+	max-width: calc(100% - 16px);
+	min-width: 56px;
+	width: max-content;
+	height: 16px;
+	padding: 0 var(--space-2);
+	border-radius: var(--radius-sm);
+}
+.detailedTag .tagText {
+	opacity: 1;
+}
+
+.tagText {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-wrap-mode: nowrap;
+	text-align: center;
+	font-size: 12px;
+	line-height: 16px;
+	height: 16px;
+	opacity: 0;
+	transition: opacity 600ms ease-in;
+}
+
+.editBtn.editBtn {
+	opacity: 0;
+	flex-shrink: 0;
+	padding: var(--space-1);
+	border-radius: 50%;
+	position: absolute;
+	right: var(--space-1);
+	top: var(--space-1);
+	z-index: 50;
+	background-color: #fff;
+}
+.editBtn:hover {
+	background-image: linear-gradient(
+		var(--black-alpha-10),
+		var(--black-alpha-10)
+	);
+}
+.editBtn:active {
+	background-image: linear-gradient(
+		var(--black-alpha-20),
+		var(--black-alpha-20)
+	);
+}
+
+.textContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
 	cursor: pointer;
 }
 
@@ -54,27 +129,3 @@
 	transform: translateX(0);
 }
 /* Ends Checkbox hide/show */
-
-.editBtn.editBtn {
-	opacity: 0;
-	flex-shrink: 0;
-	padding: var(--space-1);
-	border-radius: 50%;
-	position: absolute;
-	right: var(--space-1);
-	top: var(--space-1);
-	z-index: 50;
-	background-color: #fff;
-}
-.editBtn:hover {
-	background-image: linear-gradient(
-		var(--black-alpha-10),
-		var(--black-alpha-10)
-	);
-}
-.editBtn:active {
-	background-image: linear-gradient(
-		var(--black-alpha-20),
-		var(--black-alpha-20)
-	);
-}

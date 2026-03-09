@@ -18,6 +18,7 @@ export const TaskList = ({
 	onTaskEdit,
 }) => {
 	const [editingId, setEditingId] = useState(null);
+	const [showTagDetail, setShowTagDetail] = useState(false);
 
 	const handleToggleCheckbox = (id, is_done) => (e) => {
 		e.stopPropagation();
@@ -32,9 +33,14 @@ export const TaskList = ({
 		onTaskEdit(id);
 	};
 
-	const handleButtonClick = (id) => (e) => {
+	const handleEditClick = (id) => (e) => {
 		e.stopPropagation();
 		setEditingId(id);
+	};
+
+	const handleTagClick = (e) => {
+		e.stopPropagation();
+		setShowTagDetail(!showTagDetail);
 	};
 
 	if (!tasks) return;
@@ -49,42 +55,66 @@ export const TaskList = ({
 						className={styles.task}
 						onClick={handleEditRequest(task.id)}
 					>
-						<Checkbox
-							className={clsx(
-								styles.checkbox,
-								task?.is_done && styles.checked,
-							)}
-							checked={task?.is_done || false}
-							onChange={handleToggleCheckbox(
-								task.id,
-								!task.is_done,
-							)}
-						/>
-						<EditableText
-							component={"p"}
-							className={clsx(
-								styles.taskText,
-								task?.is_done && styles.checked,
-							)}
-							inputName={`taskInput${task.id}`}
-							onSave={handleTaskTextEdit(task.id)}
-							multiline={true}
-							maxInputLength={100}
-							isEditing={editingId === task.id}
-							onRequestEdit={handleEditRequest(task.id)}
-							onEditingChange={(val) => {
-								if (!val) setEditingId(null);
-							}}
-						>
-							{task.name}
-						</EditableText>
+						<div className={styles.tagsContainer}>
+							{task.tags &&
+								task.tags.map((tag) => (
+									<div
+										style={{ backgroundColor: tag.color }}
+										className={clsx(
+											styles.tag,
+											showTagDetail && styles.detailedTag,
+										)}
+										key={tag.id}
+										onClick={handleTagClick}
+									>
+										<span className={styles.tagText}>
+											{showTagDetail &&
+												tag.name &&
+												tag.name}
+										</span>
+									</div>
+								))}
+						</div>
 
 						<ButtonBase
-							onClick={handleButtonClick(task.id)}
+							onClick={handleEditClick(task.id)}
 							className={styles.editBtn}
 						>
 							<EditIcon />
 						</ButtonBase>
+
+						<div className={styles.textContainer}>
+							<Checkbox
+								className={clsx(
+									styles.checkbox,
+									task?.is_done && styles.checked,
+								)}
+								checked={task?.is_done || false}
+								onChange={handleToggleCheckbox(
+									task.id,
+									!task.is_done,
+								)}
+							/>
+
+							<EditableText
+								component={"p"}
+								className={clsx(
+									styles.taskText,
+									task?.is_done && styles.checked,
+								)}
+								inputName={`taskInput${task.id}`}
+								onSave={handleTaskTextEdit(task.id)}
+								multiline={true}
+								maxInputLength={100}
+								isEditing={editingId === task.id}
+								onRequestEdit={handleEditRequest(task.id)}
+								onEditingChange={(val) => {
+									if (!val) setEditingId(null);
+								}}
+							>
+								{task.name}
+							</EditableText>
+						</div>
 					</Task>
 				))}
 		</div>
