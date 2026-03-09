@@ -57,4 +57,9 @@ export const boardTransformers = {
 				: l,
 		),
 	}),
+
+	addTag: (board, newTag) => ({
+		...board,
+		tags: [...board.tags, newTag],
+	}),
 };
