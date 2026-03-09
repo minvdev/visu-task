@@ -3,7 +3,7 @@
 	border: none;
 	padding: var(--space-3);
 	background-color: transparent;
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xs);
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;

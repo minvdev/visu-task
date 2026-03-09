@@ -22,6 +22,7 @@
 	--text-title: var(--gray-800);
 	--text-primary: var(--gray-700);
 	--text-secondary: var(--gray-500);
+	--text-dark: var(--gray-850);
 	--text-on-brand: #ffffff;
 
 	/* Bordes */
@@ -30,7 +31,8 @@
 	--border-focus: var(--brand-500);
 
 	/* Radius */
-	--radius-sm: 2px;
+	--radius-xs: 2px;
+	--radius-sm: 4px;
 	--radius-md: 6px;
 	--radius-lg: 10px;
 	--radius-xl: 14px;

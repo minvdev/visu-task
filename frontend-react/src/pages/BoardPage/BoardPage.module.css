@@ -52,7 +52,7 @@
 .boardTabHeading {
 	padding: 0 var(--space-1);
 	margin: 0;
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-xs);
 }
 
 .boardContent {

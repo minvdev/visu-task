@@ -240,6 +240,28 @@ export const BoardPage = () => {
 		}
 	};
 
+	// Tag Handlers
+	const handleTagCreate = async (
+		board,
+		body,
+		inInbox = false,
+	) => {
+		try {
+			const newTag = await apiFetch(
+				`/boards/${board.id}/tags`,
+				{ method: "POST", body },
+			);
+			const newBoard = boardTransformers.addTag(
+				board,
+				newTag,
+			);
+			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+		} catch (error) {
+			console.log("Error adding tag:", error);
+			throw error;
+		}
+	};
+
 	useEffect(() => {
 		const loadInbox = async () => {
 			try {
@@ -494,6 +516,17 @@ export const BoardPage = () => {
 							isInbox,
 						);
 						setActiveTask(updatedTask);
+					}}
+					onTagCreate={async (body) => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						await handleTagCreate(
+							currentBoard,
+							body,
+							isInbox,
+						);
 					}}
 				/>
 			)}
