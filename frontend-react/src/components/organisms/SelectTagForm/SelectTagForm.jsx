@@ -10,8 +10,8 @@ export const SelectTagForm = ({
 	tags,
 	onToggleTaskTag,
 	onClose,
-	onEdit,
 	onOpenCreateTag,
+	onOpenEditTag,
 	className,
 }) => {
 	const handleSelect = async (tag) => {
@@ -24,6 +24,11 @@ export const SelectTagForm = ({
 	const handleCreateTag = () => {
 		onClose();
 		onOpenCreateTag();
+	};
+
+	const handleEditTag = (id) => () => {
+		onClose();
+		onOpenEditTag(id);
 	};
 
 	return (
@@ -53,7 +58,7 @@ export const SelectTagForm = ({
 							</label>
 
 							<ButtonBase
-								onClick={onEdit}
+								onClick={handleEditTag(tag.id)}
 								className={styles.editButton}
 							>
 								<EditIcon className={styles.icon} />
