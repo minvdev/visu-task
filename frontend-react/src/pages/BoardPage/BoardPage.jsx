@@ -240,6 +240,24 @@ export const BoardPage = () => {
 		}
 	};
 
+	// Aux
+	const fetchTask = async (boardId, columnId, taskId) => {
+		try {
+			const tasks = await apiFetch(
+				`/boards/${boardId}/lists/${columnId}/cards`,
+			);
+			const task = tasks.find((t) => t.id === taskId);
+			if (!task) throw new Error("Task not found");
+			return task;
+		} catch (error) {
+			console.log(
+				`Error searching task with id "${taskId}":`,
+				error,
+			);
+			throw error;
+		}
+	};
+
 	// Tag Handlers
 	const handleTagCreate = async (
 		board,
@@ -572,6 +590,41 @@ export const BoardPage = () => {
 							body,
 							isInbox,
 						);
+					}}
+					onTagEdit={async ({ body, id }) => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						await handleTagUpdate(
+							currentBoard,
+							id,
+							body,
+							isInbox,
+						);
+						const updatedTask = await fetchTask(
+							currentBoardId,
+							activeTask.list_id,
+							activeTask.id,
+						);
+						setActiveTask(updatedTask);
+					}}
+					onTagDelete={async (id) => {
+						const currentBoardId = activeTask.list.board_id;
+						const isInbox = boardId !== currentBoardId;
+						const currentBoard = isInbox ? inbox : board;
+
+						await handleTagDelete(
+							currentBoard,
+							id,
+							isInbox,
+						);
+						const updatedTask = await fetchTask(
+							currentBoardId,
+							activeTask.list_id,
+							activeTask.id,
+						);
+						setActiveTask(updatedTask);
 					}}
 				/>
 			)}
