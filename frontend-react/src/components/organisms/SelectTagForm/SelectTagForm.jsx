@@ -48,22 +48,20 @@ export const SelectTagForm = ({
 							className={styles.checkbox}
 						/>
 
-						<div className={styles.tagWrapper}>
-							<label
-								htmlFor={tag.id}
-								style={{ "--bg-tag": tag.color }}
-								className={styles.tag}
-							>
-								{tag.name}
-							</label>
+						<label
+							htmlFor={tag.id}
+							style={{ "--bg-tag": tag.color }}
+							className={styles.tag}
+						>
+							{tag.name}
+						</label>
 
-							<ButtonBase
-								onClick={handleEditTag(tag.id)}
-								className={styles.editButton}
-							>
-								<EditIcon className={styles.icon} />
-							</ButtonBase>
-						</div>
+						<ButtonBase
+							onClick={handleEditTag(tag.id)}
+							className={styles.editButton}
+						>
+							<EditIcon className={styles.icon} />
+						</ButtonBase>
 					</div>
 				))}
 			</section>
