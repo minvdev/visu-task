@@ -262,6 +262,51 @@ export const BoardPage = () => {
 		}
 	};
 
+	const handleTagDelete = async (
+		board,
+		tagId,
+		inInbox = false,
+	) => {
+		try {
+			await apiFetch(`/boards/${board.id}/tags/${tagId}`, {
+				method: "DELETE",
+			});
+
+			const newBoard = boardTransformers.deleteTag(
+				board,
+				tagId,
+			);
+
+			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+		} catch (error) {
+			console.log("Error deleting tag:", error);
+			throw error;
+		}
+	};
+
+	const handleTagUpdate = async (
+		board,
+		tagId,
+		body,
+		inInbox = false,
+	) => {
+		try {
+			const updatedTag = await apiFetch(
+				`/boards/${board.id}/tags/${tagId}`,
+				{ method: "PATCH", body },
+			);
+			const newBoard = boardTransformers.updateTag(
+				board,
+				tagId,
+				updatedTag,
+			);
+			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+		} catch (error) {
+			console.log("Error saving tag:", error);
+			throw error;
+		}
+	};
+
 	useEffect(() => {
 		const loadInbox = async () => {
 			try {
