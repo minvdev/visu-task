@@ -19,13 +19,14 @@ import { EditableText } from "../EditableText/EditableText";
 import { Heading } from "../../atoms/Heading/Heading";
 import { SelectTagForm } from "../../organisms/SelectTagForm/SelectTagForm";
 import { DateForm } from "../../organisms/DateForm/DateForm";
+import { CreateTagForm } from "../../organisms/CreateTagForm/CreateTagForm";
+import { EditTagForm } from "../../organisms/EditTagForm/EditTagForm";
 
 import { DownIcon } from "../../../assets/icons/DownIcon/DownIcon";
 import { ThreeDotsIcon } from "../../../assets/icons/ThreeDotsIcon/ThreeDotsIcon";
 import { CancelIcon } from "../../../assets/icons/CancelIcon/CancelIcon";
 import { DescriptionIcon } from "../../../assets/icons/DescriptionIcon/DescriptionIcon";
 import { PlusIcon } from "../../../assets/icons/PlusIcon/PlusIcon";
-import { CreateTagForm } from "../../organisms/CreateTagForm/CreateTagForm";
 
 export const TaskModal = ({
 	task,
@@ -35,6 +36,8 @@ export const TaskModal = ({
 	onTaskDelete,
 	onToggleTaskTag,
 	onTagCreate,
+	onTagEdit,
+	onTagDelete,
 	className,
 }) => {
 	const dialogRef = useRef(null);
@@ -44,12 +47,15 @@ export const TaskModal = ({
 		useState(false);
 	const [isDatePopoverOpen, setIsDatePopoverOpen] =
 		useState(false);
+	const [isTagPopoverOpen, setIsTagPopoverOpen] =
+		useState(false);
 	const [
 		isCreateTagPopoverOpen,
 		setIsCreateTagPopoverOpen,
 	] = useState(false);
-	const [isTagPopoverOpen, setIsTagPopoverOpen] =
+	const [isEditTagPopoverOpen, setIsEditTagPopoverOpen] =
 		useState(false);
+	const [activeTag, setActiveTag] = useState(null);
 
 	const containerRef = useRef(null);
 	useClickOutside(containerRef, onClose);
@@ -122,6 +128,16 @@ export const TaskModal = ({
 			options,
 		).format(date);
 		return formattedDateTime;
+	};
+
+	const handleEditTag = (tagId) => {
+		const activeTag = board.tags.find(
+			(tag) => tag.id === tagId,
+		);
+		if (!activeTag) throw new Error("Tag not found");
+
+		setActiveTag(activeTag);
+		setIsEditTagPopoverOpen(true);
 	};
 
 	const menuOptions = [
@@ -291,6 +307,34 @@ export const TaskModal = ({
 										/>
 									</Popover>
 								)}
+								{isEditTagPopoverOpen && (
+									<Popover
+										onClose={() =>
+											setIsEditTagPopoverOpen(false)
+										}
+										className={clsx(
+											styles.popover,
+											styles.tagPopover,
+										)}
+										bottomClass={styles.popoverLeft}
+									>
+										<EditTagForm
+											onSubmit={(o) => {
+												onTagEdit(o);
+												setIsTagPopoverOpen(true);
+											}}
+											onDelete={(o) => {
+												onTagDelete(o);
+												setIsTagPopoverOpen(true);
+											}}
+											onClose={() =>
+												setIsEditTagPopoverOpen(false)
+											}
+											tag={activeTag}
+											className={styles.form}
+										/>
+									</Popover>
+								)}
 								{isTagPopoverOpen && (
 									<Popover
 										onClose={() =>
@@ -311,6 +355,7 @@ export const TaskModal = ({
 											onOpenCreateTag={() =>
 												setIsCreateTagPopoverOpen(true)
 											}
+											onOpenEditTag={handleEditTag}
 											className={styles.form}
 										/>
 									</Popover>
