@@ -113,6 +113,7 @@ export const CreateTagForm = ({
 
 			<footer>
 				<Button
+					className={styles.submitButton}
 					type="submit"
 					variants={["primary", "button-md"]}
 					disabled={!selectedColor}

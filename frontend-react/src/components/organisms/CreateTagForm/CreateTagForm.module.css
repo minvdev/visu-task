@@ -81,3 +81,7 @@
 footer {
 	display: block;
 }
+
+.submitButton {
+	padding: 6px var(--space-3);
+}
