@@ -269,9 +269,20 @@ export const BoardPage = () => {
 				`/boards/${board.id}/tags`,
 				{ method: "POST", body },
 			);
-			const newBoard = boardTransformers.addTag(
+			let newBoard = boardTransformers.addTag(
 				board,
 				newTag,
+			);
+
+			const updatedTask = await apiFetch(
+				`/cards/${activeTask.id}/tags/${newTag.id}`,
+				{ method: "POST" },
+			);
+			newBoard = boardTransformers.updateTask(
+				newBoard,
+				activeTask.list_id,
+				activeTask.id,
+				updatedTask,
 			);
 			inInbox ? setInbox(newBoard) : setBoard(newBoard);
 		} catch (error) {
@@ -590,6 +601,12 @@ export const BoardPage = () => {
 							body,
 							isInbox,
 						);
+						const updatedTask = await fetchTask(
+							currentBoardId,
+							activeTask.list_id,
+							activeTask.id,
+						);
+						setActiveTask(updatedTask);
 					}}
 					onTagEdit={async ({ body, id }) => {
 						const currentBoardId = activeTask.list.board_id;
