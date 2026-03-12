@@ -79,9 +79,11 @@
 }
 
 footer {
-	display: block;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
-.submitButton {
+.button {
 	padding: 6px var(--space-3);
 }

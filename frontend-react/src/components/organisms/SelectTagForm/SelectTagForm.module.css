@@ -3,6 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-4);
+	width: 300px;
 }
 
 .tagsSection {
@@ -12,7 +13,9 @@
 }
 
 .tagContainer {
-	display: flex;
+	display: grid;
+	grid-template-columns: 16px 1fr 32px;
+	gap: var(--space-2);
 }
 
 .checkbox {
@@ -41,14 +44,8 @@
 	outline: 2px solid var(--color-primary);
 }
 
-.tagWrapper {
-	display: flex;
-	gap: var(--space-1);
-	width: 100%;
-	margin-left: var(--space-2);
-}
-
 .tag {
+	margin-left: var(--space-1);
 	width: 100%;
 	display: inline-block;
 	height: 32px;
@@ -58,7 +55,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	padding: 0 var(--space-3);
-	color: var(--black-alpha-60);
+	color: var(--text-tag, var(--black-alpha-60));
 	background-color: var(--bg-tag, var(--bg-card));
 	border-radius: var(--radius-md);
 }

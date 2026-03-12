@@ -62,4 +62,32 @@ export const boardTransformers = {
 		...board,
 		tags: [...board.tags, newTag],
 	}),
+
+	deleteTag: (board, tagId) => ({
+		...board,
+		tags: board.tags.filter((t) => t.id !== tagId),
+		lists: board.lists.map((l) => ({
+			...l,
+			cards: l.cards.map((c) => ({
+				...c,
+				tags: c.tags.filter((t) => t.id != tagId),
+			})),
+		})),
+	}),
+
+	updateTag: (board, tagId, updatedTag) => ({
+		...board,
+		tags: board.tags.map((t) =>
+			t.id === tagId ? updatedTag : t,
+		),
+		lists: board.lists.map((l) => ({
+			...l,
+			cards: l.cards.map((c) => ({
+				...c,
+				tags: c.tags.map((t) =>
+					t.id === tagId ? updatedTag : t,
+				),
+			})),
+		})),
+	}),
 };

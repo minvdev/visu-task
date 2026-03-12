@@ -1,4 +1,4 @@
-import styles from "./CreateTagForm.module.css";
+import styles from "./EditTagForm.module.css";
 import clsx from "clsx";
 
 import { useState } from "react";
@@ -12,22 +12,31 @@ import { Button } from "../../atoms/Button/Button";
 import { CheckIcon } from "../../../assets/icons/CheckIcon/CheckIcon";
 import { tagColors } from "../../../constants/tagColors";
 
-export const CreateTagForm = ({
+export const EditTagForm = ({
+	tag,
 	onSubmit,
+	onDelete,
 	onClose,
 	className,
 }) => {
-	const [name, setName] = useState("");
+	const [name, setName] = useState(tag.name || "");
 	const [selectedColor, setSelectedColor] = useState(
-		tagColors[0],
+		tagColors.find(
+			(color) => color.backgroundColor === tag.color,
+		) || tagColors[0],
 	);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let tag = { color: selectedColor.backgroundColor };
+		let body = { color: selectedColor.backgroundColor };
 		const trimmedName = name.trim();
-		if (trimmedName) tag = { ...tag, name: trimmedName };
-		onSubmit(tag);
+		if (trimmedName) body = { ...body, name: trimmedName };
+		onSubmit({ id: tag.id, body });
+		onClose();
+	};
+
+	const handleDelete = () => {
+		onDelete(tag.id);
 		onClose();
 	};
 
@@ -49,7 +58,7 @@ export const CreateTagForm = ({
 			className={clsx(styles.form, className)}
 		>
 			<Header onClose={onClose} level={4}>
-				Crear etiqueta
+				Editar etiqueta
 			</Header>
 
 			<section className={styles.previewContainer}>
@@ -113,12 +122,21 @@ export const CreateTagForm = ({
 
 			<footer>
 				<Button
-					className={styles.submitButton}
+					className={styles.button}
 					type="submit"
 					variants={["primary", "button-md"]}
 					disabled={!selectedColor}
 				>
-					Crear
+					Guardar
+				</Button>
+				<Button
+					className={styles.button}
+					type="button"
+					variants={["danger", "button-md"]}
+					disabled={!selectedColor}
+					onClick={handleDelete}
+				>
+					Eliminar
 				</Button>
 			</footer>
 		</form>
