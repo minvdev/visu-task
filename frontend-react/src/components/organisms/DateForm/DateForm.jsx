@@ -79,7 +79,7 @@ export const DateForm = ({
 						type="date"
 						id="date"
 						name="date"
-						value={tempDate}
+						value={tempDate ?? ""}
 						onChange={(e) => setTempDate(e.target.value)}
 						required
 					/>
@@ -94,7 +94,7 @@ export const DateForm = ({
 						type="time"
 						id="time"
 						name="time"
-						value={tempTime}
+						value={tempTime ?? ""}
 						onChange={(e) => setTempTime(e.target.value)}
 						required
 					/>
@@ -133,7 +133,6 @@ export const DateForm = ({
 					disabled={!tempDate || !tempTime}
 					variants={["primary", "button-md"]}
 				>
-					{console.log(tempDate, tempTime)}
 					Guardar
 				</Button>
 
