@@ -14,7 +14,6 @@ export const TaskList = ({
 	className,
 	tasks = [],
 	onTaskUpdate,
-	onTaskDelete,
 	onTaskEdit,
 }) => {
 	const [editingId, setEditingId] = useState(null);

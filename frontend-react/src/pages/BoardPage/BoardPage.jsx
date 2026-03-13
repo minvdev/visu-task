@@ -497,9 +497,6 @@ export const BoardPage = () => {
 										body,
 									)
 								}
-								onTaskDelete={(columnId, taskId) =>
-									handleTaskDelete(board, columnId, taskId)
-								}
 								onTaskEdit={(columnId, taskId) =>
 									handleLoadModal(boardId, columnId, taskId)
 								}

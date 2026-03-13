@@ -115,9 +115,6 @@ export const Column = ({
 					onTaskUpdate={(taskId, body) =>
 						onTaskUpdate(id, taskId, body)
 					}
-					onTaskDelete={(taskId) =>
-						onTaskDelete(id, taskId)
-					}
 					onTaskEdit={(taskId) => onTaskEdit(id, taskId)}
 				/>
 
