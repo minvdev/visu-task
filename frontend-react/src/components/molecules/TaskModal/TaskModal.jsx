@@ -6,6 +6,7 @@ import {
 	useRef,
 	useState,
 	useMemo,
+	useLayoutEffect,
 } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
@@ -42,6 +43,7 @@ export const TaskModal = ({
 }) => {
 	const dialogRef = useRef(null);
 	const optionsToggleRef = useRef(null);
+	const chipsContainerRef = useRef(null);
 
 	const [isOptionsPopoverOpen, setIsOptionsPopoverOpen] =
 		useState(false);
@@ -56,6 +58,8 @@ export const TaskModal = ({
 	const [isEditTagPopoverOpen, setIsEditTagPopoverOpen] =
 		useState(false);
 	const [activeTag, setActiveTag] = useState(null);
+	const [chipsContainerStyle, setChipsContainerStyle] =
+		useState(null);
 
 	const containerRef = useRef(null);
 	useClickOutside(containerRef, onClose);
@@ -68,6 +72,14 @@ export const TaskModal = ({
 			? true
 			: false,
 	}));
+
+	const getHeightToEnd = (ref) => {
+		const windowHeight = window.innerHeight;
+		const refBottom =
+			ref.current.getBoundingClientRect().bottom;
+
+		return windowHeight - refBottom;
+	};
 
 	const handleTaskDelete = () => {
 		onTaskDelete();
@@ -152,6 +164,18 @@ export const TaskModal = ({
 	];
 
 	useEffect(() => dialogRef.current?.showModal(), []);
+
+	useLayoutEffect(() => {
+		const calcStyles = {
+			"--maxFormHeight": `calc(${getHeightToEnd(chipsContainerRef)}px - var(--space-6))`,
+		};
+
+		const setStyles = () => {
+			setChipsContainerStyle(calcStyles);
+		};
+
+		setStyles();
+	}, [task]);
 
 	return (
 		<Modal
@@ -259,7 +283,11 @@ export const TaskModal = ({
 					>
 						<div className={styles.headingWrapper}>
 							<Heading level={6}>Etiquetas</Heading>
-							<div className={styles.chipsContainer}>
+							<div
+								className={styles.chipsContainer}
+								ref={chipsContainerRef}
+								style={chipsContainerStyle}
+							>
 								{task.tags.map((tag) => (
 									<ButtonBase
 										onClick={() =>
