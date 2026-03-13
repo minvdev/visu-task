@@ -72,6 +72,7 @@ export const CreateTagForm = ({
 						value={name}
 						onChange={handleChange}
 						className={styles.titleInput}
+						autoFocus
 					/>
 				</FormField>
 			</section>
