@@ -190,6 +190,7 @@
 
 .form {
 	min-width: 280px;
+	max-height: var(--maxFormHeight, 50vh);
 	padding: var(--space-3);
 	border-radius: var(--radius-lg);
 }
