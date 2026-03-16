@@ -38,8 +38,10 @@
 	/* --- ÉXITO (Verde) --- */
 	--success-50: #f0fdf4;
 	--success-500: #22c55e;
+	--success-900: #5b7f24;
 
 	/* --- ADVERTENCIA (Amarillo/Ámbar) --- */
 	--warning-50: #fffbeb;
+	--warning-200: #fbc828;
 	--warning-500: #f59e0b;
 }
