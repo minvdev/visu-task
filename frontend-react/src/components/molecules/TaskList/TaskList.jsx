@@ -9,6 +9,7 @@ import { EditableText } from "../EditableText/EditableText";
 import { ButtonBase } from "../../atoms/ButtonBase/ButtonBase";
 
 import { EditIcon } from "../../../assets/icons/EditIcon/EditIcon";
+import { TimeIcon } from "../../../assets/icons/TimeIcon/TimeIcon";
 
 export const TaskList = ({
 	className,
@@ -40,6 +41,38 @@ export const TaskList = ({
 	const handleTagClick = (e) => {
 		e.stopPropagation();
 		setShowTagDetail(!showTagDetail);
+	};
+
+	const getDueDateStyle = (task) => {
+		if (task.is_done) {
+			return styles.completed;
+		}
+
+		const due_date = new Date(task.due_date);
+		const now = new Date();
+		const diff = due_date - now;
+		if (diff < 0) return styles.expired;
+		if (diff < 86400000) return styles.upcoming;
+		return null;
+	};
+
+	const convertDateToString = (dateString) => {
+		const date = new Date(`${dateString}Z`);
+		const options = {
+			day: "numeric",
+			month: "short",
+		};
+		const actualYear = new Date().getFullYear();
+		if (date.getFullYear() !== actualYear) {
+			options.year = "numeric";
+		}
+
+		const formattedDateTime = new Intl.DateTimeFormat(
+			navigator.language,
+			options,
+		).format(date);
+
+		return formattedDateTime;
 	};
 
 	if (!tasks) return;
@@ -115,6 +148,20 @@ export const TaskList = ({
 								{task.name}
 							</EditableText>
 						</div>
+
+						{task.due_date && (
+							<div
+								className={clsx(
+									styles.dueDateContainer,
+									getDueDateStyle(task),
+								)}
+							>
+								<TimeIcon />
+								<span className={styles.dueDateText}>
+									{convertDateToString(task.due_date)}
+								</span>
+							</div>
+						)}
 					</Task>
 				))}
 		</div>

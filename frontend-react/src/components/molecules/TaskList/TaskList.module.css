@@ -129,3 +129,32 @@
 	transform: translateX(0);
 }
 /* Ends Checkbox hide/show */
+
+.dueDateContainer {
+	display: flex;
+	align-items: center;
+	padding: 2px var(--space-1);
+	gap: var(--space-1);
+	border-radius: var(--radius-sm);
+	width: max-content;
+	color: var(--gray-600);
+}
+.completed {
+	color: var(--success-500);
+	background-color: var(--success-50);
+	color: #fff;
+	background-color: #5b7f24;
+}
+.expired {
+	color: var(--danger-700);
+	background-color: var(--danger-100);
+}
+.upcoming {
+	color: var(--gray-800);
+	background-color: var(--warning-200);
+}
+
+.dueDateText {
+	font-size: var(--text-xs);
+	word-spacing: -1px;
+}
