@@ -110,7 +110,7 @@ export const TaskModal = ({
 
 	const dateStatus = useMemo(() => {
 		if (!task.due_date || task.is_done) return null;
-		const due_date = new Date(task.due_date);
+		const due_date = new Date(`${task.due_date}Z`);
 		const now = new Date();
 		const diff = due_date - now;
 		if (diff < 0)
