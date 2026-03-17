@@ -177,6 +177,10 @@
 	color: var(--warning-500);
 	background-color: var(--warning-50);
 }
+.completed {
+	color: var(--success-500);
+	background-color: var(--success-50);
+}
 
 .tagPopover {
 	top: calc(100% + var(--space-2));
