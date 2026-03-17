@@ -78,10 +78,7 @@ export const Column = ({
 
 				<div className={styles.toggleContainer}>
 					<Toggle
-						className={clsx(
-							styles.optionsToggler,
-							isPopoverOpen && styles.optionsTogglerActive,
-						)}
+						className={clsx(styles.optionsToggler)}
 						onToggleOn={() => setIsPopoverOpen(true)}
 						onToggleOff={() => setIsPopoverOpen(false)}
 						isToggled={isPopoverOpen}
