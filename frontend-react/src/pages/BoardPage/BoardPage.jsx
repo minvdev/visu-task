@@ -1,8 +1,8 @@
 import styles from "./BoardPage.module.css";
 import clsx from "clsx";
 
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { apiFetch } from "../../services/api";
 
@@ -12,6 +12,10 @@ import { ButtonBase } from "../../components/atoms/ButtonBase/ButtonBase";
 import { Task } from "../../components/atoms/Task/Task";
 import { TaskList } from "../../components/molecules/TaskList/TaskList";
 import { EditableText } from "../../components/molecules/EditableText/EditableText";
+import { Toggle } from "../../components/atoms/Toggle/Toggle";
+import { Popover } from "../../components/atoms/Popover/Popover";
+import { OptionMenu } from "../../components/organisms/OptionMenu/OptionMenu";
+
 import { Column } from "../../components/organisms/Column/Column";
 import { CreateColumnForm } from "../../components/organisms/CreateColumnForm/CreateColumnForm";
 import { Image } from "../../components/atoms/Image/Image";
@@ -19,14 +23,19 @@ import { TaskModal } from "../../components/molecules/TaskModal/TaskModal";
 
 import { boardTransformers } from "../../constants/boardTransformers";
 import { InboxIcon } from "../../assets/icons/InboxIcon/InboxIcon";
+import { ThreeDotsIcon } from "../../assets/icons/ThreeDotsIcon/ThreeDotsIcon";
 import { PlusIcon } from "../../assets/icons/PlusIcon/PlusIcon";
 
 export const BoardPage = () => {
 	const { boardId: boardIdParam } = useParams();
 	const boardId = parseInt(boardIdParam);
 	const { user } = useAuth();
+	const navigate = useNavigate();
 	const [inbox, setInbox] = useState(null);
 	const [board, setBoard] = useState(null);
+	const [isBoardPopoverOpen, setIsBoardPopoverOpen] =
+		useState(false);
+
 	const [isAddColumnFormOpen, setIsAddColumnFormOpen] =
 		useState(false);
 	const [
@@ -34,6 +43,7 @@ export const BoardPage = () => {
 		setIsAddInboxTaskFormOpen,
 	] = useState(false);
 	const [activeTask, setActiveTask] = useState(null);
+	const toggleBoardOptionsRef = useRef(null);
 
 	const handleLoadModal = async (
 		boardId,
@@ -67,6 +77,18 @@ export const BoardPage = () => {
 			);
 		} catch (error) {
 			console.log("Error saving board:", error);
+			throw error;
+		}
+	};
+
+	const handleDeleteBoard = async () => {
+		try {
+			await apiFetch(`/boards/${board.id}`, {
+				method: "DELETE",
+			});
+			navigate("/dashboard");
+		} catch (error) {
+			console.log("Error deleting board:", error);
 			throw error;
 		}
 	};
@@ -336,6 +358,17 @@ export const BoardPage = () => {
 		}
 	};
 
+	const boardMenuOptions = [
+		{
+			options: [
+				{
+					label: "Eliminar tablero",
+					onClick: handleDeleteBoard,
+				},
+			],
+		},
+	];
+
 	useEffect(() => {
 		const loadInbox = async () => {
 			try {
@@ -467,6 +500,39 @@ export const BoardPage = () => {
 					>
 						{board.name}
 					</EditableText>
+
+					<div className={styles.toggleContainer}>
+						<Toggle
+							className={styles.optionsToggler}
+							onToggleOn={() => setIsBoardPopoverOpen(true)}
+							onToggleOff={() =>
+								setIsBoardPopoverOpen(false)
+							}
+							isToggled={isBoardPopoverOpen}
+							ref={toggleBoardOptionsRef}
+						>
+							<ThreeDotsIcon
+								className={styles.optionsIcon}
+							/>
+						</Toggle>
+
+						{isBoardPopoverOpen && (
+							<Popover
+								onClose={() => setIsBoardPopoverOpen(false)}
+								className={styles.popover}
+								rightClass={styles.popoverRight}
+								bottomClass={styles.popoverBottom}
+								ignoreElements={[toggleBoardOptionsRef]}
+							>
+								<OptionMenu
+									heading={
+										<Heading level={4}>Acciones</Heading>
+									}
+									options={boardMenuOptions}
+								/>
+							</Popover>
+						)}
+					</div>
 				</div>
 
 				<div
