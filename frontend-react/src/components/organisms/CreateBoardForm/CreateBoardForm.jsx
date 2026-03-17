@@ -21,8 +21,12 @@ export const CreateBoardForm = ({
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (!title.trim()) return;
-		onSubmit({ title: title, imageId: selectedImageId });
+		const parsedTitle = title.trim();
+		if (!parsedTitle) return;
+		onSubmit({
+			title: parsedTitle,
+			imageId: selectedImageId,
+		});
 		setTitle("");
 		setSelectedImageId(backgrounds[0].id);
 	};
