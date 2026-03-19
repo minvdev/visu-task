@@ -127,7 +127,7 @@ export const DateForm = ({
 				</Button>
 			</section>
 
-			<footer>
+			<footer className={styles.footer}>
 				<Button
 					onClick={handleSave}
 					disabled={!tempDate || !tempTime}

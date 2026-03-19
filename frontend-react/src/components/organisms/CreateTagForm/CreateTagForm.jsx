@@ -112,7 +112,7 @@ export const CreateTagForm = ({
 
 			<div className={styles.separator} />
 
-			<footer>
+			<footer className={styles.footer}>
 				<Button
 					className={styles.submitButton}
 					type="submit"

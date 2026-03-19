@@ -41,7 +41,7 @@
 	background-color: var(--bg-card);
 }
 
-footer {
+.footer {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-2);

@@ -120,7 +120,7 @@ export const EditTagForm = ({
 
 			<div className={styles.separator} />
 
-			<footer>
+			<footer className={styles.footer}>
 				<Button
 					className={styles.button}
 					type="submit"
