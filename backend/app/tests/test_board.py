@@ -127,6 +127,70 @@ def test_board_cascade(client, auth_headers, db_session, fill_data):
     check_models_count(db, expected_models_count)
 
 
+def test_default_tag_colors(client, auth_headers, db_session):
+    """
+    Tests:
+    1. Create a new board without specifying the default_tag_colors field.
+    2. Create a new board specifying the default_tag_colors field.
+    3. Create a new board specifying the default_tag_colors field with wrong values.
+    4. Get the list of boards (and verify that they was created without problems).
+    5. Get the list of tags from each board and verify that the first one have the default tags and the second one have the specified.
+    """
+    # 1. Create Board without default tag colors
+    response = client.post(
+        "/boards/",
+        json={"name": "Project Alpha", "description": "No tag colors specify"},
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+    board_id_1 = response.json()["id"]
+
+    # 2. Create Board with default tag colors
+    response = client.post(
+        "/boards/",
+        json={"name": "Project Beta", "default_tag_colors": [
+            "#ffffff", "#000000"], "description": "Tag colors was specified"},
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+    board_id_2 = response.json()["id"]
+
+    # 3. Create Board with wrong default tag colors
+    response = client.post(
+        "/boards/",
+        json={"name": "Project Zeta", "default_tag_colors": [
+            "#ffffff", "#000000", "#abc_"], "description": "Wrong tag colors was specified"},
+        headers=auth_headers
+    )
+    assert response.status_code == 422  # Unprocesable entity
+
+    # 4. Get Boards
+    response = client.get("/boards/", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+
+    # There should be 2 board (Project Alpha and Project Beta)
+    # The Inbox should NOT appear here
+
+    # 5. Get tags
+    assert len(data) == 2
+    assert data[0]["name"] == "Project Alpha"
+    assert data[1]["name"] == "Project Beta"
+    assert data[0]["id"] == board_id_1
+    assert data[1]["id"] == board_id_2
+    assert [tag["color"] for tag in data[0]["tags"]] == [
+        "#d62828",
+        "#f77f00",
+        "#fcbf49",
+        "#00b4d8",
+        "#a7c957",
+    ]
+    assert [tag["color"] for tag in data[1]["tags"]] == [
+        "#ffffff",
+        "#000000",
+    ]
+
+
 # --- LISTS TESTS ---
 
 def test_create_and_get_lists(client, auth_headers):
