@@ -152,12 +152,13 @@ def create_board(
     The new board will be automatically assigned to the authenticated user.
     """
     board = Board(
-        **board_data.model_dump(),
+        **board_data.model_dump(exclude={"default_tag_colors"}),
         user=current_user
     )
 
-    tags = [Tag(color=color, board=board)
-            for color in settings.DEFAULT_TAGS_COLORS]
+    colors = board_data.default_tag_colors or settings.DEFAULT_TAGS_COLORS
+
+    tags = [Tag(color=color, board=board) for color in colors]
 
     db.add_all([board, *tags])
     db.commit()

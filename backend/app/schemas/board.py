@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
 from .common import UserSubschema, ListSubschema, TagSubschema, InboxList
+from .tag import HexColor
 
 
 class BoardBase(BaseModel):
@@ -9,7 +10,7 @@ class BoardBase(BaseModel):
 
 
 class BoardCreate(BoardBase):
-    pass
+    default_tag_colors: list[HexColor] = []
 
 
 class BoardUpdate(BaseModel):
