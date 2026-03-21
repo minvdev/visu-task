@@ -280,32 +280,19 @@ export const BoardPage = () => {
 	};
 
 	// Tag Handlers
-	const handleTagCreate = async (
-		board,
-		body,
-		inInbox = false,
-	) => {
+	const handleTagCreate = async (board, body) => {
 		try {
 			const newTag = await apiFetch(
 				`/boards/${board.id}/tags`,
 				{ method: "POST", body },
 			);
-			let newBoard = boardTransformers.addTag(
+			const newBoard = boardTransformers.addTag(
 				board,
 				newTag,
 			);
 
-			const updatedTask = await apiFetch(
-				`/cards/${activeTask.id}/tags/${newTag.id}`,
-				{ method: "POST" },
-			);
-			newBoard = boardTransformers.updateTask(
-				newBoard,
-				activeTask.list_id,
-				activeTask.id,
-				updatedTask,
-			);
-			inInbox ? setInbox(newBoard) : setBoard(newBoard);
+			setBoard(newBoard);
+			return { ...newTag, board: newBoard };
 		} catch (error) {
 			console.log("Error adding tag:", error);
 			throw error;
@@ -357,16 +344,36 @@ export const BoardPage = () => {
 		}
 	};
 
-	const boardMenuOptions = [
-		{
-			options: [
-				{
-					label: "Eliminar tablero",
-					onClick: handleDeleteBoard,
-				},
-			],
-		},
-	];
+	const tagLink = async (
+		board,
+		columnId,
+		taskId,
+		tagId,
+		action,
+	) => {
+		try {
+			if (!["attach", "detach"].includes(action))
+				throw new Error(
+					"`action` must be `attach` or `detach`",
+				);
+			const method =
+				action === "attach" ? "POST" : "DELETE";
+			const updatedTask = await apiFetch(
+				`/cards/${taskId}/tags/${tagId}`,
+				{ method },
+			);
+			const newBoard = boardTransformers.updateTask(
+				board,
+				columnId,
+				taskId,
+				updatedTask,
+			);
+			setBoard(newBoard);
+		} catch (error) {
+			console.log("Error adding tag:", error);
+			throw error;
+		}
+	};
 
 	useEffect(() => {
 		const loadInbox = async () => {
@@ -648,11 +655,20 @@ export const BoardPage = () => {
 						const isInbox = boardId !== currentBoardId;
 						const currentBoard = isInbox ? inbox : board;
 
-						await handleTagCreate(
+						const newTag = await handleTagCreate(
 							currentBoard,
 							body,
 							isInbox,
 						);
+
+						await tagLink(
+							newTag.board,
+							activeTask.list_id,
+							activeTask.id,
+							newTag.id,
+							"attach",
+						);
+
 						const updatedTask = await fetchTask(
 							currentBoardId,
 							activeTask.list_id,
