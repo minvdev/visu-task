@@ -13,8 +13,7 @@ import { Task } from "../../components/atoms/Task/Task";
 import { TaskList } from "../../components/molecules/TaskList/TaskList";
 import { EditableText } from "../../components/molecules/EditableText/EditableText";
 import { Toggle } from "../../components/atoms/Toggle/Toggle";
-import { Popover } from "../../components/atoms/Popover/Popover";
-import { OptionMenu } from "../../components/organisms/OptionMenu/OptionMenu";
+import { BoardOptions } from "../../components/organisms/BoardOptions/BoardOptions";
 
 import { Column } from "../../components/organisms/Column/Column";
 import { CreateColumnForm } from "../../components/organisms/CreateColumnForm/CreateColumnForm";
@@ -516,22 +515,12 @@ export const BoardPage = () => {
 							/>
 						</Toggle>
 
-						{isBoardPopoverOpen && (
-							<Popover
-								onClose={() => setIsBoardPopoverOpen(false)}
-								className={styles.popover}
-								rightClass={styles.popoverRight}
-								bottomClass={styles.popoverBottom}
-								ignoreElements={[toggleBoardOptionsRef]}
-							>
-								<OptionMenu
-									heading={
-										<Heading level={4}>Acciones</Heading>
-									}
-									options={boardMenuOptions}
-								/>
-							</Popover>
-						)}
+						<BoardOptions
+							isOpen={isBoardPopoverOpen}
+							onDeleteBoard={handleDeleteBoard}
+							onClose={() => setIsBoardPopoverOpen(false)}
+							ignoreElements={[toggleBoardOptionsRef]}
+						/>
 					</div>
 				</div>
 

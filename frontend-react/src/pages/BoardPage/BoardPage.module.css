@@ -61,26 +61,6 @@
 	color: inherit;
 }
 
-.popover {
-	padding: 0;
-	box-shadow: none;
-	border: none;
-	color: var(--text-secondary);
-	border-radius: var(--radius-lg);
-}
-
-.popoverRight {
-	top: 100%;
-	left: 0;
-	margin-top: var(--space-2);
-}
-
-.popoverBottom {
-	top: 100%;
-	right: 0;
-	margin-top: var(--space-2);
-}
-
 .inboxIcon {
 	margin-left: var(--space-2);
 	height: 18px;
