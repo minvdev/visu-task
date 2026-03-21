@@ -527,6 +527,16 @@ export const BoardPage = () => {
 							onDeleteBoard={handleDeleteBoard}
 							onClose={() => setIsBoardPopoverOpen(false)}
 							ignoreElements={[toggleBoardOptionsRef]}
+							tags={board.tags}
+							onTagCreate={(body) =>
+								handleTagCreate(board, body)
+							}
+							onTagEdit={(args) =>
+								handleTagUpdate(board, args.id, args.body)
+							}
+							onTagDelete={(tagId) =>
+								handleTagDelete(board, tagId)
+							}
 						/>
 					</div>
 				</div>
