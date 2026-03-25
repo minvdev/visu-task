@@ -141,7 +141,7 @@ def get_card_or_404(
 
 
 # --- CRUD ROUTES FOR BOARDS ---
-@router.post("/", response_model=schemas.Board, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=schemas.Board, status_code=status.HTTP_201_CREATED)
 def create_board(
     board_data: schemas.BoardCreate,
     db: Session = Depends(get_db),
@@ -166,7 +166,7 @@ def create_board(
     return board
 
 
-@router.get("/", response_model=list[schemas.Board])
+@router.get("", response_model=list[schemas.Board])
 def get_user_boards(
     db: Session = Depends(get_db),
     current_user: User = CurrentUserDep
