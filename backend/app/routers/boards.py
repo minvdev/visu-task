@@ -141,6 +141,18 @@ def get_card_or_404(
 
 
 # --- CRUD ROUTES FOR BOARDS ---
+@router.get("/{board_id}", response_model=schemas.Board)
+def get_board(
+    board_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get a board from a given id.
+    """
+    return get_board_or_404(board_id, db, current_user)
+
+
 @router.post("", response_model=schemas.Board, status_code=status.HTTP_201_CREATED)
 def create_board(
     board_data: schemas.BoardCreate,
@@ -240,6 +252,20 @@ def delete_board(
 
 
 # --- CRUD ROUTES FOR LISTS ---
+@router.get("/{board_id}/lists/{list_id}", response_model=schemas.List)
+def get_list(
+    board_id: int,
+    list_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get a list from a given id.
+    Only the owner of the board with the given `board_id` can get it.
+    """
+    return get_list_or_404(board_id, list_id, db, current_user)
+
+
 @router.post("/{board_id}/lists", response_model=schemas.List, status_code=status.HTTP_201_CREATED)
 def create_list(
     board_id: int,
@@ -354,6 +380,21 @@ def delete_list(
 
 
 # --- CRUD ROUTES FOR CARDS ---
+@router.get("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card)
+def get_card(
+    board_id: int,
+    list_id: int,
+    card_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get a card from a given id.
+    Only the owner of the board with the given `board_id` can get it.
+    """
+    return get_card_or_404(board_id, list_id, card_id, db, current_user)
+
+
 @router.post("/{board_id}/lists/{list_id}/cards", response_model=schemas.Card, status_code=status.HTTP_201_CREATED)
 def create_card(
     board_id: int,
@@ -454,6 +495,20 @@ def delete_card(
 
 
 # --- CRUD ROUTES FOR TAGS ---
+@router.get("/{board_id}/tags/{tag_id}", response_model=schemas.Tag)
+def get_tag(
+    board_id: int,
+    tag_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = CurrentUserDep
+):
+    """
+    Get a tag from a given id.
+    Only the owner of the board with the given `board_id` can get it.
+    """
+    return get_tag_or_404(board_id, tag_id, db, current_user)
+
+
 @router.post("/{board_id}/tags", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED)
 def create_tag(
     board_id: int,
