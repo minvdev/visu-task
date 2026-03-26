@@ -24,7 +24,6 @@ export const Column = ({
 	onColumnDelete,
 	onTaskCreate,
 	onTaskUpdate,
-	onTaskDelete,
 	onTaskEdit,
 	children,
 }) => {
