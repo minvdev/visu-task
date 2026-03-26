@@ -11,6 +11,7 @@ def test_create_and_get_board(client, auth_headers, db_session):
     Tests:
     1. Create a new board.
     2. Get the list of boards (and verify it does NOT include the Inbox).
+    3. Get the new board from the id.
     """
     # 1. Create Board
     response = client.post(
@@ -31,6 +32,15 @@ def test_create_and_get_board(client, auth_headers, db_session):
     assert len(data) == 1
     assert data[0]["name"] == "Project Alpha"
     assert data[0]["id"] == board_id
+
+    # 3. Get the board using the id
+    response = client.get(f"/boards/{board_id}", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["name"] == "Project Alpha"
+    assert data["id"] == board_id
+    assert data["description"] == "Test Board"
 
 
 def test_update_and_delete_board(client, auth_headers):
@@ -217,6 +227,15 @@ def test_create_and_get_lists(client, auth_headers):
     assert data[0]["name"] == "To Do"
     assert data[0]["id"] == list_id
 
+    # 4. Get the list using the id
+    response = client.get(
+        f"/boards/{board_id}/lists/{list_id}", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["name"] == "To Do"
+    assert data["id"] == list_id
+
 
 def test_update_and_delete_list(client, auth_headers):
     # 1. Setup
@@ -343,6 +362,7 @@ def test_create_and_get_cards(client, auth_headers):
     )
     assert res.status_code == 201
     card_data = res.json()
+    card_id = card_data["id"]
     assert card_data["name"] == "My Task"
     assert card_data["position"] == 1  # Default auto-positioning
 
@@ -353,6 +373,15 @@ def test_create_and_get_cards(client, auth_headers):
     data = res.json()
     assert len(data) == 1
     assert data[0]["id"] == card_data["id"]
+
+    # 4. Get the card using the id
+    response = client.get(
+        f"/boards/{board_id}/lists/{list_id}/cards/{card_id}", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == card_id
+    assert data["name"] == "My Task"
+    assert data["text"] == "Description"
 
 
 def test_update_and_delete_card(client, auth_headers):
@@ -470,6 +499,15 @@ def test_create_and_get_tags(client, auth_headers):
 
     assert fetched_tag["name"] == "Important"
     assert fetched_tag["color"] == "#ffffff"
+
+    # 4. Get the tag using the id
+    response = client.get(
+        f"/boards/{board_id}/tags/{created_tag_id}", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["name"] == "Important"
+    assert data["color"] == "#ffffff"
 
 
 def test_update_and_delete_tag(client, auth_headers):
