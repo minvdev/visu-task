@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+import { apiURL } from "../constants/api";
 export const apiFetch = async (endpoint, options = {}) => {
 	const headers = { ...options.headers };
 
@@ -26,7 +26,7 @@ export const apiFetch = async (endpoint, options = {}) => {
 
 	try {
 		const response = await fetch(
-			`${API_URL}${endpoint}`,
+			`${apiURL}${endpoint}`,
 			config
 		);
 
