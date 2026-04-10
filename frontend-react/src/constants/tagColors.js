@@ -1,3 +1,11 @@
+export const defaultTagColors = [
+	"#4bce97",
+	"#ddb30e",
+	"#fca700",
+	"#f87168",
+	"#c97cf4",
+];
+
 export const tagColors = [
 	{
 		id: 1,

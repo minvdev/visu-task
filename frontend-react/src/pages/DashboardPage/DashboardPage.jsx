@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { apiFetch } from "../../services/api";
 import { useEffect, useState } from "react";
 import { backgrounds } from "../../constants/defaultBoardBackgrounds";
-import { tagColors } from "../../constants/tagColors";
+import { defaultTagColors } from "../../constants/tagColors";
 
 export const DashboardPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -42,9 +42,7 @@ export const DashboardPage = () => {
 				body: {
 					name: title,
 					image_url: selectedBackground.image_url,
-					default_tag_colors: tagColors
-						.slice(5, 10)
-						.map((color) => color.backgroundColor),
+					default_tag_colors: defaultTagColors,
 				},
 			});
 
