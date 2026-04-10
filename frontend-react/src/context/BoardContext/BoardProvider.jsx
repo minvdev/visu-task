@@ -5,7 +5,10 @@ import {
 	BoardDispatchContext,
 } from "./context";
 
-const BoardProvider = ({ children, initialBoard }) => {
+export const BoardProvider = ({
+	children,
+	initialBoard,
+}) => {
 	const [board, dispatch] = useReducer(
 		boardReducer,
 		initialBoard,
@@ -18,5 +21,3 @@ const BoardProvider = ({ children, initialBoard }) => {
 		</BoardStateContext.Provider>
 	);
 };
-
-export default BoardProvider;
