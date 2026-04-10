@@ -4,7 +4,9 @@ import clsx from "clsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { apiFetch } from "../../services/api";
+import { boardService } from "../../services/board";
+import { inboxService } from "../../services/inbox";
+import { taskService } from "../../services/task";
 
 import { Heading } from "../../components/atoms/Heading/Heading";
 import { CreateTaskForm } from "../../components/organisms/CreateTaskForm/CreateTaskForm";
@@ -50,8 +52,9 @@ export const BoardPage = () => {
 		taskId,
 	) => {
 		try {
-			const tasks = await apiFetch(
-				`/boards/${boardId}/lists/${columnId}/cards`,
+			const tasks = await boardService.getTasks(
+				boardId,
+				columnId,
 			);
 			const task = tasks.filter((t) => t.id === taskId)[0];
 			if (!task)
@@ -67,9 +70,9 @@ export const BoardPage = () => {
 
 	const handleBoardUpdate = async (body) => {
 		try {
-			const updatedBoard = await apiFetch(
-				`/boards/${boardId}`,
-				{ method: "PATCH", body },
+			const updatedBoard = await boardService.updateBoard(
+				boardId,
+				body,
 			);
 			setBoard(
 				boardTransformers.updateBoard(board, updatedBoard),
@@ -82,9 +85,7 @@ export const BoardPage = () => {
 
 	const handleDeleteBoard = async () => {
 		try {
-			await apiFetch(`/boards/${board.id}`, {
-				method: "DELETE",
-			});
+			await boardService.deleteBoard(board.id);
 			navigate("/dashboard");
 		} catch (error) {
 			console.log("Error deleting board:", error);
@@ -99,9 +100,9 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const newColumn = await apiFetch(
-				`/boards/${board.id}/lists`,
-				{ method: "POST", body: { name } },
+			const newColumn = await boardService.createList(
+				board.id,
+				{ name },
 			);
 			const newBoard = boardTransformers.addColumn(
 				board,
@@ -120,12 +121,7 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			await apiFetch(
-				`/boards/${board.id}/lists/${columnId}`,
-				{
-					method: "DELETE",
-				},
-			);
+			await boardService.deleteList(board.id, columnId);
 			const newBoard = boardTransformers.deleteColumn(
 				board,
 				columnId,
@@ -144,9 +140,10 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const updatedColumn = await apiFetch(
-				`/boards/${board.id}/lists/${columnId}`,
-				{ method: "PATCH", body },
+			const updatedColumn = await boardService.updateList(
+				board.id,
+				columnId,
+				body,
 			);
 			const newBoard = boardTransformers.updateColumn(
 				board,
@@ -168,9 +165,10 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const newTask = await apiFetch(
-				`/boards/${board.id}/lists/${columnId}/cards`,
-				{ method: "POST", body },
+			const newTask = await boardService.createTask(
+				board.id,
+				columnId,
+				body,
 			);
 			const newBoard = boardTransformers.addTask(
 				board,
@@ -191,9 +189,10 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			await apiFetch(
-				`/boards/${board.id}/lists/${columnId}/cards/${taskId}`,
-				{ method: "DELETE" },
+			await boardService.deleteTask(
+				board.id,
+				columnId,
+				taskId,
 			);
 
 			const newBoard = boardTransformers.deleteTask(
@@ -217,9 +216,11 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const updatedTask = await apiFetch(
-				`/boards/${board.id}/lists/${columnId}/cards/${taskId}`,
-				{ method: "PATCH", body },
+			const updatedTask = await boardService.updateTask(
+				board.id,
+				columnId,
+				taskId,
+				body,
 			);
 			const newBoard = boardTransformers.updateTask(
 				board,
@@ -243,10 +244,11 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const updatedTask = await apiFetch(
-				`/cards/${taskId}/tags/${body.id}`,
-				{ method: body.attach ? "POST" : "DELETE" },
-			);
+			const updatedTask = body.attach
+				? taskService.attachTag(taskId, body.id)
+				: taskService.detachTag(taskId, body.id);
+			await updatedTask;
+
 			const newBoard = boardTransformers.updateTask(
 				board,
 				columnId,
@@ -264,8 +266,9 @@ export const BoardPage = () => {
 	// Aux
 	const fetchTask = async (boardId, columnId, taskId) => {
 		try {
-			const tasks = await apiFetch(
-				`/boards/${boardId}/lists/${columnId}/cards`,
+			const tasks = await boardService.getTasks(
+				boardId,
+				columnId,
 			);
 			const task = tasks.find((t) => t.id === taskId);
 			if (!task) throw new Error("Task not found");
@@ -282,9 +285,9 @@ export const BoardPage = () => {
 	// Tag Handlers
 	const handleTagCreate = async (board, body) => {
 		try {
-			const newTag = await apiFetch(
-				`/boards/${board.id}/tags`,
-				{ method: "POST", body },
+			const newTag = await boardService.createTag(
+				board.id,
+				body,
 			);
 			const newBoard = boardTransformers.addTag(
 				board,
@@ -305,9 +308,7 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			await apiFetch(`/boards/${board.id}/tags/${tagId}`, {
-				method: "DELETE",
-			});
+			await boardService.deleteTag(board.id, tagId);
 
 			const newBoard = boardTransformers.deleteTag(
 				board,
@@ -328,9 +329,10 @@ export const BoardPage = () => {
 		inInbox = false,
 	) => {
 		try {
-			const updatedTag = await apiFetch(
-				`/boards/${board.id}/tags/${tagId}`,
-				{ method: "PATCH", body },
+			const updatedTag = await boardService.updateTag(
+				board.id,
+				tagId,
+				body,
 			);
 			const newBoard = boardTransformers.updateTag(
 				board,
@@ -356,12 +358,11 @@ export const BoardPage = () => {
 				throw new Error(
 					"`action` must be `attach` or `detach`",
 				);
-			const method =
-				action === "attach" ? "POST" : "DELETE";
-			const updatedTask = await apiFetch(
-				`/cards/${taskId}/tags/${tagId}`,
-				{ method },
-			);
+			const isAttach = action === "attach" ? 1 : 0;
+			const updatedTask = isAttach
+				? taskService.attachTag(taskId, tagId)
+				: taskService.detachTag(taskId, tagId);
+			await updatedTask;
 			const newBoard = boardTransformers.updateTask(
 				board,
 				columnId,
@@ -378,7 +379,7 @@ export const BoardPage = () => {
 	useEffect(() => {
 		const loadInbox = async () => {
 			try {
-				const inboxData = await apiFetch(`/inbox`);
+				const inboxData = await inboxService.getInbox();
 				setInbox(inboxData);
 			} catch (error) {
 				console.log("Error loading inbox: ", error);
@@ -387,14 +388,13 @@ export const BoardPage = () => {
 		};
 		const loadBoard = async () => {
 			try {
-				const boards = await apiFetch(`/boards`);
+				const boards = await boardService.getBoards();
 				const boardData = boards.filter(
 					(b) => b.id === boardId,
 				)[0];
 
-				const boardLists = await apiFetch(
-					`/boards/${boardId}/lists`,
-				);
+				const boardLists =
+					await boardService.getLists(boardId);
 
 				setBoard(
 					boardTransformers.setupBoard(

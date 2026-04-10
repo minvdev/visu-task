@@ -1,6 +1,6 @@
 import styles from "./LoginPage.module.css";
 import { LoginForm } from "../../components/organisms/LoginForm/LoginForm";
-import { apiFetch } from "../../services/api";
+import { authService } from "../../services/auth";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -17,15 +17,11 @@ export const LoginPage = () => {
 		setIsLoading(true);
 		setError(null);
 
-		const formData = new FormData();
-		formData.append("username", credentials.username);
-		formData.append("password", credentials.password);
-
 		try {
-			const data = await apiFetch("/auth/login", {
-				method: "POST",
-				body: formData,
-			});
+			const data = await authService.login(
+				credentials.username,
+				credentials.password,
+			);
 
 			await login(data.access_token);
 			navigate("/dashboard");

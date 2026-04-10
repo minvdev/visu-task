@@ -1,6 +1,6 @@
 import styles from "./RegisterPage.module.css";
 import { RegisterForm } from "../../components/organisms/RegisterForm/RegisterForm";
-import { apiFetch } from "../../services/api";
+import { authService } from "../../services/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,17 +13,10 @@ export const RegisterPage = () => {
 	const handleSubmit = async (credentials) => {
 		setIsLoading(true);
 		setError(null);
+		const { username, email, password } = credentials;
 
 		try {
-			await apiFetch("/auth/register", {
-				method: "POST",
-				body: {
-					email: credentials.email,
-					username: credentials.username,
-					password: credentials.password,
-				},
-			});
-
+			await authService.register(username, email, password);
 			navigate("/login");
 		} catch (error) {
 			console.log(error);

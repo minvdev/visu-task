@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetch } from "../../services/api";
+import { userService } from "../../services/user";
 import { AuthContext } from "./context";
 
 export const AuthProvider = ({ children }) => {
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
 			if (token) {
 				try {
-					const userData = await apiFetch("/users/me");
+					const userData = await userService.getMe();
 					setUser(userData);
 					setIsAuthenticated(true);
 				} catch (error) {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 		localStorage.setItem("token", token);
 
 		try {
-			const userData = await apiFetch("/users/me");
+			const userData = await userService.getMe();
 			setUser(userData);
 			setIsAuthenticated(true);
 		} catch (error) {

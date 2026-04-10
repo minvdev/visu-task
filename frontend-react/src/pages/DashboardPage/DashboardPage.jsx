@@ -4,7 +4,7 @@ import { BoardCard } from "../../components/molecules/BoardCard/BoardCard";
 import { Popover } from "../../components/atoms/Popover/Popover";
 import { CreateBoardForm } from "../../components/organisms/CreateBoardForm/CreateBoardForm";
 import { Link } from "react-router-dom";
-import { apiFetch } from "../../services/api";
+import { boardService } from "../../services/board";
 import { useEffect, useState } from "react";
 import { backgrounds } from "../../constants/defaultBoardBackgrounds";
 import { defaultTagColors } from "../../constants/tagColors";
@@ -17,7 +17,7 @@ export const DashboardPage = () => {
 
 	const fetchBoards = async () => {
 		try {
-			const boardsData = await apiFetch("/boards");
+			const boardsData = await boardService.getBoards();
 			setBoards(boardsData);
 		} catch (error) {
 			console.log("Error loading boards: ", error);
@@ -37,13 +37,10 @@ export const DashboardPage = () => {
 				(bg) => bg.id === imageId,
 			);
 
-			await apiFetch("/boards", {
-				method: "POST",
-				body: {
-					name: title,
-					image_url: selectedBackground.image_url,
-					default_tag_colors: defaultTagColors,
-				},
+			await boardService.createBoard({
+				name: title,
+				image_url: selectedBackground.image_url,
+				default_tag_colors: defaultTagColors,
 			});
 
 			fetchBoards();
