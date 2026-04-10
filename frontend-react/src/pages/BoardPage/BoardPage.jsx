@@ -52,15 +52,11 @@ export const BoardPage = () => {
 		taskId,
 	) => {
 		try {
-			const tasks = await boardService.getTasks(
+			const task = await boardService.getTask(
 				boardId,
 				columnId,
+				taskId,
 			);
-			const task = tasks.filter((t) => t.id === taskId)[0];
-			if (!task)
-				throw new Error(
-					`Task with id '${taskId}' not found`,
-				);
 			setActiveTask(task);
 		} catch (error) {
 			console.log("Error loading task: ", error);
@@ -263,25 +259,6 @@ export const BoardPage = () => {
 		}
 	};
 
-	// Aux
-	const fetchTask = async (boardId, columnId, taskId) => {
-		try {
-			const tasks = await boardService.getTasks(
-				boardId,
-				columnId,
-			);
-			const task = tasks.find((t) => t.id === taskId);
-			if (!task) throw new Error("Task not found");
-			return task;
-		} catch (error) {
-			console.log(
-				`Error searching task with id "${taskId}":`,
-				error,
-			);
-			throw error;
-		}
-	};
-
 	// Tag Handlers
 	const handleTagCreate = async (board, body) => {
 		try {
@@ -388,19 +365,13 @@ export const BoardPage = () => {
 		};
 		const loadBoard = async () => {
 			try {
-				const boards = await boardService.getBoards();
-				const boardData = boards.filter(
-					(b) => b.id === boardId,
-				)[0];
+				const board = await boardService.getBoard(boardId);
 
 				const boardLists =
 					await boardService.getLists(boardId);
 
 				setBoard(
-					boardTransformers.setupBoard(
-						boardData,
-						boardLists,
-					),
+					boardTransformers.setupBoard(board, boardLists),
 				);
 			} catch (error) {
 				console.log("Error loading board: ", error);
@@ -679,7 +650,7 @@ export const BoardPage = () => {
 							"attach",
 						);
 
-						const updatedTask = await fetchTask(
+						const updatedTask = await boardService.getTask(
 							currentBoardId,
 							activeTask.list_id,
 							activeTask.id,
@@ -697,7 +668,7 @@ export const BoardPage = () => {
 							body,
 							isInbox,
 						);
-						const updatedTask = await fetchTask(
+						const updatedTask = await boardService.getTask(
 							currentBoardId,
 							activeTask.list_id,
 							activeTask.id,
@@ -714,7 +685,7 @@ export const BoardPage = () => {
 							id,
 							isInbox,
 						);
-						const updatedTask = await fetchTask(
+						const updatedTask = await boardService.getTask(
 							currentBoardId,
 							activeTask.list_id,
 							activeTask.id,
