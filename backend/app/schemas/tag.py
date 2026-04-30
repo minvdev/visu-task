@@ -23,7 +23,7 @@ class TagCreate(TagBase):
 
 
 class TagUpdate(TagBase):
-    name: str | None = Field(None, min_length=1, max_length=50)
+    name: str | None = Field(None, min_length=0, max_length=50)
     color: str | None = Field(None, min_length=4, max_length=7)
 
 

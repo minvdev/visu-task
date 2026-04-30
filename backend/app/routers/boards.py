@@ -571,7 +571,7 @@ def update_tag(
     update_data = tag_data.model_dump(exclude_unset=True)
 
     for key, value in update_data.items():
-        setattr(tag_to_update, key, value)
+        setattr(tag_to_update, key, value or None)
 
     db.add(tag_to_update)
     db.commit()

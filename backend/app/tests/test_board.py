@@ -466,7 +466,7 @@ def test_card_cascade(client, auth_headers, db_session, fill_data):
     check_models_count(db, expected_models_count)
 
 
-# --- CARDS TESTS ---
+# --- TAGS TESTS ---
 
 def test_create_and_get_tags(client, auth_headers):
     # 1. Setup: Create board
@@ -527,7 +527,7 @@ def test_update_and_delete_tag(client, auth_headers):
         headers=auth_headers
     ).json()["id"]
 
-    # 2. Update List
+    # 2. Update Tag
     all_tags = client.patch(
         f"/boards/{board_id}/tags/{tag_id}",
         json={"name": "Super Important"},
@@ -536,7 +536,7 @@ def test_update_and_delete_tag(client, auth_headers):
     assert all_tags.status_code == 200
     assert all_tags.json()["name"] == "Super Important"
 
-    # 3. Delete List
+    # 3. Delete Tag
     all_tags = client.delete(
         f"/boards/{board_id}/tags/{tag_id}", headers=auth_headers)
     assert all_tags.status_code == 204
@@ -621,3 +621,38 @@ def test_tag_cascade(client, auth_headers, db_session, fill_data):
 
     expected_models_count[Tag] = 9
     check_models_count(db, expected_models_count)
+
+
+def test_tag_update_void_name(client, auth_headers):
+    # 1. Setup: Create board
+    board_id = client.post(
+        "/boards/",
+        json={"name": "List Test Board"},
+        headers=auth_headers
+    ).json()["id"]
+
+    tag_id = client.post(
+        f"/boards/{board_id}/tags",
+        json={"color": "#a1b2c3", "name": "Name to delete"},
+        headers=auth_headers
+    ).json()["id"]
+
+    # 2. Update Tag to change the color and check that if no name is passed, the name was not deleted
+    tag_response = client.patch(
+        f"/boards/{board_id}/tags/{tag_id}",
+        json={"color": "#fff"},
+        headers=auth_headers
+    )
+    assert tag_response.status_code == 200
+    updated_tag = tag_response.json()
+    assert updated_tag["name"] == "Name to delete"
+    assert updated_tag["color"] == "#fff"
+
+    # 3. Update Tag to delete the name
+    tag_response = client.patch(
+        f"/boards/{board_id}/tags/{tag_id}",
+        json={"name": ""},  # or json = {"name": None}
+        headers=auth_headers
+    )
+    assert tag_response.status_code == 200
+    assert tag_response.json()["name"] == None
