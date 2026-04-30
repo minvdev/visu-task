@@ -28,9 +28,11 @@ export const EditTagForm = ({
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let body = { color: selectedColor.backgroundColor };
 		const trimmedName = name.trim();
-		if (trimmedName) body = { ...body, name: trimmedName };
+		const body = {
+			color: selectedColor.backgroundColor,
+			name: trimmedName,
+		};
 		onSubmit({ id: tag.id, body });
 		onClose();
 	};
