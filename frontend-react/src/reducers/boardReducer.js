@@ -114,13 +114,7 @@ export const boardReducer = (board, action) => {
 		}
 
 		case "delete-tag": {
-			console.log("Deleting tag...");
-			console.log("Triying to obtain tag id");
-
 			const { tagId } = payload;
-			console.log("Tagid: ", tagId);
-			console.log("board", board);
-
 			return {
 				...board,
 				tags: board.tags.filter((t) => t.id !== tagId),
