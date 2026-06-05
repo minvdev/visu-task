@@ -1,7 +1,7 @@
 .form {
 	background-color: var(--bg-input);
 	padding: var(--space-3);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;

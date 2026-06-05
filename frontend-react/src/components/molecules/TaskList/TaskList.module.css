@@ -23,7 +23,7 @@
 	display: inline-flex;
 	width: 40px;
 	height: 8px;
-	border-radius: var(--radius-xl);
+	border-radius: var(--radius-xxl);
 	flex-shrink: 0;
 	transition:
 		width 300ms ease,
@@ -94,7 +94,7 @@
 }
 .taskText:focus.taskText:focus {
 	outline: none;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 }
 
 /* Starts Checkbox hide/show */

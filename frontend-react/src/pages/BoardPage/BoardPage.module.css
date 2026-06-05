@@ -7,14 +7,14 @@
 
 .inboxBoardContainer {
 	background-color: var(--bg-inbox);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-sm);
 	display: flex;
 	flex-direction: column;
 }
 
 .mainBoardContainer {
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	position: relative;
 	z-index: 0;
 	box-shadow: var(--shadow-sm);
@@ -34,8 +34,8 @@
 }
 
 .boardTab {
-	border-top-left-radius: var(--radius-lg);
-	border-top-right-radius: var(--radius-lg);
+	border-top-left-radius: var(--radius-xl);
+	border-top-right-radius: var(--radius-xl);
 	padding: var(--space-4) var(--space-3);
 	background-color: var(--white-alpha-40);
 	flex-shrink: 0;
@@ -51,7 +51,7 @@
 
 .optionsToggler.optionsToggler {
 	padding: var(--space-2);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	flex-shrink: 0;
 }
 

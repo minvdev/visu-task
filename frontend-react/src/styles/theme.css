@@ -34,8 +34,9 @@
 	--radius-xs: 2px;
 	--radius-sm: 4px;
 	--radius-md: 6px;
-	--radius-lg: 10px;
-	--radius-xl: 14px;
+	--radius-lg: 8px;
+	--radius-xl: 10px;
+	--radius-xxl: 14px;
 
 	/* Acciones - Primario */
 	--color-primary: var(--brand-500);

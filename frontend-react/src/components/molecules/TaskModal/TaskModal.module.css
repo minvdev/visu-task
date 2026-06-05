@@ -111,7 +111,7 @@
 	user-select: none;
 	overflow: hidden;
 	outline: none;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 }
 
 .toggleWrapper {
@@ -126,7 +126,7 @@
 	box-shadow: none;
 	border: 1px solid var(--border-light);
 	color: var(--text-secondary);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	animation: none;
 	margin: 0;
 }
@@ -196,7 +196,7 @@
 	min-width: 280px;
 	max-height: var(--maxFormHeight, 50vh);
 	padding: var(--space-3);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 }
 
 .descriptionIcon.descriptionIcon {

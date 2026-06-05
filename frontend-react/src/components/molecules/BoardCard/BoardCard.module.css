@@ -1,6 +1,6 @@
 .board {
 	background-color: var(--bg-card);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	height: 200px;
 }
 
@@ -17,7 +17,7 @@
 
 .imageContainer {
 	overflow: hidden;
-	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+	border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 	min-height: 0;
 }
 
