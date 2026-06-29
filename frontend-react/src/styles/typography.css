@@ -1,8 +1,17 @@
+@font-face {
+	font-family: "Nunito";
+	src:
+		url("../assets/Nunito-VariableFont_wght.woff2")
+			format("woff2"),
+		url("../assets/Nunito-VariableFont_wght.woff")
+			format("woff");
+}
+
 :root {
 	/* --- 1. Font Family --- */
-	--font-sans: ui-sans-serif, system-ui, -apple-system,
-		BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-		Arial, sans-serif;
+	--font-sans:
+		"Nunito", system-ui, -apple-system, BlinkMacSystemFont,
+		"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 	/* --- 2. TAMAÑOS --- */
 
