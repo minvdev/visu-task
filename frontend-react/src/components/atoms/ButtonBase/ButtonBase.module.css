@@ -1,4 +1,6 @@
 .buttonBase {
+	width: var(--close-width, auto);
+	height: var(--close-height, auto);
 	margin: 0;
 	padding: 0;
 	border: none;

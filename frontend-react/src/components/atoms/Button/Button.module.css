@@ -51,3 +51,12 @@
 	background-color: var(--color-danger);
 	color: white;
 }
+
+.transparent {
+	background-color: transparent;
+	color: var(--text-secondary);
+	border: 1px var(--border) solid;
+}
+.transparent:hover {
+	background-color: var(--white-alpha-10);
+}

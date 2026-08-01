@@ -1,0 +1,50 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	padding: var(--space-4) 0;
+}
+.container.withHeader {
+	padding-top: var(--space-2);
+}
+.header {
+	width: 100%;
+	margin-top: var(--space-2);
+	margin-bottom: var(--space-3);
+	padding: 0 var(--space-3);
+}
+.content {
+	width: 100%;
+}
+
+/* Group of options */
+.group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+.groupHeading {
+	padding-left: var(--space-4);
+}
+
+/* Option */
+.option.option {
+	padding: 0 var(--space-3);
+	width: 100%;
+	justify-content: left;
+}
+.option:hover {
+	background-color: var(--bg-card);
+}
+
+/* Separation line */
+.separator {
+	height: 2px;
+	width: 100%;
+	margin: var(--space-2) 0;
+	background-color: var(--border-light);
+}
+.container.withHeader .separator {
+	width: calc(100% - var(--space-4) * 1);
+	justify-self: center;
+}

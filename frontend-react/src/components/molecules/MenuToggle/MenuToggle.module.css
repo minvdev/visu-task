@@ -1,0 +1,26 @@
+.container {
+	position: relative;
+}
+
+button.toggle {
+	padding: var(--space-2);
+	border-radius: var(--radius-xl);
+	width: var(--space-8);
+	height: var(--space-8);
+}
+button.toggle:hover {
+	background-color: var(--black-alpha-10);
+}
+button.toggle.active {
+	background-color: var(--bg-toggle-active);
+}
+button.toggle.active:hover {
+	background-color: var(--bg-toggle-active-hover);
+}
+
+button.toggle svg {
+	color: #1f2937;
+}
+button.active svg {
+	color: #fff;
+}

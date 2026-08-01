@@ -7,6 +7,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	variants?: (
 		| "primary"
 		| "danger"
+		| "transparent"
 		| "button-md"
 		| "button-sm"
 	)[];

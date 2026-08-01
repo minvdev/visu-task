@@ -14,10 +14,8 @@
 	transition: all 200ms ease-in-out;
 	flex-shrink: 0;
 }
-
-.checkbox:hover {
-	border-color: var(--border-focus);
-	background-color: var(--brand-50);
+.checkbox.square {
+	border-radius: 4px;
 }
 
 .checked {
@@ -40,4 +38,16 @@
 .checked .checkIcon {
 	opacity: 1;
 	transform: scale(1);
+}
+
+/* No select text */
+.checkbox {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+/* Para navegadores que aún permiten selección visual */
+.checkbox::selection {
+	background: transparent;
 }
