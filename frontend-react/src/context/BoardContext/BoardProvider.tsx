@@ -1,14 +1,22 @@
-import { useReducer } from "react";
-import { boardReducer } from "../../reducers/boardReducer";
+import { useReducer, type ReactNode } from "react";
+import {
+	boardReducer,
+	type BoardState,
+} from "@/reducers/boardReducer";
 import {
 	BoardStateContext,
 	BoardDispatchContext,
 } from "./context";
 
+interface BoardProviderProps {
+	children: ReactNode;
+	initialBoard: BoardState;
+}
+
 export const BoardProvider = ({
 	children,
 	initialBoard,
-}) => {
+}: BoardProviderProps) => {
 	const [board, dispatch] = useReducer(
 		boardReducer,
 		initialBoard,
