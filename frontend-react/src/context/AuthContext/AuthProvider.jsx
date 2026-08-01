@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { userService } from "../../services/user";
+import { userService } from "@services/user";
 import { AuthContext } from "./context";
 
 export const AuthProvider = ({ children }) => {
@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
 
 			if (token) {
 				try {
-					const userData = await userService.getMe();
-					setUser(userData);
+					const { data } = await userService.getMe();
+					setUser(data);
 					setIsAuthenticated(true);
 				} catch (error) {
 					console.log(`Error checking auth: ${error}`);
@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
 		localStorage.setItem("token", token);
 
 		try {
-			const userData = await userService.getMe();
-			setUser(userData);
+			const { data } = await userService.getMe();
+			setUser(data);
 			setIsAuthenticated(true);
 		} catch (error) {
 			console.log(`Error loading user in login: ${error}`);

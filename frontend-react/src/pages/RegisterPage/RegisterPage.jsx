@@ -16,12 +16,17 @@ export const RegisterPage = () => {
 		const { username, email, password } = credentials;
 
 		try {
-			await authService.register(username, email, password);
+			await authService.register({
+				username,
+				email,
+				password,
+			});
 			navigate("/login");
 		} catch (error) {
 			console.log(error);
 			setError(
-				error.message || "Error al conectar con el servidor"
+				error.message ||
+					"Error al conectar con el servidor",
 			);
 		} finally {
 			setIsLoading(false);

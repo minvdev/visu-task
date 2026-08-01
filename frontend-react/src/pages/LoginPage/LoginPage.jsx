@@ -17,22 +17,20 @@ export const LoginPage = () => {
 		setIsLoading(true);
 		setError(null);
 
-		try {
-			const data = await authService.login(
-				credentials.username,
-				credentials.password,
-			);
+		const { data, error } = await authService.login({
+			username: credentials.username,
+			password: credentials.password,
+		});
 
-			await login(data.access_token);
-			navigate("/dashboard");
-		} catch (error) {
-			console.log(error);
-			setError(
-				error.message || "Error al conectar con el servidor"
-			);
-		} finally {
+		if (error) {
+			setError("Usuario o contraseña incorrectos");
 			setIsLoading(false);
+			return;
 		}
+
+		await login(data.access_token);
+		navigate("/dashboard");
+		setIsLoading(false);
 	};
 
 	if (isAuthenticated) return <Navigate to="/" />;
