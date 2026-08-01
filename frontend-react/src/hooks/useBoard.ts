@@ -2,7 +2,7 @@ import { useContext } from "react";
 import {
 	BoardStateContext,
 	BoardDispatchContext,
-} from "../context/BoardContext/context";
+} from "@/context/BoardContext/context";
 
 export const useBoardState = () => {
 	const context = useContext(BoardStateContext);

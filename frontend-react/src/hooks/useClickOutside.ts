@@ -1,13 +1,20 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
-export const useClickOutside = (ref, handler) => {
+type ClickOutsideRef = React.RefObject<Element | null>;
+
+type HandleEvents = Event;
+
+export const useClickOutside = (
+	ref: ClickOutsideRef | ClickOutsideRef[],
+	handler: (e: HandleEvents) => void,
+) => {
 	useEffect(() => {
 		const refs = Array.isArray(ref) ? ref : [ref];
-		const listener = (event) => {
+		const listener = (event: HandleEvents) => {
 			const isClickInside = refs.some(
 				(ref) =>
 					!ref.current ||
-					ref.current.contains(event.target),
+					ref.current.contains(event.target as Node),
 			);
 
 			if (isClickInside) {

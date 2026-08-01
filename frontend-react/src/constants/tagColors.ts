@@ -1,3 +1,9 @@
+export type TagColor = {
+	id: number;
+	backgroundColor: string;
+	color: string;
+};
+
 export const defaultTagColors = [
 	"#4bce97",
 	"#ddb30e",
@@ -6,7 +12,7 @@ export const defaultTagColors = [
 	"#c97cf4",
 ];
 
-export const tagColors = [
+export const tagColors: TagColor[] = [
 	{
 		id: 1,
 		backgroundColor: "#baf3db",
