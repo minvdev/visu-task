@@ -15,7 +15,7 @@ HexColor = Annotated[
 
 class TagBase(BaseModel):
     name: str | None = Field(None, min_length=1, max_length=50)
-    color: str = HexColor
+    color: HexColor
 
 
 class TagCreate(TagBase):
