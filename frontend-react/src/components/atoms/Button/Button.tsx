@@ -1,28 +1,32 @@
 import styles from "./Button.module.css";
 import clsx from "clsx";
 
+import { ButtonHTMLAttributes } from "react";
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	variants?: (
+		| "primary"
+		| "danger"
+		| "button-md"
+		| "button-sm"
+	)[];
+}
+
 export const Button = ({
 	variants = ["primary"],
 	type = "button",
-	onClick,
-	disabled = false,
 	className,
-	children,
 	...props
-}) => {
+}: ButtonProps) => {
 	return (
 		<button
 			type={type}
 			className={clsx(
-				styles.button,
+				styles["button"],
 				variants.map((variant) => styles[variant]),
-				className
+				className,
 			)}
-			onClick={onClick}
-			disabled={disabled}
 			{...props}
-		>
-			{children}
-		</button>
+		></button>
 	);
 };

@@ -2,8 +2,8 @@
 	border: none;
 	cursor: pointer;
 	padding: var(--space-3);
-	font-size: var(--text-base);
-	font-weight: 600;
+	font-size: var(--text-sm);
+	font-weight: var(--font-medium);
 	font-family:
 		system-ui,
 		-apple-system,
@@ -15,13 +15,17 @@
 		"Open Sans",
 		"Helvetica Neue",
 		sans-serif;
+	border-radius: var(--radius-md);
+	transition:
+		background-image 100ms ease,
+		background-color 100ms ease;
 }
 .button:hover {
 	background-image: linear-gradient(var(--black-alpha-10));
 }
 .button:active {
 	background-image: linear-gradient(var(--black-alpha-20));
-	transform: scale(1.02);
+	transform: scale(0.97) translateY(1px);
 }
 .button:disabled {
 	cursor: not-allowed;
@@ -41,11 +45,9 @@
 .primary {
 	background-color: var(--color-primary);
 	color: white;
-	border-radius: var(--radius-xs);
 }
 
 .danger {
 	background-color: var(--color-danger);
 	color: white;
-	border-radius: var(--radius-xs);
 }

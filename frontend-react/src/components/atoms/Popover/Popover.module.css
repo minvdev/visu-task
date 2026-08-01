@@ -5,7 +5,7 @@
 	z-index: 50;
 	background-color: #fff;
 	border-radius: var(--radius-md);
-	box-shadow: var(--shadow-lg);
+	box-shadow: var(--shadow-overlay);
 	border: 1px solid var(--border-light);
 
 	min-width: 250px;
@@ -21,7 +21,7 @@
 
 .bottom {
 	top: 100%;
-	left: 0;
+	right: 0;
 	margin-top: var(--space-2);
 }
 
