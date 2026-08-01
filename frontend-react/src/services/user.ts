@@ -1,4 +1,4 @@
-import { apiFetch } from "./apiClient";
+import { client } from "./apiClient";
 
 /**
  * API Service Layer for the "User" resource.
@@ -6,5 +6,5 @@ import { apiFetch } from "./apiClient";
  * No React component or hook should manually construct URLs.
  */
 export const userService = {
-	getMe: () => apiFetch("/users/me"),
+	getMe: () => client.GET("/users/me"),
 };

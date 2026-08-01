@@ -1,4 +1,4 @@
-import { apiFetch } from "./apiClient";
+import { client } from "./apiClient";
 
 /**
  * API Service Layer for the "Inbox" resource.
@@ -6,5 +6,5 @@ import { apiFetch } from "./apiClient";
  * No React component or hook should manually construct URLs.
  */
 export const inboxService = {
-	getInbox: () => apiFetch(`/inbox`),
+	getInbox: () => client.GET("/inbox"),
 };
