@@ -17,8 +17,8 @@ export const DashboardPage = () => {
 
 	const fetchBoards = async () => {
 		try {
-			const boardsData = await boardService.getBoards();
-			setBoards(boardsData);
+			const { data } = await boardService.getBoards();
+			setBoards(data);
 		} catch (error) {
 			console.log("Error loading boards: ", error);
 			throw error;
