@@ -1,0 +1,38 @@
+.form {
+	width: 100%;
+	animation: formIn 100ms ease-out;
+	transform-origin: top;
+}
+
+@keyframes formIn {
+	from {
+		opacity: 0.2;
+		transform: scaleY(0.8);
+	}
+	to {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+}
+
+.task {
+	padding: var(--space-2) var(--space-3);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-surface);
+	background-color: var(--bg-task);
+}
+
+.actions {
+	margin-top: var(--space-2);
+	display: flex;
+	gap: var(--space-1);
+}
+
+button.addButton,
+button.closeButton {
+	border-radius: var(--radius-md);
+}
+button.closeButton {
+	width: 32px;
+	height: 32px;
+}

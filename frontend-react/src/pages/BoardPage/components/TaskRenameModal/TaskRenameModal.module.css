@@ -1,0 +1,47 @@
+.modal.modal {
+	position: fixed;
+	translate: none;
+}
+.modal.modal::backdrop {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.card {
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-surface);
+	background-color: var(--bg-task);
+	padding: var(--space-2) var(--space-3);
+}
+
+.tags {
+	margin-bottom: var(--space-2);
+}
+.tags > * {
+	cursor: pointer;
+}
+
+.textArea {
+	min-height: 1.5lh;
+}
+
+.date {
+	margin-top: var(--space-2);
+}
+
+.submitBtn.submitBtn {
+	margin-top: var(--space-2);
+	border-radius: var(--radius-md);
+	position: relative;
+	transform: none;
+
+	user-select: none;
+	-moz-user-select: none;
+}
+.submitBtn::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border: 1px solid #0b120e24;
+	border-radius: inherit;
+	pointer-events: none;
+}

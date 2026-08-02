@@ -1,0 +1,20 @@
+.container {
+	background-color: var(--bg-column-hover);
+	border-radius: var(--radius-md);
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-1);
+	padding: var(--space-1);
+}
+.container:hover {
+	filter: brightness(0.9);
+}
+
+.text {
+	color: var(--text-title);
+	overflow: hidden;
+	line-clamp: 1; /* more compability */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}

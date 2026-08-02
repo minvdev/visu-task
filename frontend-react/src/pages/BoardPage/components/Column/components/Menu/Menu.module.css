@@ -1,0 +1,10 @@
+.popover {
+	padding: 0;
+	border-radius: var(--radius-xl);
+}
+
+.popoverLocation {
+	top: 100%;
+	left: 0;
+	margin-top: var(--space-2);
+}
