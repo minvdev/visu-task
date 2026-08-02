@@ -1,0 +1,26 @@
+.input {
+	width: 100%;
+	border: none;
+	font: var(--font-sans);
+	font-size: var(--text-base);
+	background-color: transparent;
+	outline: none;
+}
+
+.default {
+	padding: var(--space-3);
+	border-radius: var(--radius-xs);
+	background-color: var(--bg-input);
+	outline: 1px ridge var(--border);
+	transition: background-color 200ms ease-out;
+}
+
+.default:hover {
+	background-color: var(--bg-input-hover);
+	outline: 1px ridge var(--border-light);
+}
+
+.default:focus {
+	background-color: var(--bg-input);
+	outline: 2px ridge var(--border-focus);
+}

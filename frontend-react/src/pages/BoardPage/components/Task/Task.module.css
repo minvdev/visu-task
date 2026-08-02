@@ -1,0 +1,80 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	flex-shrink: 0;
+	position: relative;
+	cursor: pointer;
+
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-surface);
+	background-color: var(--bg-task);
+	padding: var(--space-2) var(--space-3);
+}
+.container:hover {
+	outline: 2px solid var(--brand-450);
+}
+
+/* Tags section */
+.tags {
+	margin-bottom: var(--space-2);
+	width: 100%;
+}
+
+/* Edit section */
+button.editButton {
+	width: var(--space-6);
+	height: var(--space-6);
+	opacity: 0;
+	flex-shrink: 0;
+	padding: var(--space-1);
+	border-radius: 50%;
+	position: absolute;
+	right: var(--space-1);
+	top: var(--space-1);
+	z-index: 25;
+	background-color: var(--bg-task);
+	border: 1px solid var(--border);
+}
+.editButton:hover {
+	filter: brightness(0.95);
+}
+.editButton:active {
+	filter: brightness(0.9);
+}
+.container:hover .editButton {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* Text section */
+.textContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+	cursor: pointer;
+}
+.textContainer:not(.checked) .text {
+	transform: translateX(-24px);
+	transition: transform 300ms ease-in;
+}
+.container:hover .text {
+	transform: none;
+}
+
+/* Checkbox section */
+.checkbox.checkbox {
+	align-self: flex-start;
+}
+.textContainer:not(.checked) .checkbox.checkbox {
+	opacity: 0;
+}
+.container:hover .checkbox.checkbox {
+	opacity: 1;
+	transition: opacity 300ms ease-in;
+}
+
+/* Due date section */
+.date {
+	margin-top: var(--space-2);
+}

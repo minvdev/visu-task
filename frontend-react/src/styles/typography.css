@@ -1,9 +1,9 @@
 @font-face {
 	font-family: "Nunito";
 	src:
-		url("../assets/Nunito-VariableFont_wght.woff2")
+		url("@assets/Nunito-VariableFont_wght.woff2")
 			format("woff2"),
-		url("../assets/Nunito-VariableFont_wght.woff")
+		url("@assets/Nunito-VariableFont_wght.woff")
 			format("woff");
 }
 

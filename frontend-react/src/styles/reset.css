@@ -2,9 +2,15 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	scrollbar-color: var(--border-hover) var(--bg-column);
 }
 
 a {
 	text-decoration: none;
 	color: inherit;
+}
+
+ul,
+ol {
+	list-style: none;
 }

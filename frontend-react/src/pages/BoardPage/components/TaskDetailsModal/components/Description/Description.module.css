@@ -1,0 +1,29 @@
+.iconContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--icon-section-gap, var(--space-2));
+}
+
+.icon {
+	width: var(--icon-size);
+	height: var(--icon-size);
+	padding: var(--space-1);
+}
+
+.editableText.editableText {
+	font-size: var(--text-sm);
+	font-weight: var(--font-normal);
+	overflow-wrap: anywhere;
+	border-radius: var(--radius-sm);
+	padding: var(--space-2) var(--space-3);
+	border: 1px solid var(--border);
+	min-height: calc(2 * var(--space-2) + 2.5lh);
+}
+.editableText.editableText:focus {
+	box-shadow: inset 0 0 0 2px var(--border-focus, #388bff);
+}
+
+p.placeholder,
+textarea.placeholder {
+	color: var(--text-secondary);
+}

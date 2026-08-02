@@ -8,6 +8,7 @@ import styles from "./Navbar.module.css";
 import clsx from "clsx";
 import { SearchIcon } from "../../../assets/icons/SearchIcon/SearchIcon";
 import { UserIcon } from "../../../assets/icons/UserIcon/UserIcon";
+import { NAVBAR_HEIGHT } from "../../../constants/layout";
 
 export const Navbar = () => {
 	const { logout, user } = useAuth();
@@ -20,7 +21,12 @@ export const Navbar = () => {
 	const displayName = user?.username || "Usuario";
 
 	return (
-		<nav className={styles.navbar}>
+		<nav
+			className={styles.navbar}
+			style={{
+				["--navbar-height"]: `${NAVBAR_HEIGHT}px`,
+			}}
+		>
 			<Link to="/dashboard" className={styles.logo}>
 				<Heading level={3}>VisuTask</Heading>
 			</Link>

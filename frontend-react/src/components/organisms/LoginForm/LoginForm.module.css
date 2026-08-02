@@ -1,7 +1,7 @@
 .form {
 	padding: var(--space-8);
 	background-color: #fff;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-xl);
 	box-shadow: var(--shadow-lg);
 	max-width: 400px;
 }
