@@ -6,7 +6,7 @@ import { useTask } from "./useTask";
 
 import { ButtonBase } from "@atoms/ButtonBase/ButtonBase";
 import { Checkbox } from "@atoms/Checkbox/Checkbox";
-import { DueDate } from "@atoms/DueDate/DueDate";
+import { DueDate } from "@pages/BoardPage/components/DueDate/DueDate";
 import { TaskTags } from "@pages/BoardPage/components/TaskTags/TaskTags";
 import { TaskRenameModal } from "@pages/BoardPage/components/TaskRenameModal/TaskRenameModal";
 import { TaskDetailsModal } from "@pages/BoardPage/components/TaskDetailsModal/TaskDetailsModal";

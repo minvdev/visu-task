@@ -5,8 +5,8 @@ import { useTaskRenameModal } from "./useTaskRenameModal";
 
 import { Modal } from "@components/atoms/Modal/Modal";
 import { TaskTags } from "@pages/BoardPage/components/TaskTags/TaskTags";
+import { DueDate } from "@pages/BoardPage/components/DueDate/DueDate";
 import { Textarea } from "@atoms/Textarea/Textarea";
-import { DueDate } from "@atoms/DueDate/DueDate";
 import { Button } from "@atoms/Button/Button";
 
 import { TaskProps } from "../Task/Task";

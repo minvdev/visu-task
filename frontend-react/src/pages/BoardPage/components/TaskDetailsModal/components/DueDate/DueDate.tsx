@@ -6,9 +6,9 @@ import { useDueDate } from "./useDueDate";
 import { useVerticalOffset } from "@hooks/useVerticalOffset";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
-import { DueDate as DueDateCard } from "@atoms/DueDate/DueDate";
 import { ButtonBase } from "@atoms/ButtonBase/ButtonBase";
 import { Popover } from "@atoms/Popover/Popover";
+import { DueDate as DueDateCard } from "@pages/BoardPage/components/DueDate/DueDate";
 import { DateForm } from "@pages/BoardPage/components/DateFormV2/DateForm";
 import {
 	LucideChevronDown,
