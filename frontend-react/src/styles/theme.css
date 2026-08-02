@@ -17,11 +17,14 @@
 	--bg-task: var(--gray-50);
 	--bg-new-task: var(--gray-100);
 	--bg-dark: var(--gray-700);
+	--bg-toggle-active: var(--gray-850);
+	--bg-toggle-active-hover: #3b3d42;
 
 	/* Textos */
 	--text-title: var(--gray-800);
 	--text-primary: var(--gray-700);
 	--text-secondary: var(--gray-500);
+	--text-tertiary: var(--gray-400);
 	--text-dark: var(--gray-850);
 	--text-on-brand: #ffffff;
 
@@ -29,6 +32,8 @@
 	--border: var(--gray-300);
 	--border-light: var(--gray-200);
 	--border-focus: var(--brand-500);
+	--border-hover: var(--gray-400);
+	--border-active: var(--gray-500);
 
 	/* Radius */
 	--radius-xs: 2px;
@@ -68,6 +73,12 @@
 	--shadow-lg:
 		0 10px 15px -3px rgba(0, 0, 0, 0.1),
 		0 4px 6px -4px rgba(0, 0, 0, 0.1);
+	--shadow-surface:
+		0px 1px 1px rgba(30, 31, 33, 0.25),
+		0px 0px 1px rgba(30, 31, 33, 0.3);
+	--shadow-overlay:
+		0px 8px 12px rgba(30, 31, 33, 0.149),
+		0px 0px 1px rgba(30, 31, 33, 0.31);
 
 	/* color overlays */
 	--white-alpha-10: rgba(255, 255, 255, 0.1);
@@ -78,4 +89,5 @@
 	--black-alpha-20: rgba(0, 0, 0, 0.2);
 	--black-alpha-40: rgba(0, 0, 0, 0.4);
 	--black-alpha-60: rgba(0, 0, 0, 0.6);
+	--primary-alpha: rgba(147, 197, 253, 0.3);
 }
