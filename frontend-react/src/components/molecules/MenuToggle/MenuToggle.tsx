@@ -23,10 +23,14 @@ export const MenuToggle = ({
 	menu,
 	isOpen,
 	onClick,
+	className,
 	...props
 }: BoardMenuToggleProps) => {
 	return (
-		<div className={styles["container"]} {...props}>
+		<div
+			className={clsx(styles["container"], className)}
+			{...props}
+		>
 			<ButtonBase
 				className={clsx(
 					styles["toggle"],
