@@ -34,10 +34,8 @@ export const Menu = ({
 				options: [
 					{
 						text: "Añadir tarjeta",
-						action: () => {
-							onSelectCreateTask();
-							closeMenu();
-						},
+						action: onSelectCreateTask,
+						closeOnSelect: true,
 					},
 				],
 			},
@@ -61,7 +59,7 @@ export const Menu = ({
 			bottomClass={styles["popoverLocation"]}
 			ignoreElements={[toggleRef]}
 		>
-			<OptionsMenu options={options}>
+			<OptionsMenu options={options} onClose={closeMenu}>
 				<MenuHeader title="Acciones" onClose={closeMenu} />
 			</OptionsMenu>
 		</Popover>
