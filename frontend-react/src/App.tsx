@@ -25,7 +25,7 @@ function App() {
 					/>
 
 					<Route
-						path="/"
+						index
 						element={<Navigate to="/dashboard" />}
 					/>
 
