@@ -8,6 +8,7 @@ type Option = {
 	text: string;
 	action: () => void;
 	disabled?: boolean;
+	closeOnSelect?: boolean;
 };
 
 type OptionGroup = {
@@ -19,14 +20,21 @@ export type Options = Array<OptionGroup>;
 
 export interface OptionsMenuProps extends PropsWithChildren {
 	options: Options;
+	onClose: () => void;
 	className?: string | undefined;
 }
 
 export const OptionsMenu = ({
 	options: actions,
+	onClose,
 	className,
 	children,
 }: OptionsMenuProps) => {
+	function handleClick(option: Option) {
+		option.action();
+		if (option.closeOnSelect) onClose();
+	}
+
 	return (
 		<div
 			className={clsx(
@@ -54,7 +62,7 @@ export const OptionsMenu = ({
 								{options.map((option, i) => (
 									<ButtonBase
 										className={styles["option"]}
-										onClick={option.action}
+										onClick={() => handleClick(option)}
 										disabled={option.disabled}
 										key={i}
 									>
