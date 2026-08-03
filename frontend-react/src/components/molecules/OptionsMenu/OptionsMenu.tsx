@@ -6,7 +6,7 @@ import { ButtonBase } from "@atoms/ButtonBase/ButtonBase";
 
 type Option = {
 	text: string;
-	action: () => void;
+	action: () => void | Promise<void>;
 	disabled?: boolean;
 	closeOnSelect?: boolean;
 };
@@ -30,8 +30,8 @@ export const OptionsMenu = ({
 	className,
 	children,
 }: OptionsMenuProps) => {
-	function handleClick(option: Option) {
-		option.action();
+	async function handleClick(option: Option) {
+		await option.action();
 		if (option.closeOnSelect) onClose();
 	}
 
