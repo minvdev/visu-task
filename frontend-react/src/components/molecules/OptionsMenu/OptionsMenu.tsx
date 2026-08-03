@@ -20,10 +20,17 @@ export type Options = Array<OptionGroup>;
 
 export interface OptionsMenuProps extends PropsWithChildren {
 	options: Options;
-	onClose: () => void;
+	onClose?: () => void;
 	className?: string | undefined;
 }
 
+/**
+ * Displays a grouped list of selectable options.
+ *
+ * @remarks
+ * If any option has `closeOnSelect` set to `true`, the `onClose`
+ * prop should be provided so the menu can be closed after the action completes.
+ */
 export const OptionsMenu = ({
 	options: actions,
 	onClose,
@@ -32,7 +39,7 @@ export const OptionsMenu = ({
 }: OptionsMenuProps) => {
 	async function handleClick(option: Option) {
 		await option.action();
-		if (option.closeOnSelect) onClose();
+		if (option.closeOnSelect) onClose?.();
 	}
 
 	return (
