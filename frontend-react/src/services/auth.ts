@@ -15,9 +15,9 @@ export const authService = {
 	register: (body: RegisterBody) =>
 		client.POST("/auth/register", { body }),
 
-	login: (body: LoginBody) =>
+	login: (body: Omit<LoginBody, "scope">) =>
 		client.POST("/auth/login", {
-			body,
+			body: { ...body, scope: "" },
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
