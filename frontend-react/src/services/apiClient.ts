@@ -21,12 +21,11 @@ const authMiddleware: Middleware = {
 		if (response.status === 401) {
 			window.dispatchEvent(new Event("auth:expired"));
 		}
-		return response;
+		return;
 	},
 
 	async onError({ error }) {
-		console.error("API error:", error);
-		throw error;
+		return new Error("API error", { cause: error });
 	},
 };
 
