@@ -1,5 +1,3 @@
-import styles from "./LoginPage.module.css";
-
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
@@ -36,12 +34,10 @@ export const LoginPage = () => {
 	if (user) return <Navigate to="/" />;
 
 	return (
-		<div className={styles["pageContainer"]}>
-			<LoginForm
-				onSubmit={handleSubmit}
-				isLoading={isLoading}
-				error={error}
-			></LoginForm>
-		</div>
+		<LoginForm
+			onSubmit={handleSubmit}
+			isLoading={isLoading}
+			error={error}
+		/>
 	);
 };

@@ -6,7 +6,9 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext/AuthProvider";
 
+import { AuthLayout } from "@components/templates/AuthLayout/AuthLayout";
 import { MainLayout } from "@components/templates/MainLayout/MainLayout";
+
 import { LoginPage } from "@pages/LoginPage/LoginPage";
 import { RegisterPage } from "@pages/RegisterPage/RegisterPage";
 import { ProtectedRoute } from "@components/utility/ProtectedRoute";
@@ -19,7 +21,9 @@ function App() {
 			<AuthProvider>
 				<Routes>
 					{/* Public routes */}
-					<Route path="/login" element={<LoginPage />} />
+					<Route element={<AuthLayout />}>
+						<Route path="/login" element={<LoginPage />} />
+					</Route>
 					<Route
 						path="/register"
 						element={<RegisterPage />}
