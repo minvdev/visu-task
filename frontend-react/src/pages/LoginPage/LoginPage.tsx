@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
 
-import { LoginForm } from "@organisms/LoginForm/LoginForm";
+import { LoginForm } from "./components/LoginForm/LoginForm";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
