@@ -7,7 +7,7 @@ import {
 	type CSSProperties,
 } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@hooks/useAuth";
+import { useAuth } from "@/context/AuthContext/AuthProvider";
 
 import { Heading } from "@atoms/Heading/Heading";
 import { Input } from "@atoms/Input/Input";
