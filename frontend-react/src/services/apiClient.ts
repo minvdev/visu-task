@@ -19,9 +19,7 @@ const authMiddleware: Middleware = {
 			return;
 		}
 		if (response.status === 401) {
-			localStorage.removeItem("token");
-			window.location.href = "/";
-			throw new Error("Sesión expirada");
+			window.dispatchEvent(new Event("auth:expired"));
 		}
 		return response;
 	},
