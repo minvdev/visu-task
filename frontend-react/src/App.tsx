@@ -18,8 +18,8 @@ function App() {
 		<BrowserRouter>
 			<AuthProvider>
 				<Routes>
+					{/* Public routes */}
 					<Route path="/login" element={<LoginPage />} />
-
 					<Route
 						path="/register"
 						element={<RegisterPage />}
@@ -27,9 +27,10 @@ function App() {
 
 					<Route
 						index
-						element={<Navigate to="/dashboard" />}
+						element={<Navigate to="/dashboard" replace />}
 					/>
 
+					{/* Protected routes */}
 					<Route
 						element={
 							<ProtectedRoute>
@@ -41,7 +42,6 @@ function App() {
 							path="/dashboard"
 							element={<DashboardPage />}
 						/>
-
 						<Route
 							path="/boards/:boardId"
 							element={<BoardPage />}
