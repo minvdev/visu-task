@@ -2,14 +2,13 @@ import styles from "./LoginPage.module.css";
 
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { useAuth } from "@hooks/useAuth";
-import { authService } from "@services/auth";
+import { useAuth } from "@/context/AuthContext/AuthProvider";
 
 import { LoginForm } from "@organisms/LoginForm/LoginForm";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
-	const { login, isAuthenticated } = useAuth();
+	const { login, user } = useAuth();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -21,23 +20,20 @@ export const LoginPage = () => {
 		setIsLoading(true);
 		setError(null);
 
-		const { data, error } = await authService.login({
-			username: credentials.username,
-			password: credentials.password,
-		});
-
-		if (error) {
+		try {
+			await login(
+				credentials.username,
+				credentials.password,
+			);
+			navigate("/dashboard");
+		} catch (error) {
 			setError("Usuario o contraseña incorrectos");
+		} finally {
 			setIsLoading(false);
-			return;
 		}
-
-		await login(data.access_token);
-		navigate("/dashboard");
-		setIsLoading(false);
 	};
 
-	if (isAuthenticated) return <Navigate to="/" />;
+	if (user) return <Navigate to="/" />;
 
 	return (
 		<div className={styles["pageContainer"]}>
