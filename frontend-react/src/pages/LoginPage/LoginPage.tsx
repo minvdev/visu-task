@@ -1,19 +1,23 @@
 import styles from "./LoginPage.module.css";
-import { LoginForm } from "../../components/organisms/LoginForm/LoginForm";
-import { authService } from "../../services/auth";
+
 import { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "@hooks/useAuth";
+import { authService } from "@services/auth";
+
+import { LoginForm } from "@organisms/LoginForm/LoginForm";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
 	const { login, isAuthenticated } = useAuth();
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<string | null>(null);
 
-	const handleSubmit = async (credentials) => {
+	const handleSubmit = async (credentials: {
+		username: string;
+		password: string;
+	}) => {
 		setIsLoading(true);
 		setError(null);
 
@@ -36,7 +40,7 @@ export const LoginPage = () => {
 	if (isAuthenticated) return <Navigate to="/" />;
 
 	return (
-		<div className={styles.pageContainer}>
+		<div className={styles["pageContainer"]}>
 			<LoginForm
 				onSubmit={handleSubmit}
 				isLoading={isLoading}
