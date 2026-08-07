@@ -1,4 +1,3 @@
-import styles from "./FormField.module.css";
 import { Label } from "@atoms/Label/Label";
 
 import {
@@ -23,15 +22,11 @@ export const FormField = ({
 }: FormFieldProps) => {
 	return (
 		<div className={className}>
-			<Label htmlFor={htmlFor} className={styles["label"]}>
-				{label}
-			</Label>
+			<Label htmlFor={htmlFor}>{label}</Label>
 
-			<div className={styles["control"]}>{children}</div>
+			{children}
 
-			{error && (
-				<span className={styles["error"]}>{error}</span>
-			)}
+			{error && <span>{error}</span>}
 		</div>
 	);
 };
