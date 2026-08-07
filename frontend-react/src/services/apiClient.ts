@@ -23,10 +23,6 @@ const authMiddleware: Middleware = {
 		}
 		return;
 	},
-
-	async onError({ error }) {
-		return new Error("API error", { cause: error });
-	},
 };
 
 export const client = createClient<paths>({
