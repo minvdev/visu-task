@@ -8,8 +8,8 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 
-import { Heading } from "@atoms/Heading/Heading";
-import { Input } from "@atoms/Input/Input";
+import { Heading } from "@atoms/HeadingV2/Heading";
+import { Input } from "@atoms/InputV2/Input";
 import { FormField } from "@molecules/FormField/FormField";
 import { Button } from "@atoms/Button/Button";
 
