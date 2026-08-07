@@ -74,55 +74,59 @@ export const RegisterForm = ({
 				</p>
 			</div>
 
-			{error && (
-				<div className={styles["errorAlert"]}>{error}</div>
-			)}
+			<main className={styles["main"]}>
+				{error && (
+					<div className={styles["errorAlert"]}>
+						{error}
+					</div>
+				)}
 
-			<div className={styles["fieldsContainer"]}>
-				<FormField label="Email" htmlFor="email">
-					<Input
-						id="email"
-						name="email"
-						placeholder="Introduce tu email"
-						value={formData.email}
-						onChange={handleChange}
-						required
-						autoFocus
-					/>
-				</FormField>
+				<div className={styles["fieldsContainer"]}>
+					<FormField label="Email" htmlFor="email">
+						<Input
+							id="email"
+							name="email"
+							placeholder="Introduce tu email"
+							value={formData.email}
+							onChange={handleChange}
+							required
+							autoFocus
+						/>
+					</FormField>
 
-				<FormField label="Usuario" htmlFor="username">
-					<Input
-						id="username"
-						name="username"
-						placeholder="Introduce tu nombre de usuario"
-						value={formData.username}
-						onChange={handleChange}
-						required
-					/>
-				</FormField>
+					<FormField label="Usuario" htmlFor="username">
+						<Input
+							id="username"
+							name="username"
+							placeholder="Introduce tu nombre de usuario"
+							value={formData.username}
+							onChange={handleChange}
+							required
+						/>
+					</FormField>
 
-				<FormField label="Contraseña" htmlFor="password">
-					<Input
-						id="password"
-						name="password"
-						placeholder="••••••••"
-						value={formData.password}
-						onChange={handleChange}
-						required
-					/>
-				</FormField>
-			</div>
+					<FormField label="Contraseña" htmlFor="password">
+						<Input
+							id="password"
+							name="password"
+							placeholder="••••••••"
+							value={formData.password}
+							onChange={handleChange}
+							required
+						/>
+					</FormField>
+				</div>
 
-			<div className={styles["actions"]}>
-				<Button
-					type="submit"
-					disabled={isLoading}
-					className={styles["submitBtn"]}
-				>
-					{isLoading ? "Entrando..." : "Regístrate"}
-				</Button>
-			</div>
+				<div className={styles["actions"]}>
+					<Button
+						type="submit"
+						disabled={isLoading}
+						className={styles["submitBtn"]}
+					>
+						{isLoading ? "Entrando..." : "Regístrate"}
+					</Button>
+				</div>
+			</main>
 		</form>
 	);
 };

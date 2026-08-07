@@ -1,15 +1,7 @@
 .form {
-	padding: var(--space-8);
-	background-color: #fff;
-	border-radius: var(--radius-xl);
-	box-shadow: var(--shadow-lg);
-	max-width: 400px;
-}
-
-@media (max-width: 799px), (min-width: 600px) {
-	.form {
-		width: 80%;
-	}
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .header {
@@ -17,8 +9,10 @@
 	margin-bottom: 1rem;
 }
 
-.noMargin {
-	margin: 0;
+.main {
+	flex: 1;
+	overflow-y: auto;
+	padding: 0 2px; /* Avoid the input outline to be hidden */
 }
 
 .errorAlert {
