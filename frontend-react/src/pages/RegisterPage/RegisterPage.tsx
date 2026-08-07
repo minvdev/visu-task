@@ -1,5 +1,3 @@
-import styles from "./RegisterPage.module.css";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "@services/auth";
@@ -40,12 +38,10 @@ export const RegisterPage = () => {
 	};
 
 	return (
-		<div className={styles["pageContainer"]}>
-			<RegisterForm
-				onSubmit={handleSubmit}
-				isLoading={isLoading}
-				error={error}
-			></RegisterForm>
-		</div>
+		<RegisterForm
+			onSubmit={handleSubmit}
+			isLoading={isLoading}
+			error={error}
+		/>
 	);
 };

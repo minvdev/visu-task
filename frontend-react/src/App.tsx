@@ -28,11 +28,11 @@ function App() {
 								path="/login"
 								element={<LoginPage />}
 							/>
+							<Route
+								path="/register"
+								element={<RegisterPage />}
+							/>
 						</Route>
-						<Route
-							path="/register"
-							element={<RegisterPage />}
-						/>
 
 						<Route
 							index
