@@ -1,6 +1,3 @@
-import { components } from "@/types/open-api-schema";
-import { authService } from "@services/auth";
-import { userService } from "@services/user";
 import {
 	createContext,
 	useContext,
@@ -8,6 +5,11 @@ import {
 	useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "@services/auth";
+import { userService } from "@services/user";
+import { AuthError } from "./AuthErrors";
+
+import { type components } from "@/types/open-api-schema";
 type User = components["schemas"]["User"];
 
 interface AuthContextType {
@@ -47,19 +49,24 @@ export function AuthProvider({
 			password,
 		});
 
-		if (error || !data)
-			throw error || new Error("Failed to login");
+		if (error || !data) {
+			throw new AuthError(
+				typeof error?.detail === "string"
+					? error.detail // HTTP error API message
+					: "Failed to login. Try again",
+			);
+		}
 
 		localStorage.setItem("token", data.access_token);
 
-		const { data: userData, error: userError } =
-			await userService.getMe();
+		const { data: userData } = await userService.getMe();
 
-		if (userError || !userData)
-			throw (
-				userError ||
-				new Error("Failed to get user in order to login")
-			);
+		if (!userData) {
+			localStorage.removeItem("token");
+			throw new AuthError("Failed to login. Try again", {
+				cause: "Invalid token",
+			});
+		}
 
 		setUser(userData);
 	};
@@ -74,32 +81,54 @@ export function AuthProvider({
 		email: string,
 		password: string,
 	) => {
-		const { data, error } = await authService.register({
-			username,
-			email,
-			password,
-		});
+		const { data: registerData, error: registerError } =
+			await authService.register({
+				username,
+				email,
+				password,
+			});
 
-		if (error || !data)
-			throw error || new Error("Failed to register");
+		if (registerError || !registerData) {
+			throw new AuthError(
+				typeof registerError?.detail === "string"
+					? registerError.detail // HTTP error API message
+					: "Failed to register. Try again",
+			);
+		}
 
-		await login(username, password);
+		const { data: loginData, error: loginError } =
+			await authService.login({
+				username,
+				password,
+			});
+
+		if (loginError || !loginData) {
+			throw new AuthError(
+				typeof loginError?.detail === "string"
+					? loginError.detail // HTTP error API message
+					: "Failed to login. Try again",
+			);
+		}
+
+		localStorage.setItem("token", loginData.access_token);
+		setUser(registerData);
 	};
 
 	const checkAuth = async () => {
 		const token = localStorage.getItem("token");
 		if (token) {
-			const { data, error } = await userService.getMe();
+			try {
+				const { data } = await userService.getMe();
 
-			if (error || !data) {
-				console.error(
-					"Authorization checking failed: ",
-					error,
-				);
-				localStorage.removeItem("token");
+				if (!data) {
+					localStorage.removeItem("token");
+					throw new AuthError("Session expired");
+				}
+
+				setUser(data);
+			} catch (error) {
+				console.error(error);
 			}
-
-			if (data) setUser(data);
 		}
 		setIsLoading(false);
 	};
