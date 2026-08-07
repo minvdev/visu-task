@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "@services/auth";
 
-import { RegisterForm } from "@organisms/RegisterForm/RegisterForm";
+import { RegisterForm } from "./components/RegisterForm/RegisterForm";
 
 export const RegisterPage = () => {
 	const navigate = useNavigate();
