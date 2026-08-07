@@ -6,7 +6,9 @@ import {
 	type SubmitEvent,
 	useState,
 } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext/AuthProvider";
+import { AuthError } from "@/context/AuthContext/AuthErrors";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
@@ -15,47 +17,58 @@ import { Button } from "@atoms/Button/Button";
 
 export interface LoginFormProps extends Omit<
 	ComponentPropsWithRef<"form">,
-	"onSubmit"
-> {
-	onSubmit: (data: FormData) => void;
-	isLoading: boolean;
-	error: string | null;
-}
+	"onSubmit" | "className"
+> {}
 
 type FormData = {
 	username: string;
 	password: string;
 };
 
-export const LoginForm = ({
-	onSubmit,
-	isLoading,
-	error,
-}: LoginFormProps) => {
+export const LoginForm = ({ ...props }: LoginFormProps) => {
+	const navigate = useNavigate();
+	const { login } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
 	const [formData, setFormData] = useState<FormData>({
 		username: "",
 		password: "",
 	});
+	const [error, setError] = useState<string | null>(null);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
 	) => {
 		const { name, value } = event.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
+		if (error) setError(null);
 	};
 
-	const handleSubmit = (
+	const handleSubmit = async (
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
-		if (isLoading) return;
-		onSubmit(formData);
+		try {
+			setIsLoading(true);
+
+			await login(formData.username, formData.password);
+			navigate("/dashboard");
+		} catch (error) {
+			if (error instanceof AuthError) {
+				setError(error.message);
+			} else {
+				setError("Failed to login. Try again.");
+			}
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
 		<form
 			className={styles["form"]}
 			onSubmit={handleSubmit}
+			{...props}
 		>
 			<div className={styles["header"]}>
 				<Heading level={2} className={styles["noMargin"]}>
