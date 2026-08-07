@@ -1,8 +1,10 @@
 import styles from "./RegisterPage.module.css";
-import { RegisterForm } from "../../components/organisms/RegisterForm/RegisterForm";
-import { authService } from "../../services/auth";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "@services/auth";
+
+import { RegisterForm } from "@organisms/RegisterForm/RegisterForm";
 
 export const RegisterPage = () => {
 	const navigate = useNavigate();
@@ -10,7 +12,11 @@ export const RegisterPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 
-	const handleSubmit = async (credentials) => {
+	const handleSubmit = async (credentials: {
+		username: string;
+		email: string;
+		password: string;
+	}) => {
 		setIsLoading(true);
 		setError(null);
 		const { username, email, password } = credentials;
@@ -34,7 +40,7 @@ export const RegisterPage = () => {
 	};
 
 	return (
-		<div className={styles.pageContainer}>
+		<div className={styles["pageContainer"]}>
 			<RegisterForm
 				onSubmit={handleSubmit}
 				isLoading={isLoading}
