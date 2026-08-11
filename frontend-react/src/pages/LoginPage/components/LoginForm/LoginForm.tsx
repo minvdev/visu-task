@@ -12,6 +12,7 @@ import { AuthError } from "@/context/AuthContext/AuthErrors";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
+import { Error } from "@atoms/Error/Error";
 import { FormField } from "@molecules/FormField/FormField";
 import { Button } from "@atoms/Button/Button";
 
@@ -87,9 +88,10 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 
 			<main className={styles["main"]}>
 				{error && (
-					<div className={styles["errorAlert"]}>
-						{error}
-					</div>
+					<Error
+						className={styles["errorAlert"]}
+						message={error}
+					/>
 				)}
 
 				<div className={styles["fieldsContainer"]}>
