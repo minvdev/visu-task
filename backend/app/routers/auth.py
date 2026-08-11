@@ -75,7 +75,11 @@ def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/login", response_model=token_schema)
+@router.post("/login", response_model=token_schema,
+             responses={401: {
+                 "model": HTTPError,
+                 "description": "Unauthorized: Incorrect username or password"}
+             })
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """
     Authenticates the user and returns a JWT.
