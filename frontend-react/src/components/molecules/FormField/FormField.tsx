@@ -1,16 +1,14 @@
+import styles from "./FormField.module.css";
+
 import { Label } from "@atoms/Label/Label";
+import { Error } from "@components/atoms/Error/Error";
 
-import {
-	type ComponentPropsWithoutRef,
-	type ReactNode,
-} from "react";
+import { type ComponentPropsWithRef } from "react";
 
-export interface FormFieldProps extends ComponentPropsWithoutRef<"div"> {
+export interface FormFieldProps extends ComponentPropsWithRef<"div"> {
 	label: string;
 	htmlFor?: string | undefined;
 	error?: string | undefined;
-	children?: ReactNode;
-	className?: string | undefined;
 }
 
 export const FormField = ({
@@ -19,14 +17,20 @@ export const FormField = ({
 	error,
 	children,
 	className,
+	...props
 }: FormFieldProps) => {
 	return (
-		<div className={className}>
+		<div className={className} {...props}>
 			<Label htmlFor={htmlFor}>{label}</Label>
 
 			{children}
 
-			{error && <span>{error}</span>}
+			{error && (
+				<Error
+					message={error}
+					className={styles["error"]}
+				/>
+			)}
 		</div>
 	);
 };
