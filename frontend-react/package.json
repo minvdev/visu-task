@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "types": "tsc --noEmit",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "openapi-generate": "openapi-typescript http://127.0.0.1:8080/openapi.json --output src/types/open-api-schema.d.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
