@@ -6,7 +6,9 @@ import {
 	type SubmitEvent,
 	useState,
 } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext/AuthProvider";
+import { AuthError } from "@/context/AuthContext/AuthErrors";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
@@ -16,12 +18,8 @@ import { Error } from "@components/atoms/Error/Error";
 
 export interface RegisterFormProps extends Omit<
 	ComponentPropsWithRef<"form">,
-	"onSubmit"
-> {
-	onSubmit: (data: FormData) => void;
-	isLoading: boolean;
-	error: string | null;
-}
+	"onSubmit" | "className"
+> {}
 
 type FormData = {
 	username: string;
@@ -30,35 +28,56 @@ type FormData = {
 };
 
 export const RegisterForm = ({
-	onSubmit,
-	isLoading,
-	error,
+	...props
 }: RegisterFormProps) => {
-	const [formData, setFormData] = useState({
+	const navigate = useNavigate();
+	const { register } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
+	const [formData, setFormData] = useState<FormData>({
 		email: "",
 		username: "",
 		password: "",
 	});
+	const [error, setError] = useState<string | null>(null);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
 	) => {
 		const { name, value } = event.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
+		if (error) setError(null);
 	};
 
-	const handleSubmit = (
+	const handleSubmit = async (
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
-		if (isLoading) return;
-		onSubmit(formData);
+		try {
+			setIsLoading(true);
+
+			await register(
+				formData.username,
+				formData.email,
+				formData.password,
+			);
+			navigate("/dashboard");
+		} catch (error) {
+			if (error instanceof AuthError) {
+				setError(error.message);
+			} else {
+				setError("Failed to login. Try again.");
+			}
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
 		<form
 			className={styles["form"]}
 			onSubmit={handleSubmit}
+			{...props}
 		>
 			<div className={styles["header"]}>
 				<Heading level={2} className={styles["noMargin"]}>
