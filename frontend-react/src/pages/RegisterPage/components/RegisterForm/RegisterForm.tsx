@@ -12,6 +12,7 @@ import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
 import { FormField } from "@molecules/FormField/FormField";
 import { Button } from "@atoms/Button/Button";
+import { Error } from "@components/atoms/Error/Error";
 
 export interface RegisterFormProps extends Omit<
 	ComponentPropsWithRef<"form">,
@@ -76,9 +77,10 @@ export const RegisterForm = ({
 
 			<main className={styles["main"]}>
 				{error && (
-					<div className={styles["errorAlert"]}>
-						{error}
-					</div>
+					<Error
+						message={error}
+						className={styles["errorAlert"]}
+					/>
 				)}
 
 				<div className={styles["fieldsContainer"]}>
