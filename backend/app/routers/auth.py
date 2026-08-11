@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from ..schemas.user import User as user_schema, UserCreate as user_create_schema
 from ..schemas.token import Token as token_schema
+from ..schemas import HTTPError
 from ..db.database import get_db
 from .. import security
 from ..models.user import User
@@ -15,7 +16,11 @@ router = APIRouter(
 )
 
 
-@router.post("/register", response_model=user_schema, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=user_schema, status_code=status.HTTP_201_CREATED,
+             responses={400: {
+                 "model": HTTPError,
+                 "description": "Username or email are already registered"}
+             })
 def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     """Create a new user in the database.
     - Validates that the email does not exist.
