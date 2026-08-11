@@ -21,3 +21,5 @@ from .card import Card
 from .tag import TagCreate
 from .tag import TagUpdate
 from .tag import Tag
+
+from .error import HTTPError
