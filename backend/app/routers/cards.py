@@ -144,7 +144,9 @@ def move_card(
     return card
 
 
-@router.post("/{card_id}/tags/{tag_id}", response_model=schemas.Card, status_code=status.HTTP_201_CREATED)
+@router.post("/{card_id}/tags/{tag_id}", response_model=schemas.Card, status_code=status.HTTP_201_CREATED, responses={
+    404: {"model": schemas.HTTPError, "description": "Card or Tag not found"},
+})
 def attach_tag(
     card_id: int,
     tag_id: int,
@@ -187,7 +189,9 @@ def attach_tag(
     return card
 
 
-@router.delete("/{card_id}/tags/{tag_id}", response_model=schemas.Card)
+@router.delete("/{card_id}/tags/{tag_id}", response_model=schemas.Card, responses={
+    404: {"model": schemas.HTTPError, "description": "Card or Tag not found"},
+})
 def detach_tag(
     card_id: int,
     tag_id: int,
