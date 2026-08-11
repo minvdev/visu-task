@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import auth, boards, inbox, cards, users
+from .schemas import HTTPError
 
 
 app = FastAPI(
@@ -17,8 +18,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+unauthorized_response = {
+    "model": HTTPError,
+    "description": "Authentication credentials are invalid or missing.",
+}
+
 app.include_router(auth.router)
-app.include_router(boards.router)
-app.include_router(inbox.router)
-app.include_router(cards.router)
-app.include_router(users.router)
+app.include_router(boards.router, responses={401: unauthorized_response})
+app.include_router(inbox.router, responses={401: unauthorized_response})
+app.include_router(cards.router, responses={401: unauthorized_response})
+app.include_router(users.router, responses={401: unauthorized_response})

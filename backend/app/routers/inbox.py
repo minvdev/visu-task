@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=schemas.Inbox)
+@router.get("", response_model=schemas.Inbox, responses={404: {"model": schemas.HTTPError}})
 def get_inbox(
     db: Session = Depends(get_db),
     current_user: User = CurrentUserDep

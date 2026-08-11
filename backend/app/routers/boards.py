@@ -22,19 +22,13 @@ def get_board_or_404(
 ) -> Board:
     """
     Search for the board of the given id and verifies if the current user is the owner of the board.
-    Raise 404 if not found.
-    Raise 403 if not the owner.
+    Raise 404 if not found or not the owner.
     """
     board = db.query(Board).filter(Board.id == board_id).first()
-    if not board:
+    if not board or board.user_id != current_user.id:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
             detail=f"Board with id {board_id} not found."
-        )
-    if board.user_id != current_user.id:
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            detail=f"You do not have permission to modify this board."
         )
 
     return board
@@ -141,7 +135,9 @@ def get_card_or_404(
 
 
 # --- CRUD ROUTES FOR BOARDS ---
-@router.get("/{board_id}", response_model=schemas.Board)
+@router.get("/{board_id}", response_model=schemas.Board, responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+})
 def get_board(
     board_id: int,
     db: Session = Depends(get_db),
@@ -194,7 +190,10 @@ def get_user_boards(
     return boards
 
 
-@router.patch("/{board_id}", response_model=schemas.Board)
+@router.patch("/{board_id}", response_model=schemas.Board, responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to modify the inbox"},
+})
 def update_board(
     board_id: int,
     board_data: schemas.BoardUpdate,
@@ -226,7 +225,10 @@ def update_board(
     return board
 
 
-@router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to delete the inbox"},
+})
 def delete_board(
     board_id: int,
     db: Session = Depends(get_db),
@@ -252,7 +254,9 @@ def delete_board(
 
 
 # --- CRUD ROUTES FOR LISTS ---
-@router.get("/{board_id}/lists/{list_id}", response_model=schemas.List)
+@router.get("/{board_id}/lists/{list_id}", response_model=schemas.List, responses={
+    404: {"model": schemas.HTTPError, "description": "List not found"},
+})
 def get_list(
     board_id: int,
     list_id: int,
@@ -266,7 +270,10 @@ def get_list(
     return get_list_or_404(board_id, list_id, db, current_user)
 
 
-@router.post("/{board_id}/lists", response_model=schemas.List, status_code=status.HTTP_201_CREATED)
+@router.post("/{board_id}/lists", response_model=schemas.List, status_code=status.HTTP_201_CREATED, responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to create list in the Inbox"},
+})
 def create_list(
     board_id: int,
     list_data: schemas.ListCreate,
@@ -304,7 +311,9 @@ def create_list(
     return new_list
 
 
-@router.get("/{board_id}/lists", response_model=list[schemas.List])
+@router.get("/{board_id}/lists", response_model=list[schemas.List], responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+})
 def get_board_lists(
     board_id: int,
     db: Session = Depends(get_db),
@@ -318,7 +327,10 @@ def get_board_lists(
     return board.lists
 
 
-@router.patch("/{board_id}/lists/{list_id}", response_model=schemas.List)
+@router.patch("/{board_id}/lists/{list_id}", response_model=schemas.List, responses={
+    404: {"model": schemas.HTTPError, "description": "List not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to modify inbox list"},
+})
 def update_list(
     board_id: int,
     list_id: int,
@@ -352,7 +364,10 @@ def update_list(
     return list_to_update
 
 
-@router.delete("/{board_id}/lists/{list_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{board_id}/lists/{list_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {"model": schemas.HTTPError, "description": "List not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to delete inbox list"},
+})
 def delete_list(
     board_id: int,
     list_id: int,
@@ -380,7 +395,9 @@ def delete_list(
 
 
 # --- CRUD ROUTES FOR CARDS ---
-@router.get("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card)
+@router.get("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card, responses={
+    404: {"model": schemas.HTTPError, "description": "Card not found"},
+})
 def get_card(
     board_id: int,
     list_id: int,
@@ -395,7 +412,10 @@ def get_card(
     return get_card_or_404(board_id, list_id, card_id, db, current_user)
 
 
-@router.post("/{board_id}/lists/{list_id}/cards", response_model=schemas.Card, status_code=status.HTTP_201_CREATED)
+@router.post("/{board_id}/lists/{list_id}/cards", response_model=schemas.Card,
+             status_code=status.HTTP_201_CREATED, responses={
+                 404: {"model": schemas.HTTPError, "description": "List not found"}
+             })
 def create_card(
     board_id: int,
     list_id: int,
@@ -428,7 +448,9 @@ def create_card(
     return new_card
 
 
-@router.get("/{board_id}/lists/{list_id}/cards", response_model=list[schemas.Card])
+@router.get("/{board_id}/lists/{list_id}/cards", response_model=list[schemas.Card], responses={
+    404: {"model": schemas.HTTPError, "description": "List not found"},
+})
 def get_list_cards(
     board_id: int,
     list_id: int,
@@ -443,7 +465,9 @@ def get_list_cards(
     return board_list.cards
 
 
-@router.patch("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card)
+@router.patch("/{board_id}/lists/{list_id}/cards/{card_id}", response_model=schemas.Card, responses={
+    404: {"model": schemas.HTTPError, "description": "Card not found"},
+})
 def update_card(
     board_id: int,
     list_id: int,
@@ -472,7 +496,9 @@ def update_card(
     return card_to_update
 
 
-@router.delete("/{board_id}/lists/{list_id}/cards/{card_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{board_id}/lists/{list_id}/cards/{card_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {"model": schemas.HTTPError, "description": "Card not found"},
+})
 def delete_card(
     board_id: int,
     list_id: int,
@@ -495,7 +521,9 @@ def delete_card(
 
 
 # --- CRUD ROUTES FOR TAGS ---
-@router.get("/{board_id}/tags/{tag_id}", response_model=schemas.Tag)
+@router.get("/{board_id}/tags/{tag_id}", response_model=schemas.Tag, responses={
+    404: {"model": schemas.HTTPError, "description": "Tag not found"},
+})
 def get_tag(
     board_id: int,
     tag_id: int,
@@ -509,7 +537,10 @@ def get_tag(
     return get_tag_or_404(board_id, tag_id, db, current_user)
 
 
-@router.post("/{board_id}/tags", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED)
+@router.post("/{board_id}/tags", response_model=schemas.Tag, status_code=status.HTTP_201_CREATED, responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+    403: {"model": schemas.HTTPError, "description": "Tryed to create tag in Inbox"},
+})
 def create_tag(
     board_id: int,
     tag_data: schemas.TagCreate,
@@ -540,7 +571,9 @@ def create_tag(
     return new_tag
 
 
-@router.get("/{board_id}/tags", response_model=list[schemas.Tag])
+@router.get("/{board_id}/tags", response_model=list[schemas.Tag], responses={
+    404: {"model": schemas.HTTPError, "description": "Board not found"},
+})
 def get_board_tags(
     board_id: int,
     db: Session = Depends(get_db),
@@ -554,7 +587,9 @@ def get_board_tags(
     return board.tags
 
 
-@router.patch("/{board_id}/tags/{tag_id}", response_model=schemas.Tag)
+@router.patch("/{board_id}/tags/{tag_id}", response_model=schemas.Tag, responses={
+    404: {"model": schemas.HTTPError, "description": "Tag not found"},
+})
 def update_tag(
     board_id: int,
     tag_id: int,
@@ -580,7 +615,9 @@ def update_tag(
     return tag_to_update
 
 
-@router.delete("/{board_id}/tags/{tag_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{board_id}/tags/{tag_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {"model": schemas.HTTPError, "description": "Tag not found"},
+})
 def delete_tag(
     board_id: int,
     tag_id: int,
