@@ -517,6 +517,11 @@ export interface components {
             /** Due Date */
             due_date?: string | null;
         };
+        /** HTTPError */
+        HTTPError: {
+            /** Detail */
+            detail: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -727,6 +732,15 @@ export interface operations {
                     "application/json": components["schemas"]["User"];
                 };
             };
+            /** @description Username or email are already registered */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -760,6 +774,15 @@ export interface operations {
                     "application/json": components["schemas"]["Token"];
                 };
             };
+            /** @description Unauthorized: Incorrect username or password */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -791,6 +814,24 @@ export interface operations {
                     "application/json": components["schemas"]["Board"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -819,6 +860,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to delete the inbox */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
             };
             /** @description Validation Error */
             422: {
@@ -855,6 +923,33 @@ export interface operations {
                     "application/json": components["schemas"]["Board"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to modify the inbox */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -884,6 +979,15 @@ export interface operations {
                     "application/json": components["schemas"]["Board"][];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
         };
     };
     create_board_boards_post: {
@@ -906,6 +1010,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Board"];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
             /** @description Validation Error */
@@ -940,6 +1053,24 @@ export interface operations {
                     "application/json": components["schemas"]["List"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -969,6 +1100,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to delete inbox list */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
             };
             /** @description Validation Error */
             422: {
@@ -1006,6 +1164,33 @@ export interface operations {
                     "application/json": components["schemas"]["List"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to modify inbox list */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1035,6 +1220,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["List"][];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
             /** @description Validation Error */
@@ -1072,6 +1275,33 @@ export interface operations {
                     "application/json": components["schemas"]["List"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to create list in the Inbox */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1105,6 +1335,24 @@ export interface operations {
                     "application/json": components["schemas"]["Card"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1135,6 +1383,24 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
             };
             /** @description Validation Error */
             422: {
@@ -1173,6 +1439,24 @@ export interface operations {
                     "application/json": components["schemas"]["Card"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1203,6 +1487,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Card"][];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
             /** @description Validation Error */
@@ -1241,6 +1543,24 @@ export interface operations {
                     "application/json": components["schemas"]["Card"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1273,6 +1593,24 @@ export interface operations {
                     "application/json": components["schemas"]["Tag"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tag not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1302,6 +1640,24 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tag not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
             };
             /** @description Validation Error */
             422: {
@@ -1339,6 +1695,24 @@ export interface operations {
                     "application/json": components["schemas"]["Tag"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tag not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1368,6 +1742,24 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Tag"][];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
             /** @description Validation Error */
@@ -1405,6 +1797,33 @@ export interface operations {
                     "application/json": components["schemas"]["Tag"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Tryed to create tag in Inbox */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1434,6 +1853,24 @@ export interface operations {
                     "application/json": components["schemas"]["Inbox"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
         };
     };
     move_card_cards__card_id__move_post: {
@@ -1458,6 +1895,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Card"];
+                };
+            };
+            /** @description Position out of the range */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Trying to move a card without owning the card or list */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card or List not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
             /** @description Validation Error */
@@ -1492,6 +1965,24 @@ export interface operations {
                     "application/json": components["schemas"]["Card"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card or Tag not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1524,6 +2015,24 @@ export interface operations {
                     "application/json": components["schemas"]["Card"];
                 };
             };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
+            /** @description Card or Tag not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1551,6 +2060,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Authentication credentials are invalid or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPError"];
                 };
             };
         };
