@@ -13,8 +13,8 @@ services:
     depends_on:
       - db
     
-    # volumes:
-    #   - .:/app
+    volumes:
+      - .:/app
     
     command: ./boot.sh
 
