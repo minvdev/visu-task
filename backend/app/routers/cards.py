@@ -13,7 +13,11 @@ router = APIRouter(
 )
 
 
-@router.post("/{card_id}/move", response_model=schemas.Card)
+@router.post("/{card_id}/move", response_model=schemas.Card, responses={
+    400: {"model": schemas.HTTPError, "description": "Position out of the range"},
+    403: {"model": schemas.HTTPError, "description": "Trying to move a card without owning the card or list"},
+    404: {"model": schemas.HTTPError, "description": "Card or List not found"},
+})
 def move_card(
     card_id: int,
     move_data: schemas.CardMove,
