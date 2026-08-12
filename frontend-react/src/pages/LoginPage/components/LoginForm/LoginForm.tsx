@@ -8,13 +8,13 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
-import { LoginFormError } from "@/types/auth";
+import type { LoginFormError } from "@/types/auth";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
 import { Error } from "@atoms/Error/Error";
-import { FormField } from "@molecules/FormField/FormField";
 import { Button } from "@atoms/Button/Button";
+import { FormField } from "@molecules/FormField/FormField";
 
 export interface LoginFormProps extends Omit<
 	ComponentPropsWithRef<"form">,
