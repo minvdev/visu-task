@@ -8,13 +8,13 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
-import { AuthError } from "@/context/AuthContext/AuthErrors";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
 import { FormField } from "@molecules/FormField/FormField";
 import { Button } from "@atoms/Button/Button";
 import { Error } from "@components/atoms/Error/Error";
+import { RegisterFormError } from "@/types/auth";
 
 export interface RegisterFormProps extends Omit<
 	ComponentPropsWithRef<"form">,
@@ -38,35 +38,48 @@ export const RegisterForm = ({
 		username: "",
 		password: "",
 	});
-	const [error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<RegisterFormError>({});
+	const [submitCount, setSubmitCount] = useState(0);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
 	) => {
 		const { name, value } = event.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
-		if (error) setError(null);
+		setError((prev) => ({
+			...prev,
+			general: undefined,
+			[name]: undefined,
+		}));
 	};
 
 	const handleSubmit = async (
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
+		setSubmitCount((prev) => prev + 1);
+		const hasErrors = Object.values(error).some(Boolean);
+		if (hasErrors) return;
+
 		try {
 			setIsLoading(true);
 
-			await register(
+			const result = await register(
 				formData.username,
 				formData.email,
 				formData.password,
 			);
+			if (!result.success) {
+				setError(result.error);
+				return;
+			}
+
 			navigate("/dashboard");
 		} catch (error) {
-			if (error instanceof AuthError) {
-				setError(error.message);
-			} else {
-				setError("Failed to login. Try again.");
-			}
+			setError((prev) => ({
+				...prev,
+				general: "Failed to register. Try again.",
+			}));
 			console.error(error);
 		} finally {
 			setIsLoading(false);
@@ -95,15 +108,21 @@ export const RegisterForm = ({
 			</div>
 
 			<main className={styles["main"]}>
-				{error && (
+				{error.general && (
 					<Error
-						message={error}
+						key={submitCount}
+						message={error.general}
 						className={styles["errorAlert"]}
 					/>
 				)}
 
 				<div className={styles["fieldsContainer"]}>
-					<FormField label="Email" htmlFor="email">
+					<FormField
+						label="Email"
+						htmlFor="email"
+						error={error.email}
+						errorKey={submitCount}
+					>
 						<Input
 							id="email"
 							name="email"
@@ -115,7 +134,12 @@ export const RegisterForm = ({
 						/>
 					</FormField>
 
-					<FormField label="Usuario" htmlFor="username">
+					<FormField
+						label="Usuario"
+						htmlFor="username"
+						error={error.username}
+						errorKey={submitCount}
+					>
 						<Input
 							id="username"
 							name="username"
@@ -126,7 +150,12 @@ export const RegisterForm = ({
 						/>
 					</FormField>
 
-					<FormField label="Contraseña" htmlFor="password">
+					<FormField
+						label="Contraseña"
+						htmlFor="password"
+						error={error.password}
+						errorKey={submitCount}
+					>
 						<Input
 							id="password"
 							name="password"

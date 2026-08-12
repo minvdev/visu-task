@@ -7,25 +7,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { authService } from "@services/auth";
 import { userService } from "@services/user";
-import { AuthError } from "./AuthErrors";
+import { parseAuthError } from "@/utils/parseAuthError";
 
-import { type components } from "@/types/open-api-schema";
-type User = components["schemas"]["User"];
-
-interface AuthContextType {
-	user: User | null;
-	login: (
-		username: string,
-		password: string,
-	) => Promise<void>;
-	logout: () => Promise<void>;
-	register: (
-		username: string,
-		email: string,
-		password: string,
-	) => Promise<void>;
-	isLoading: boolean;
-}
+import type {
+	User,
+	AuthContextType,
+	LoginResult,
+	RegisterResult,
+} from "@/types/auth";
 
 const AuthContext = createContext<
 	AuthContextType | undefined
@@ -43,32 +32,34 @@ export function AuthProvider({
 	const login = async (
 		username: string,
 		password: string,
-	) => {
-		const { data, error } = await authService.login({
-			username,
-			password,
-		});
+	): Promise<LoginResult> => {
+		const { data: loginData, error: loginError } =
+			await authService.login({
+				username,
+				password,
+			});
 
-		if (error || !data) {
-			throw new AuthError(
-				typeof error?.detail === "string"
-					? error.detail // HTTP error API message
-					: "Failed to login. Try again",
-			);
+		if (loginError) {
+			return {
+				success: false,
+				error: parseAuthError(loginError),
+			};
 		}
 
-		localStorage.setItem("token", data.access_token);
+		localStorage.setItem("token", loginData.access_token);
+		const { data: userData, error: userError } =
+			await userService.getMe();
 
-		const { data: userData } = await userService.getMe();
-
-		if (!userData) {
+		if (userError) {
 			localStorage.removeItem("token");
-			throw new AuthError("Failed to login. Try again", {
-				cause: "Invalid token",
-			});
+			return {
+				success: false,
+				error: parseAuthError(userError),
+			};
 		}
 
 		setUser(userData);
+		return { success: true };
 	};
 
 	const logout = async () => {
@@ -80,7 +71,7 @@ export function AuthProvider({
 		username: string,
 		email: string,
 		password: string,
-	) => {
+	): Promise<RegisterResult> => {
 		const { data: registerData, error: registerError } =
 			await authService.register({
 				username,
@@ -88,12 +79,11 @@ export function AuthProvider({
 				password,
 			});
 
-		if (registerError || !registerData) {
-			throw new AuthError(
-				typeof registerError?.detail === "string"
-					? registerError.detail // HTTP error API message
-					: "Failed to register. Try again",
-			);
+		if (registerError) {
+			return {
+				success: false,
+				error: parseAuthError(registerError),
+			};
 		}
 
 		const { data: loginData, error: loginError } =
@@ -102,27 +92,27 @@ export function AuthProvider({
 				password,
 			});
 
-		if (loginError || !loginData) {
-			throw new AuthError(
-				typeof loginError?.detail === "string"
-					? loginError.detail // HTTP error API message
-					: "Failed to login. Try again",
-			);
+		if (loginError) {
+			return {
+				success: false,
+				error: parseAuthError(loginError),
+			};
 		}
 
 		localStorage.setItem("token", loginData.access_token);
 		setUser(registerData);
+		return { success: true };
 	};
 
 	const checkAuth = async () => {
 		const token = localStorage.getItem("token");
 		if (token) {
 			try {
-				const { data } = await userService.getMe();
+				const { data, error } = await userService.getMe();
 
-				if (!data) {
+				if (error) {
 					localStorage.removeItem("token");
-					throw new AuthError("Session expired");
+					throw new Error("Session expired");
 				}
 
 				setUser(data);

@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
-import { AuthError } from "@/context/AuthContext/AuthErrors";
+import { LoginFormError } from "@/types/auth";
 
 import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/InputV2/Input";
@@ -34,31 +34,47 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 		username: "",
 		password: "",
 	});
-	const [error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<LoginFormError>({});
+	const [submitCount, setSubmitCount] = useState(0);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
 	) => {
 		const { name, value } = event.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
-		if (error) setError(null);
+		setError((prev) => ({
+			...prev,
+			general: undefined,
+			[name]: undefined,
+		}));
 	};
 
 	const handleSubmit = async (
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
+		setSubmitCount((prev) => prev + 1);
+		const hasErrors = Object.values(error).some(Boolean);
+		if (hasErrors) return;
+
 		try {
 			setIsLoading(true);
 
-			await login(formData.username, formData.password);
+			const result = await login(
+				formData.username,
+				formData.password,
+			);
+			if (!result.success) {
+				setError(result.error);
+				return;
+			}
+
 			navigate("/dashboard");
 		} catch (error) {
-			if (error instanceof AuthError) {
-				setError(error.message);
-			} else {
-				setError("Failed to login. Try again.");
-			}
+			setError((prev) => ({
+				...prev,
+				general: "Unexpected error. Try again.",
+			}));
 			console.error(error);
 		} finally {
 			setIsLoading(false);
@@ -87,10 +103,11 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 			</div>
 
 			<main className={styles["main"]}>
-				{error && (
+				{error.general && (
 					<Error
 						className={styles["errorAlert"]}
-						message={error}
+						message={error.general}
+						key={submitCount}
 					/>
 				)}
 
@@ -98,6 +115,8 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 					<FormField
 						label="Usuario o Email"
 						htmlFor="username"
+						error={error.username}
+						errorKey={submitCount}
 					>
 						<Input
 							id="username"
@@ -110,7 +129,12 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 						/>
 					</FormField>
 
-					<FormField label="Contraseña" htmlFor="password">
+					<FormField
+						label="Contraseña"
+						htmlFor="password"
+						error={error.password}
+						errorKey={submitCount}
+					>
 						<Input
 							id="password"
 							name="password"
