@@ -39,6 +39,7 @@ export const RegisterForm = ({
 		password: "",
 	});
 	const [error, setError] = useState<RegisterFormError>({});
+	const [submitCount, setSubmitCount] = useState(0);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
@@ -56,6 +57,8 @@ export const RegisterForm = ({
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
+		setSubmitCount((prev) => prev + 1);
+
 		try {
 			setIsLoading(true);
 
@@ -105,6 +108,7 @@ export const RegisterForm = ({
 			<main className={styles["main"]}>
 				{error.general && (
 					<Error
+						key={submitCount}
 						message={error.general}
 						className={styles["errorAlert"]}
 					/>
@@ -115,6 +119,7 @@ export const RegisterForm = ({
 						label="Email"
 						htmlFor="email"
 						error={error.email}
+						errorKey={submitCount}
 					>
 						<Input
 							id="email"
@@ -131,6 +136,7 @@ export const RegisterForm = ({
 						label="Usuario"
 						htmlFor="username"
 						error={error.username}
+						errorKey={submitCount}
 					>
 						<Input
 							id="username"
@@ -146,6 +152,7 @@ export const RegisterForm = ({
 						label="Contraseña"
 						htmlFor="password"
 						error={error.password}
+						errorKey={submitCount}
 					>
 						<Input
 							id="password"

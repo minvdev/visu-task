@@ -35,6 +35,7 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 		password: "",
 	});
 	const [error, setError] = useState<LoginFormError>({});
+	const [submitCount, setSubmitCount] = useState(0);
 
 	const handleChange = (
 		event: ChangeEvent<HTMLInputElement>,
@@ -52,6 +53,8 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 		e: SubmitEvent<HTMLFormElement>,
 	) => {
 		e.preventDefault();
+		setSubmitCount((prev) => prev + 1);
+
 		try {
 			setIsLoading(true);
 
@@ -102,6 +105,7 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 					<Error
 						className={styles["errorAlert"]}
 						message={error.general}
+						key={submitCount}
 					/>
 				)}
 
@@ -110,6 +114,7 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 						label="Usuario o Email"
 						htmlFor="username"
 						error={error.username}
+						errorKey={submitCount}
 					>
 						<Input
 							id="username"
@@ -126,6 +131,7 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 						label="Contraseña"
 						htmlFor="password"
 						error={error.password}
+						errorKey={submitCount}
 					>
 						<Input
 							id="password"
