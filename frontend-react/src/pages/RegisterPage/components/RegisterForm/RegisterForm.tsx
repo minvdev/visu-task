@@ -58,6 +58,8 @@ export const RegisterForm = ({
 	) => {
 		e.preventDefault();
 		setSubmitCount((prev) => prev + 1);
+		const hasErrors = Object.values(error).some(Boolean);
+		if (hasErrors) return;
 
 		try {
 			setIsLoading(true);

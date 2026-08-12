@@ -54,6 +54,8 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 	) => {
 		e.preventDefault();
 		setSubmitCount((prev) => prev + 1);
+		const hasErrors = Object.values(error).some(Boolean);
+		if (hasErrors) return;
 
 		try {
 			setIsLoading(true);
