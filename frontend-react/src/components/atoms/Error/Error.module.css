@@ -6,4 +6,19 @@
 	color: var(--danger-700);
 	font-size: var(--text-sm);
 	text-align: center;
+	animation: shake 400ms ease 100ms;
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		border-color: var(--danger-100);
+	}
+	25%,
+	75% {
+		border-color: var(--danger-500);
+	}
+	50% {
+		border-color: var(--danger-700);
+	}
 }
