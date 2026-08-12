@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "@services/auth";
 import { userService } from "@services/user";
 import { parseAuthError } from "@/utils/parseAuthError";
-import { AuthError } from "./AuthErrors";
 
 import type {
 	User,
@@ -109,11 +108,11 @@ export function AuthProvider({
 		const token = localStorage.getItem("token");
 		if (token) {
 			try {
-				const { data } = await userService.getMe();
+				const { data, error } = await userService.getMe();
 
-				if (!data) {
+				if (error) {
 					localStorage.removeItem("token");
-					throw new AuthError("Session expired");
+					throw new Error("Session expired");
 				}
 
 				setUser(data);
