@@ -9,23 +9,12 @@ import { authService } from "@services/auth";
 import { userService } from "@services/user";
 import { AuthError } from "./AuthErrors";
 
-import { type components } from "@/types/open-api-schema";
-type User = components["schemas"]["User"];
-
-interface AuthContextType {
-	user: User | null;
-	login: (
-		username: string,
-		password: string,
-	) => Promise<void>;
-	logout: () => Promise<void>;
-	register: (
-		username: string,
-		email: string,
-		password: string,
-	) => Promise<void>;
-	isLoading: boolean;
-}
+import type {
+	User,
+	AuthContextType,
+	LoginResult,
+	RegisterResult,
+} from "@/types/auth";
 
 const AuthContext = createContext<
 	AuthContextType | undefined
@@ -43,7 +32,7 @@ export function AuthProvider({
 	const login = async (
 		username: string,
 		password: string,
-	) => {
+	): Promise<LoginResult> => {
 		const { data, error } = await authService.login({
 			username,
 			password,
@@ -80,7 +69,7 @@ export function AuthProvider({
 		username: string,
 		email: string,
 		password: string,
-	) => {
+	): Promise<RegisterResult> => {
 		const { data: registerData, error: registerError } =
 			await authService.register({
 				username,
