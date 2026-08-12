@@ -35,6 +35,10 @@ export type ParsedAuthError =
 	| RegisterFormError
 	| LoginFormError;
 
-export type RegisterResult = void;
+export type RegisterResult =
+	| { success: true }
+	| { success: false; error: RegisterFormError };
 
-export type LoginResult = void;
+export type LoginResult =
+	| { success: true }
+	| { success: false; error: LoginFormError };

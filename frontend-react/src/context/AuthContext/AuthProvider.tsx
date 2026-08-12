@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { authService } from "@services/auth";
 import { userService } from "@services/user";
+import { parseAuthError } from "@/utils/parseAuthError";
 import { AuthError } from "./AuthErrors";
 
 import type {
@@ -33,31 +34,33 @@ export function AuthProvider({
 		username: string,
 		password: string,
 	): Promise<LoginResult> => {
-		const { data, error } = await authService.login({
-			username,
-			password,
-		});
+		const { data: loginData, error: loginError } =
+			await authService.login({
+				username,
+				password,
+			});
 
-		if (error || !data) {
-			throw new AuthError(
-				typeof error?.detail === "string"
-					? error.detail // HTTP error API message
-					: "Failed to login. Try again",
-			);
+		if (loginError) {
+			return {
+				success: false,
+				error: parseAuthError(loginError),
+			};
 		}
 
-		localStorage.setItem("token", data.access_token);
+		localStorage.setItem("token", loginData.access_token);
+		const { data: userData, error: userError } =
+			await userService.getMe();
 
-		const { data: userData } = await userService.getMe();
-
-		if (!userData) {
+		if (userError) {
 			localStorage.removeItem("token");
-			throw new AuthError("Failed to login. Try again", {
-				cause: "Invalid token",
-			});
+			return {
+				success: false,
+				error: parseAuthError(userError),
+			};
 		}
 
 		setUser(userData);
+		return { success: true };
 	};
 
 	const logout = async () => {
@@ -77,12 +80,11 @@ export function AuthProvider({
 				password,
 			});
 
-		if (registerError || !registerData) {
-			throw new AuthError(
-				typeof registerError?.detail === "string"
-					? registerError.detail // HTTP error API message
-					: "Failed to register. Try again",
-			);
+		if (registerError) {
+			return {
+				success: false,
+				error: parseAuthError(registerError),
+			};
 		}
 
 		const { data: loginData, error: loginError } =
@@ -91,16 +93,16 @@ export function AuthProvider({
 				password,
 			});
 
-		if (loginError || !loginData) {
-			throw new AuthError(
-				typeof loginError?.detail === "string"
-					? loginError.detail // HTTP error API message
-					: "Failed to login. Try again",
-			);
+		if (loginError) {
+			return {
+				success: false,
+				error: parseAuthError(loginError),
+			};
 		}
 
 		localStorage.setItem("token", loginData.access_token);
 		setUser(registerData);
+		return { success: true };
 	};
 
 	const checkAuth = async () => {
