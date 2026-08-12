@@ -173,7 +173,7 @@ export const RegisterForm = ({
 						disabled={isLoading}
 						className={styles["submitBtn"]}
 					>
-						{isLoading ? "Entrando..." : "Regístrate"}
+						{isLoading ? "Creando cuenta..." : "Regístrate"}
 					</Button>
 				</div>
 			</main>
