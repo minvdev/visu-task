@@ -1,23 +1,30 @@
 import styles from "./DashboardPage.module.css";
-import { Heading } from "../../components/atoms/Heading/Heading";
-import { BoardCard } from "../../components/molecules/BoardCard/BoardCard";
-import { Popover } from "../../components/atoms/Popover/Popover";
-import { CreateBoardForm } from "../../components/organisms/CreateBoardForm/CreateBoardForm";
-import { Link } from "react-router-dom";
-import { boardService } from "../../services/board";
+
 import { useEffect, useState } from "react";
-import { backgrounds } from "../../constants/defaultBoardBackgrounds";
-import { defaultTagColors } from "../../constants/tagColors";
+import { Link } from "react-router-dom";
+import { boardService } from "@services/board";
+import { defaultTagColors } from "@constants/tagColors";
+import { backgrounds } from "@constants/defaultBoardBackgrounds";
+
+import { Heading } from "@atoms/HeadingV2/Heading";
+import { BoardCard } from "@molecules/BoardCard/BoardCard";
+import { Popover } from "@atoms/Popover/Popover";
+import { CreateBoardForm } from "@organisms/CreateBoardForm/CreateBoardForm";
+
+import type { components } from "@/types/open-api-schema";
+type Board = components["schemas"]["Board"];
 
 export const DashboardPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [boards, setBoards] = useState([]);
+	const [boards, setBoards] = useState<Board[]>([]);
 	const [isCreatePopoverOpen, setIsCreatePopoverOpen] =
 		useState(false);
 
 	const fetchBoards = async () => {
 		try {
-			const { data } = await boardService.getBoards();
+			const { data, error } =
+				await boardService.getBoards();
+			if (error) throw error;
 			setBoards(data);
 		} catch (error) {
 			console.log("Error loading boards: ", error);
@@ -31,11 +38,19 @@ export const DashboardPage = () => {
 		fetchBoards();
 	}, []);
 
-	const handleCreateBoard = async ({ title, imageId }) => {
+	const handleCreateBoard = async ({
+		title,
+		imageId,
+	}: {
+		title: string;
+		imageId: number;
+	}) => {
 		try {
 			const selectedBackground = backgrounds.find(
 				(bg) => bg.id === imageId,
 			);
+
+			if (!selectedBackground) return;
 
 			await boardService.createBoard({
 				name: title,
@@ -55,10 +70,12 @@ export const DashboardPage = () => {
 	if (isLoading) return <div>Cargando ...</div>;
 
 	return (
-		<div className={styles.container}>
-			<Heading level={1}>Tus espacios de trabajo</Heading>
+		<div className={styles["container"]}>
+			<Heading level={3} className={styles["title"]}>
+				Tus espacios de trabajo
+			</Heading>
 
-			<div className={styles.cardContainer}>
+			<div className={styles["main"]}>
 				{boards.map((board) => (
 					<Link
 						replace
@@ -68,21 +85,21 @@ export const DashboardPage = () => {
 						<BoardCard
 							src={board.image_url}
 							name={board.name}
-							className={styles.board}
+							className={styles["board"]}
 						/>
 					</Link>
 				))}
 
-				<div className={styles.popoverContainer}>
+				<div className={styles["popoverContainer"]}>
 					<div
-						className={styles.createBoard}
+						className={styles["createBoard"]}
 						onClick={() => {
 							setIsCreatePopoverOpen(true);
 						}}
 					>
 						<BoardCard
 							name="Nuevo Tablero"
-							className={styles.board}
+							className={styles["board"]}
 						/>
 					</div>
 
