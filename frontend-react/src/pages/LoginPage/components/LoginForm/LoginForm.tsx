@@ -138,6 +138,7 @@ export const LoginForm = ({ ...props }: LoginFormProps) => {
 						<Input
 							id="password"
 							name="password"
+							type="password"
 							placeholder="••••••••"
 							value={formData.password}
 							onChange={handleChange}

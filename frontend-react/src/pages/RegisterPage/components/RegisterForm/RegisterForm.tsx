@@ -159,6 +159,7 @@ export const RegisterForm = ({
 						<Input
 							id="password"
 							name="password"
+							type="password"
 							placeholder="••••••••"
 							value={formData.password}
 							onChange={handleChange}
