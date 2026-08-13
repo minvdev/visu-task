@@ -31,4 +31,7 @@
 	margin: 0;
 	text-align: center;
 	padding: var(--space-2);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-wrap-mode: nowrap;
 }
