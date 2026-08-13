@@ -976,7 +976,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Board"][];
+                    "application/json": components["schemas"]["BoardSubschema"][];
                 };
             };
             /** @description Authentication credentials are invalid or missing. */
