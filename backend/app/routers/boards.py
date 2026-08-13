@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from ..db.database import get_db
 from .. import schemas
+from ..schemas import common as common_schemas
 from ..security import CurrentUserDep
 from ..models import User, Board, List, Card, Tag
 from ..core.config import settings
@@ -174,7 +175,7 @@ def create_board(
     return board
 
 
-@router.get("", response_model=list[schemas.Board])
+@router.get("", response_model=list[common_schemas.BoardSubschema])
 def get_user_boards(
     db: Session = Depends(get_db),
     current_user: User = CurrentUserDep
