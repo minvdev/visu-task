@@ -40,7 +40,9 @@ export const DashboardPage = () => {
 			await boardService.createBoard({
 				name: title,
 				image_url: selectedBackground.image_url,
-				default_tag_colors: defaultTagColors,
+				default_tag_colors: defaultTagColors.map(
+					(tag) => tag.backgroundColor,
+				),
 			});
 
 			fetchBoards();
