@@ -5,7 +5,7 @@ import {
 	ComponentPropsWithRef,
 	CSSProperties,
 } from "react";
-import { useTag } from "./useTag";
+import { resolveTagColors } from "@pages/BoardPage/utils/resolveTagColors";
 
 import type { components } from "@/types/open-api-schema";
 type TagSubschema = components["schemas"]["TagSubschema"];
@@ -24,8 +24,6 @@ export const Tag = ({
 	style,
 	...props
 }: TagProps) => {
-	const { resolveTagColors } = useTag();
-
 	const resolvedTag = resolveTagColors(tag);
 	return (
 		<div
