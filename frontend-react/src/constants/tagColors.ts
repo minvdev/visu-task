@@ -4,15 +4,7 @@ export type TagColor = {
 	color: string;
 };
 
-export const defaultTagColors = [
-	"#4bce97",
-	"#ddb30e",
-	"#fca700",
-	"#f87168",
-	"#c97cf4",
-];
-
-export const tagColors: TagColor[] = [
+export const tagColors = [
 	{
 		id: 1,
 		backgroundColor: "#baf3db",
@@ -168,4 +160,12 @@ export const tagColors: TagColor[] = [
 		backgroundColor: "#6b6e76",
 		color: "#fff",
 	},
-];
+] as const;
+
+export const defaultTagColors = [
+	tagColors[5],
+	tagColors[6],
+	tagColors[7],
+	tagColors[8],
+	tagColors[9],
+] as const;
