@@ -10,7 +10,7 @@ import { tagColors } from "@constants/tagColors";
 import { VALIDATION_RULES } from "@constants/validationRules";
 
 type Tag = TagProps["tag"];
-const defaultColor = tagColors[0]!;
+const defaultColor = tagColors[0];
 
 export const useCreateTagForm = (
 	onSuccess: CreateTagFormProps["onSuccess"],
