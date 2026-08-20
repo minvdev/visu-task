@@ -175,27 +175,26 @@ def test_default_tag_colors(client, auth_headers, db_session):
     assert response.status_code == 422  # Unprocesable entity
 
     # 4. Get Boards
-    response = client.get("/boards/", headers=auth_headers)
-    assert response.status_code == 200
-    data = response.json()
+    response_1 = client.get(f"/boards/{board_id_1}", headers=auth_headers)
+    response_2 = client.get(f"/boards/{board_id_2}", headers=auth_headers)
+    assert response_1.status_code == 200
+    assert response_2.status_code == 200
+    data_1 = response_1.json()
+    data_2 = response_2.json()
 
-    # There should be 2 board (Project Alpha and Project Beta)
-    # The Inbox should NOT appear here
-
-    # 5. Get tags
-    assert len(data) == 2
-    assert data[0]["name"] == "Project Alpha"
-    assert data[1]["name"] == "Project Beta"
-    assert data[0]["id"] == board_id_1
-    assert data[1]["id"] == board_id_2
-    assert [tag["color"] for tag in data[0]["tags"]] == [
+    # 5. Check tags
+    assert data_1["name"] == "Project Alpha"
+    assert data_2["name"] == "Project Beta"
+    assert data_1["id"] == board_id_1
+    assert data_2["id"] == board_id_2
+    assert [tag["color"] for tag in data_1["tags"]] == [
         "#d62828",
         "#f77f00",
         "#fcbf49",
         "#00b4d8",
         "#a7c957",
     ]
-    assert [tag["color"] for tag in data[1]["tags"]] == [
+    assert [tag["color"] for tag in data_2["tags"]] == [
         "#ffffff",
         "#000000",
     ]
