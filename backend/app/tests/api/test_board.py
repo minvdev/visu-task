@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
 
-from ...models import Board, List, Card, Tag
+from app.models import Board, List, Card, Tag
 from .conftest import check_models_count, check_board_count
 
 
