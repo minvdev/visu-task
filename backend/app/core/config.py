@@ -14,6 +14,8 @@ class Settings(BaseSettings):
         "#00b4d8",
         "#a7c957"
     ]
+    UNSPLASH_API_KEY: str
+    UNSPLASH_API_URL: str = "https://api.unsplash.com"
 
     model_config = ConfigDict(
         env_file="backend/.env",
