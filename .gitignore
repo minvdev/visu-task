@@ -5,3 +5,4 @@ frontend-react/.vite
 frontend-react/node_modules
 .python-version
 *.sql
+.mypy_cache

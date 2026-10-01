@@ -1,6 +1,7 @@
+import pytest
 from sqlalchemy.orm import joinedload
 
-from ..models import Board, List, Card, Tag
+from app.models import Board, List, Card, Tag
 from .conftest import check_models_count, check_board_count
 
 
@@ -175,30 +176,133 @@ def test_default_tag_colors(client, auth_headers, db_session):
     assert response.status_code == 422  # Unprocesable entity
 
     # 4. Get Boards
-    response = client.get("/boards/", headers=auth_headers)
-    assert response.status_code == 200
-    data = response.json()
+    response_1 = client.get(f"/boards/{board_id_1}", headers=auth_headers)
+    response_2 = client.get(f"/boards/{board_id_2}", headers=auth_headers)
+    assert response_1.status_code == 200
+    assert response_2.status_code == 200
+    data_1 = response_1.json()
+    data_2 = response_2.json()
 
-    # There should be 2 board (Project Alpha and Project Beta)
-    # The Inbox should NOT appear here
-
-    # 5. Get tags
-    assert len(data) == 2
-    assert data[0]["name"] == "Project Alpha"
-    assert data[1]["name"] == "Project Beta"
-    assert data[0]["id"] == board_id_1
-    assert data[1]["id"] == board_id_2
-    assert [tag["color"] for tag in data[0]["tags"]] == [
+    # 5. Check tags
+    assert data_1["name"] == "Project Alpha"
+    assert data_2["name"] == "Project Beta"
+    assert data_1["id"] == board_id_1
+    assert data_2["id"] == board_id_2
+    assert [tag["color"] for tag in data_1["tags"]] == [
         "#d62828",
         "#f77f00",
         "#fcbf49",
         "#00b4d8",
         "#a7c957",
     ]
-    assert [tag["color"] for tag in data[1]["tags"]] == [
+    assert [tag["color"] for tag in data_2["tags"]] == [
         "#ffffff",
         "#000000",
     ]
+
+
+def test_board_image_url(client, auth_headers, db_session):
+    """    
+    1. Create board with image_url property (deprecated).
+    2. Get the board and check if was successfully transformed to background_type & bg..._value.
+    3. Check if board still having the image_url property (deprecated & computed).
+    4. Updates the board with image_url and repeat 2 & 3.
+    """
+    # 1. Create Board with image_url 'https://cdn/photo-1'
+    response = client.post(
+        "/boards/",
+        json={"name": "Project Alpha", "image_url": "https://cdn/photo-1"},
+        headers=auth_headers
+    )
+    assert response.status_code == 201
+    board_id = response.json()["id"]
+
+    # 2. Get Board and check the standard fields
+    response = client.get(f"/boards/{board_id}", headers=auth_headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["background_type"] == "image"
+    assert data["background_value"] == "https://cdn/photo-1"
+
+    # 3. Check image_url property
+    assert data["image_url"] == "https://cdn/photo-1"
+
+    # 4. Updates board with deprecated field
+    response = client.patch(
+        f"/boards/{board_id}",
+        json={"image_url": "https://cdn/photo-2"},
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["background_type"] == "image"
+    assert data["background_value"] == "https://cdn/photo-2"
+    assert data["image_url"] == "https://cdn/photo-2"
+
+
+BACKGROUND_CASES_IMAGE = [
+    # type,       value,    blur,     expect_success
+    (None,        None,     None,     True),
+    ("image",     None,     None,     False),
+    (None,        "cdn/x",  None,     False),
+    ("image",     "cdn/x",  None,     True),
+    (None,        None,     "hash",   False),
+    ("image",     None,     "hash",   False),
+    (None,        "cdn/x",  "hash",   False),
+    ("image",     "cdn/x",  "hash",   True),
+]
+BACKGROUND_CASES_NON_IMAGE = [
+    (None,        None,     None,     True),
+    ("solid",  None,     None,     False),
+    (None,        "#fff",   None,     False),
+    ("solid",  "#fff",   None,     True),
+    (None,        None,     "hash",   False),
+    ("solid",  None,     "hash",   False),
+    (None,        "#fff",   "hash",   False),
+    ("solid",  "#fff",   "hash",   False),
+]
+
+
+@pytest.mark.parametrize(
+    "bg_type,bg_value,bg_blur,expect_success",
+    BACKGROUND_CASES_IMAGE + BACKGROUND_CASES_NON_IMAGE,
+)
+def test_board_background(client, auth_headers, db_session, bg_type, bg_value, bg_blur, expect_success):
+    """    
+    Tests the background constraints with background_type, background_value and background_blur_hash.
+    """
+    payload = {
+        "name": "Project Alpha",
+        "background_type": bg_type,
+        "background_value": bg_value,
+        "background_blur_hash": bg_blur,
+    }
+
+    board_to_update_response = client.post(
+        "/boards",
+        json={"name": "Default board"},
+        headers=auth_headers
+    )
+    assert board_to_update_response.status_code == 201
+    board_to_update_data = board_to_update_response.json()
+
+    create_response = client.post(
+        "/boards",
+        json=payload,
+        headers=auth_headers
+    )
+    update_response = client.patch(
+        f"/boards/{board_to_update_data["id"]}",
+        json=payload,
+        headers=auth_headers
+    )
+
+    if expect_success:
+        assert create_response.status_code == 201
+        assert update_response.status_code == 200
+    else:
+        assert create_response.status_code == 422
+        assert update_response.status_code == 422
 
 
 # --- LISTS TESTS ---

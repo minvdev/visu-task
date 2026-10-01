@@ -1,8 +1,11 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, mapped_column, Mapped
+from typing import Optional, Literal
 
 from ..db.database import Base
 from ..models.list import List
+
+BackgroundType = Literal["image", "gradient", "solid"]
 
 
 class Board(Base):
@@ -11,7 +14,12 @@ class Board(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     description = Column(String(255), nullable=True)
-    image_url = Column(String(255), nullable=True)
+
+    image_url = Column(String(255), nullable=True)  # deprecated
+    background_type: Mapped[Optional[BackgroundType]] = mapped_column()
+    background_value: Mapped[Optional[str]] = mapped_column(String(511))
+    background_blur_hash: Mapped[Optional[str]] = mapped_column(String(511))
+
     is_inbox = Column(Boolean, nullable=False, default=False)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)

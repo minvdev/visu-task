@@ -9,4 +9,7 @@ argon2-cffi
 python-jose[cryptography]==3.5.0
 alembic==1.17.1
 pytest==9.0.1
+pytest-asyncio==1.4.0
 httpx==0.28.1
+cachetools==7.1.8
+respx==0.23.1
