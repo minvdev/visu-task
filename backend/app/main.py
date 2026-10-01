@@ -1,13 +1,21 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import auth, boards, inbox, cards, users
 from .schemas import HTTPError
+from .services import unsplash as unsplash_service
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    await unsplash_service.close_client()
 
 app = FastAPI(
     title="VisualTask API",
     description="API for manage Kanban-like projects",
-    version="0.1.0"
+    version="0.1.0",
+    lifespan=lifespan
 )
 
 app.add_middleware(

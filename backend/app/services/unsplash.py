@@ -78,3 +78,9 @@ async def search_photos(query: str, page: int, per_page: int) -> PaginatedPhotos
                 "per_page": per_page, "content_filter": "high"}
     )
     return _validate(PaginatedPhotos, raw_photos)
+
+
+# Lifespan function
+async def close_client() -> None:
+    if _client is not None and not _client.is_closed:
+        await _client.aclose()
