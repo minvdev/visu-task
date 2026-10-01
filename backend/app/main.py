@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, boards, inbox, cards, users
+from .routers import auth, boards, inbox, cards, users, unsplash
 from .schemas import HTTPError
 from .services import unsplash as unsplash_service
 
@@ -36,3 +36,4 @@ app.include_router(boards.router, responses={401: unauthorized_response})
 app.include_router(inbox.router, responses={401: unauthorized_response})
 app.include_router(cards.router, responses={401: unauthorized_response})
 app.include_router(users.router, responses={401: unauthorized_response})
+app.include_router(unsplash.router, responses={401: unauthorized_response})
