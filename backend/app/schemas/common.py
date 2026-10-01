@@ -1,5 +1,7 @@
 from __future__ import annotations
-from pydantic import BaseModel, ConfigDict
+from typing import Optional, Literal
+from typing_extensions import deprecated
+from pydantic import BaseModel, ConfigDict, computed_field
 from datetime import datetime
 
 """
@@ -20,7 +22,15 @@ class BoardSubschema(BaseModel):
     id: int
     name: str
     description: str | None
-    image_url: str | None
+    background_type: Optional[Literal["image", "gradient", "solid"]]
+    background_value: str | None
+    background_blur_hash: str | None
+
+    @computed_field
+    @property
+    @deprecated("'image_url' is deprecated")
+    def image_url(self) -> str | None:
+        return self.background_value
 
     model_config = ConfigDict(from_attributes=True)
 
