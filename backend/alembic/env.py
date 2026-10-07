@@ -7,8 +7,6 @@ from sqlalchemy import pool
 
 from alembic import context
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
-
 from app.db.database import Base
 from app.models import user, board, list, card, Tag, card_tags
 from app.core.config import settings
