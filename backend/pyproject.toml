@@ -33,6 +33,10 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# Mypy
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+
 # Ruff
 [tool.ruff]
 src = ["src"]
