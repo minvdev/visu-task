@@ -13,11 +13,12 @@ async def lifespan(app: FastAPI):
     yield
     await unsplash_service.close_client()
 
+
 app = FastAPI(
     title="VisualTask API",
     description="API for manage Kanban-like projects",
     version="0.1.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 app.add_middleware(

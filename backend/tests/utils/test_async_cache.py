@@ -71,7 +71,8 @@ async def test_cached_function_executes_after_ttl_expiration():
     calls = 0
 
     initial_datetime = datetime.datetime(
-        year=2026, month=9, day=14, hour=12, minute=15, second=30)
+        year=2026, month=9, day=14, hour=12, minute=15, second=30
+    )
 
     with freeze_time(initial_datetime) as frozen_datetime:
         # timer function but must be declared inside of the freeze_time context
@@ -88,11 +89,12 @@ async def test_cached_function_executes_after_ttl_expiration():
         result_1 = await service("test")
 
         frozen_datetime.tick(delta=datetime.timedelta(minutes=2, seconds=1))
-        assert frozen_datetime() == initial_datetime + \
-            datetime.timedelta(minutes=2, seconds=1)
+        assert frozen_datetime() == initial_datetime + datetime.timedelta(
+            minutes=2, seconds=1
+        )
 
         expired = cache.expire()
-        assert expired == [(('test',), 'result: test')]
+        assert expired == [(("test",), "result: test")]
 
         result_2 = await service("test")
 
@@ -151,7 +153,6 @@ async def test_concurrent_calls_share_result():
 @pytest.mark.asyncio
 async def test_function_preserves_metadata():
     @cached({})
-    async def service():
-        ...
+    async def service(): ...
 
     assert service.__name__ == "service"

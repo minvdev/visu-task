@@ -4,12 +4,14 @@ from sqlalchemy.orm import relationship
 from ..db.database import Base
 
 card_tags = Table(
-    'card_tags',
+    "card_tags",
     Base.metadata,
-    Column('card_id', Integer, ForeignKey(
-        "cards.id", ondelete="CASCADE"), primary_key=True),
-    Column('tag_id', Integer, ForeignKey(
-        "tags.id", ondelete="CASCADE"), primary_key=True)
+    Column(
+        "card_id", Integer, ForeignKey("cards.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "tag_id", Integer, ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True
+    ),
 )
 
 
@@ -26,4 +28,4 @@ class Tag(Base):
     cards = relationship("Card", secondary=card_tags, back_populates="tags")
 
     def __str__(self):
-        return f'<{self.__class__}: {self.name if self.name else self.color}>'
+        return f"<{self.__class__}: {self.name if self.name else self.color}>"

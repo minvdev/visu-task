@@ -7,9 +7,9 @@ from .common import BoardSubschema, CardSubschema
 HexColor = Annotated[
     str,
     Field(
-        pattern=r'^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$',
-        description="Hex color code (e.g. #FF0000)"
-    )
+        pattern=r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+        description="Hex color code (e.g. #FF0000)",
+    ),
 ]
 
 

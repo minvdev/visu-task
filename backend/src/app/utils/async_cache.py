@@ -1,13 +1,13 @@
 """
 Utilities for caching the results of asynchronous functions.
 
-This module provides an async-compatible caching decorator built on top of 
-``cachetools``. Unlike ``cachetools.cached``, which caches the coroutine 
-object returned by an async function, this decorator awaits the function 
+This module provides an async-compatible caching decorator built on top of
+``cachetools``. Unlike ``cachetools.cached``, which caches the coroutine
+object returned by an async function, this decorator awaits the function
 before storing its result.
 
-As a consequence, only successfully completed results are added to the cache. 
-If the wrapped function raises an exception, the result is not 
+As a consequence, only successfully completed results are added to the cache.
+If the wrapped function raises an exception, the result is not
 cached and the exception is propagated to the caller.
 """
 
@@ -74,4 +74,5 @@ def cached(cache: cachetools.Cache):
                     locks.pop(key, None)
 
         return async_wrapper
+
     return decorator

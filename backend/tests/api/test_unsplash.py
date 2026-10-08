@@ -28,6 +28,7 @@ def make_photo() -> Photo:
 
 # --- Authentication ---
 
+
 def test_get_photos_requires_authentication(client):
     response = client.get("/unsplash/photos")  # without auth headers
     assert response.status_code == 401
@@ -49,13 +50,10 @@ def test_get_photos_forwards_params_to_service(client, auth_headers, monkeypatch
         received["per_page"] = per_page
         return []
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "get_photos", fake_get_photos)
+    monkeypatch.setattr(unsplash_router.unsplash_service, "get_photos", fake_get_photos)
 
     response = client.get(
-        "/unsplash/photos",
-        params={"page": 3, "per_page": 10},
-        headers=auth_headers
+        "/unsplash/photos", params={"page": 3, "per_page": 10}, headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -71,13 +69,12 @@ def test_search_photos_forwards_params_to_service(client, auth_headers, monkeypa
         received["per_page"] = per_page
         return PaginatedPhotos(total=0, total_pages=0, results=[])
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "search_photos", fake_search_photos)
+    monkeypatch.setattr(
+        unsplash_router.unsplash_service, "search_photos", fake_search_photos
+    )
 
     response = client.get(
-        "/unsplash/photos/search",
-        params={"query": "sea"},
-        headers=auth_headers
+        "/unsplash/photos/search", params={"query": "sea"}, headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -91,12 +88,12 @@ def test_search_photos_requires_query_param(client, auth_headers):
 
 # --- Response serialization ---
 
+
 def test_get_photos_returns_serialized_photos(client, auth_headers, monkeypatch):
     async def fake_get_photos(*_, **__):
         return [make_photo()]
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "get_photos", fake_get_photos)
+    monkeypatch.setattr(unsplash_router.unsplash_service, "get_photos", fake_get_photos)
 
     response = client.get("/unsplash/photos", headers=auth_headers)
 
@@ -106,15 +103,19 @@ def test_get_photos_returns_serialized_photos(client, auth_headers, monkeypatch)
     assert body[0]["id"] == "abc123"
 
 
-def test_search_photos_returns_serialized_paginated_photos(client, auth_headers, monkeypatch):
+def test_search_photos_returns_serialized_paginated_photos(
+    client, auth_headers, monkeypatch
+):
     async def fake_search_photos(*_, **__):
         return PaginatedPhotos(total=1, total_pages=1, results=[make_photo()])
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "search_photos", fake_search_photos)
+    monkeypatch.setattr(
+        unsplash_router.unsplash_service, "search_photos", fake_search_photos
+    )
 
-    response = client.get("/unsplash/photos/search",
-                          params={"query": "sea"}, headers=auth_headers)
+    response = client.get(
+        "/unsplash/photos/search", params={"query": "sea"}, headers=auth_headers
+    )
 
     assert response.status_code == 200
     body = response.json()
@@ -125,15 +126,16 @@ def test_search_photos_returns_serialized_paginated_photos(client, auth_headers,
 
 # --- Error propagation ---
 
+
 def test_get_photos_propagates_service_error(client, auth_headers, monkeypatch):
     from fastapi import HTTPException, status
 
     async def fake_get_photos(*_, **__):
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
-                            detail="Unsplash API request failed")
+        raise HTTPException(
+            status.HTTP_502_BAD_GATEWAY, detail="Unsplash API request failed"
+        )
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "get_photos", fake_get_photos)
+    monkeypatch.setattr(unsplash_router.unsplash_service, "get_photos", fake_get_photos)
 
     response = client.get("/unsplash/photos", headers=auth_headers)
 
@@ -145,14 +147,17 @@ def test_search_photos_propagates_service_error(client, auth_headers, monkeypatc
     from fastapi import HTTPException, status
 
     async def fake_search_photos(*_, **__):
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
-                            detail="Unsplash API request failed")
+        raise HTTPException(
+            status.HTTP_502_BAD_GATEWAY, detail="Unsplash API request failed"
+        )
 
-    monkeypatch.setattr(unsplash_router.unsplash_service,
-                        "search_photos", fake_search_photos)
+    monkeypatch.setattr(
+        unsplash_router.unsplash_service, "search_photos", fake_search_photos
+    )
 
-    response = client.get("/unsplash/photos/search",
-                          params={"query": "sea"}, headers=auth_headers)
+    response = client.get(
+        "/unsplash/photos/search", params={"query": "sea"}, headers=auth_headers
+    )
 
     assert response.status_code == 502
     assert response.json()["detail"] == "Unsplash API request failed"

@@ -7,7 +7,9 @@ from app.core.config import settings
 from app.schemas import PaginatedPhotos, Photo
 from app.services import unsplash as unsplash_service
 
-PHOTOS_URL = f"{settings.UNSPLASH_API_URL}/collections/{unsplash_service.COLLECTION_ID}/photos"
+PHOTOS_URL = (
+    f"{settings.UNSPLASH_API_URL}/collections/{unsplash_service.COLLECTION_ID}/photos"
+)
 SEARCH_URL = f"{settings.UNSPLASH_API_URL}/search/photos"
 
 PHOTO_FIELDS = {
@@ -59,7 +61,7 @@ def raw_photo() -> dict:
             "download_location": "https://api.unsplash.com/photos/abc123/download",
         },
         "user": {"id": "JL0rTDa0lBM", "username": "yolobear", "bio": "..."},
-        "more_stuff": "..."
+        "more_stuff": "...",
     }
 
 
@@ -86,6 +88,7 @@ def clear_caches():
 
 
 # --- Success: request params and returned data ---
+
 
 @pytest.mark.asyncio
 @respx.mock
@@ -126,6 +129,7 @@ async def test_search_photos_success():
 
 # --- Upstream errors ---
 
+
 @pytest.mark.asyncio
 @respx.mock
 async def test_get_photos_raise_http_error():
@@ -145,6 +149,7 @@ async def test_search_photos_raise_http_error():
 
 
 # --- Cache hits ---
+
 
 @pytest.mark.asyncio
 @respx.mock
@@ -176,12 +181,11 @@ async def test_search_photos_uses_cache_on_second_call():
 
 # --- Response filtering with the pydantic schemas ---
 
+
 @pytest.mark.asyncio
 @respx.mock
 async def test_get_photos_returns_filtered_models():
-    respx.get(PHOTOS_URL).mock(
-        return_value=httpx.Response(200, json=[raw_photo()])
-    )
+    respx.get(PHOTOS_URL).mock(return_value=httpx.Response(200, json=[raw_photo()]))
 
     result = await call_get_photos()
 
@@ -219,16 +223,16 @@ async def test_search_photos_returns_filtered_models():
             PHOTOS_URL,
             [raw_photo()],
             unsplash_service.collection_cache,
-            id="get_photos"
+            id="get_photos",
         ),
         pytest.param(
             call_search_photos,
             SEARCH_URL,
             raw_search_response(),
             unsplash_service.search_cache,
-            id="search_photos"
+            id="search_photos",
         ),
-    ]
+    ],
 )
 @pytest.mark.asyncio
 @respx.mock
@@ -244,6 +248,7 @@ async def test_cache_stores_filtered_result(call, url, payload, cache):
 
 # --- Unexpected upstream payloads ---
 
+
 @pytest.mark.parametrize(
     "call,url,payload,cache",
     [
@@ -252,34 +257,36 @@ async def test_cache_stores_filtered_result(call, url, payload, cache):
             PHOTOS_URL,
             [{"id": "abc123"}],
             unsplash_service.collection_cache,
-            id="get_photos-missing-fields"
+            id="get_photos-missing-fields",
         ),
         pytest.param(
             call_get_photos,
             PHOTOS_URL,
             [{"total": 1}],
             unsplash_service.collection_cache,
-            id="get_photos-wrong-top-level"
+            id="get_photos-wrong-top-level",
         ),
         pytest.param(
             call_search_photos,
             SEARCH_URL,
             {"total": 1, "total_pages": 1, "results": [{"id": "abc123"}]},
             unsplash_service.search_cache,
-            id="search_photos-missing-fields"
+            id="search_photos-missing-fields",
         ),
         pytest.param(
             call_search_photos,
             SEARCH_URL,
             [raw_photo()],
             unsplash_service.search_cache,
-            id="search_photos-wrong-top-level"
+            id="search_photos-wrong-top-level",
         ),
-    ]
+    ],
 )
 @pytest.mark.asyncio
 @respx.mock
-async def test_invalid_upstream_payload_returs_502_and_is_not_cached(call, url, payload, cache):
+async def test_invalid_upstream_payload_returs_502_and_is_not_cached(
+    call, url, payload, cache
+):
     respx.get(url).mock(return_value=httpx.Response(200, json=payload))
 
     with pytest.raises(fastapi.HTTPException) as exc_info:

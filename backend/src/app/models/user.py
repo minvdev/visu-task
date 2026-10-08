@@ -12,8 +12,7 @@ class User(Base):
     email = Column(String(120), unique=True, index=True, nullable=False)
     password_hash = Column(String(256), nullable=False)
 
-    boards = relationship("Board", back_populates="user",
-                          cascade="all, delete-orphan")
+    boards = relationship("Board", back_populates="user", cascade="all, delete-orphan")
 
     def __str__(self):
-        return f'<{self.__class__.__name__}: {self.username}>'
+        return f"<{self.__class__.__name__}: {self.username}>"

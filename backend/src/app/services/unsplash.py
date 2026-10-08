@@ -23,9 +23,9 @@ def _get_client() -> httpx.AsyncClient:
             base_url=settings.UNSPLASH_API_URL,
             headers={
                 "Accept-Version": "v1",
-                "Authorization": f"Client-ID {settings.UNSPLASH_API_KEY}"
+                "Authorization": f"Client-ID {settings.UNSPLASH_API_KEY}",
             },
-            timeout=10.0
+            timeout=10.0,
         )
     return _client
 
@@ -40,7 +40,7 @@ def _validate(model: T, data) -> T:
     except ValidationError:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Unsplash API request failed"
+            detail="Unsplash API request failed",
         )
 
 
@@ -52,12 +52,12 @@ async def _get(path: str, params: dict) -> dict | list:
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Unsplash API request failed"
+            detail="Unsplash API request failed",
         ) from exc
     except httpx.RequestError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Could not reach Unsplash API"
+            detail="Could not reach Unsplash API",
         ) from exc
 
 
@@ -65,7 +65,7 @@ async def _get(path: str, params: dict) -> dict | list:
 async def get_photos(page: int, per_page: int) -> list[Photo]:
     raw_photos = await _get(
         f"/collections/{COLLECTION_ID}/photos",
-        params={"page": page, "per_page": per_page, "order_by": "latest"}
+        params={"page": page, "per_page": per_page, "order_by": "latest"},
     )
     return [_validate(Photo, raw) for raw in raw_photos]
 
@@ -74,8 +74,12 @@ async def get_photos(page: int, per_page: int) -> list[Photo]:
 async def search_photos(query: str, page: int, per_page: int) -> PaginatedPhotos:
     raw_photos = await _get(
         "/search/photos",
-        params={"query": query, "page": page,
-                "per_page": per_page, "content_filter": "high"}
+        params={
+            "query": query,
+            "page": page,
+            "per_page": per_page,
+            "content_filter": "high",
+        },
     )
     return _validate(PaginatedPhotos, raw_photos)
 

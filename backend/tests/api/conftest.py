@@ -13,11 +13,10 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False},
-    poolclass=StaticPool
+    poolclass=StaticPool,
 )
 
-TestingSessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 @pytest.fixture(scope="function")
@@ -40,6 +39,7 @@ def client(db_session):
     """
     Test client that use the test database.
     """
+
     def override_get_db():
         try:
             yield db_session
@@ -62,7 +62,7 @@ def auth_headers(client):
     user_data = {
         "username": "testuser",
         "email": "test@example.com",
-        "password": "password123"
+        "password": "password123",
     }
     client.post("/auth/register", json=user_data)
 
@@ -91,12 +91,12 @@ def fill_data(client, auth_headers):
         Also checks if the list was created.
         """
         url = f"/boards/{board_id}/lists/"
-        created_lists = [client.post(
-            url, json={"name": name}).json() for name in list_names]
+        created_lists = [
+            client.post(url, json={"name": name}).json() for name in list_names
+        ]
 
         response = client.get(url)
-        assert [list_item["name"]
-                for list_item in response.json()] == list_names
+        assert [list_item["name"] for list_item in response.json()] == list_names
 
         return created_lists
 
@@ -120,8 +120,11 @@ def fill_data(client, auth_headers):
     inbox_id = inbox["id"]
     incoming_id = inbox["lists"][0]["id"]
 
-    create_cards(inbox_id, incoming_id, [
-                 f"Task {i}" for i in range(cards_count, cards_count+3)])
+    create_cards(
+        inbox_id,
+        incoming_id,
+        [f"Task {i}" for i in range(cards_count, cards_count + 3)],
+    )
     cards_count += 3
 
     # First Board
@@ -129,15 +132,22 @@ def fill_data(client, auth_headers):
     board_id = board["id"]
 
     lists = create_lists(
-        board_id, [f"List {i}" for i in range(lists_count, lists_count+2)])
+        board_id, [f"List {i}" for i in range(lists_count, lists_count + 2)]
+    )
     lists_count += 2
     list_ids = [l["id"] for l in lists]
 
-    create_cards(board_id, list_ids[0], [
-                 f"Task {i}" for i in range(cards_count, cards_count+1)])
+    create_cards(
+        board_id,
+        list_ids[0],
+        [f"Task {i}" for i in range(cards_count, cards_count + 1)],
+    )
     cards_count += 1
-    create_cards(board_id, list_ids[1], [
-                 f"Task {i}" for i in range(cards_count, cards_count+2)])
+    create_cards(
+        board_id,
+        list_ids[1],
+        [f"Task {i}" for i in range(cards_count, cards_count + 2)],
+    )
     cards_count += 2
 
     # Second Board
@@ -145,16 +155,21 @@ def fill_data(client, auth_headers):
     board_id = board["id"]
 
     lists = create_lists(
-        board_id, [f"List {i}" for i in range(lists_count, lists_count+1)])
+        board_id, [f"List {i}" for i in range(lists_count, lists_count + 1)]
+    )
     list_ids = [l["id"] for l in lists]
 
-    create_cards(board_id, list_ids[0], [
-                 f"Task {i}" for i in range(cards_count, cards_count+3)])
+    create_cards(
+        board_id,
+        list_ids[0],
+        [f"Task {i}" for i in range(cards_count, cards_count + 3)],
+    )
 
     client.headers = default_headers
 
 
 # --- Helpers ---
+
 
 def check_models_count(db, models_count: dict):
     """
@@ -168,7 +183,9 @@ def check_models_count(db, models_count: dict):
         assert len(retrieved_models) == count
 
 
-def check_board_count(db, *, board_id, board_count, list_count=None, tag_count=None, card_count=None):
+def check_board_count(
+    db, *, board_id, board_count, list_count=None, tag_count=None, card_count=None
+):
     """
     Assert expected counts for a board and its related entities in the database.
     Args:
@@ -191,6 +208,5 @@ def check_board_count(db, *, board_id, board_count, list_count=None, tag_count=N
         assert len(lists) == list_count
 
     if card_count:
-        cards = db.query(Card).join(Card.list).filter(
-            List.board_id == board_id).all()
+        cards = db.query(Card).join(Card.list).filter(List.board_id == board_id).all()
         assert len(cards) == card_count

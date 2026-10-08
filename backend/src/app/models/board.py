@@ -26,12 +26,14 @@ class Board(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="boards")
 
-    lists = relationship("List", back_populates="board",
-                         cascade="all, delete-orphan",
-                         order_by=[List.position.asc(), List.name.asc()])
+    lists = relationship(
+        "List",
+        back_populates="board",
+        cascade="all, delete-orphan",
+        order_by=[List.position.asc(), List.name.asc()],
+    )
 
-    tags = relationship("Tag", back_populates="board",
-                        cascade="all, delete-orphan")
+    tags = relationship("Tag", back_populates="board", cascade="all, delete-orphan")
 
     def __str__(self):
-        return f'<{self.__class__.__name__}: {self.name}>'
+        return f"<{self.__class__.__name__}: {self.name}>"

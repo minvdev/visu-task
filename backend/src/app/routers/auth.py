@@ -12,17 +12,20 @@ from ..schemas.token import Token as token_schema
 from ..schemas.user import User as user_schema
 from ..schemas.user import UserCreate as user_create_schema
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Auth"]
+router = APIRouter(prefix="/auth", tags=["Auth"])
+
+
+@router.post(
+    "/register",
+    response_model=user_schema,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        400: {
+            "model": HTTPError,
+            "description": "Username or email are already registered",
+        }
+    },
 )
-
-
-@router.post("/register", response_model=user_schema, status_code=status.HTTP_201_CREATED,
-             responses={400: {
-                 "model": HTTPError,
-                 "description": "Username or email are already registered"}
-             })
 def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     """Create a new user in the database.
     - Validates that the email does not exist.
@@ -32,20 +35,18 @@ def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     """
 
     # Verify username & email
-    email_exists = db.query(User).filter(
-        User.email == user_data.email).first()
+    email_exists = db.query(User).filter(User.email == user_data.email).first()
     if email_exists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The email is already registered."
+            detail="The email is already registered.",
         )
 
-    username_exists = db.query(User).filter(
-        User.username == user_data.username).first()
+    username_exists = db.query(User).filter(User.username == user_data.username).first()
     if username_exists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The username is already used."
+            detail="The username is already used.",
         )
 
     # Hash password
@@ -59,16 +60,10 @@ def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     )
 
     inbox_board = Board(
-        name="Inbox",
-        description="Your deafult inbox board.",
-        is_inbox=True,
-        user=user
+        name="Inbox", description="Your deafult inbox board.", is_inbox=True, user=user
     )
 
-    incoming_list = List(
-        name="Incoming",
-        board=inbox_board
-    )
+    incoming_list = List(name="Incoming", board=inbox_board)
 
     db.add_all([user, inbox_board, incoming_list])
     db.commit()
@@ -77,12 +72,19 @@ def register_user(user_data: user_create_schema, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/login", response_model=token_schema,
-             responses={401: {
-                 "model": HTTPError,
-                 "description": "Unauthorized: Incorrect username or password"}
-             })
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@router.post(
+    "/login",
+    response_model=token_schema,
+    responses={
+        401: {
+            "model": HTTPError,
+            "description": "Unauthorized: Incorrect username or password",
+        }
+    },
+)
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+):
     """
     Authenticates the user and returns a JWT.
     - Accepts login with 'username' OR 'email'.
@@ -90,10 +92,14 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     - Creates and returns an access token.
     """
 
-    user = db.query(User).filter(User.username == form_data.username).first(
-    ) or db.query(User).filter(User.email == form_data.username).first()
+    user = (
+        db.query(User).filter(User.username == form_data.username).first()
+        or db.query(User).filter(User.email == form_data.username).first()
+    )
 
-    if user is None or not security.verify_password(form_data.password, user.password_hash):
+    if user is None or not security.verify_password(
+        form_data.password, user.password_hash
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="incorrect username or password",

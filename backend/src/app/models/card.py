@@ -21,4 +21,4 @@ class Card(Base):
     tags = relationship("Tag", secondary="card_tags", back_populates="cards")
 
     def __str__(self):
-        return f'<{self.__class__.__name__}: {self.name}>'
+        return f"<{self.__class__.__name__}: {self.name}>"
