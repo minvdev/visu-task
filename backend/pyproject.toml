@@ -23,10 +23,38 @@ dependencies = [
 [dependency-groups]
 dev = [
     "freezegun~=1.5.5",
+    "mypy~=2.4.0",
     "pytest-asyncio~=1.4.0",
     "pytest~=9.0.1",
     "respx~=0.23.1",
+    "ruff~=0.16.10",
+    "types-passlib~=1.7.7",
+    "types-python-jose~=3.5.0",
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# Pytest
+[tool.pytest]
+filterwarnings = [
+    "ignore::DeprecationWarning:passlib.*",
+    "ignore::DeprecationWarning:starlette.*",
+]
+
+# Mypy
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+
+# Ruff
+[tool.ruff]
+src = ["src"]
+line-length = 88 # Explicit default value
+indent-width = 4 # Explicit default value
+
+[tool.ruff.lint]
+select = [
+    "E", # pycode style
+    "F", # Pyflakes
+    "I", # Isort
+]
