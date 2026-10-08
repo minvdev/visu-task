@@ -13,7 +13,7 @@ class BoardBase(BaseModel):
     background_value: Optional[str] = Field(None, max_length=511)
     background_blur_hash: Optional[str] = Field(None, max_length=511)
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     @deprecated("'image_url' is deprecated")
     def image_url(self) -> str | None:

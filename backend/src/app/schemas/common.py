@@ -26,7 +26,7 @@ class BoardSubschema(BaseModel):
     background_value: str | None
     background_blur_hash: str | None
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     @deprecated("'image_url' is deprecated")
     def image_url(self) -> str | None:
