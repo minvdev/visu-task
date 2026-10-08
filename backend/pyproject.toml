@@ -32,3 +32,9 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# Ruff
+[tool.ruff]
+src = ["src"]
+line-length = 88 # Explicit default value
+indent-width = 4 # Explicit default value
