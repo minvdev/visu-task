@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from ..db.database import get_db
-from ..security import CurrentUserDep
-from ..models import User, Board
 from .. import schemas
+from ..db.database import get_db
+from ..models import Board, User
+from ..security import CurrentUserDep
 
 router = APIRouter(
     prefix="/inbox",

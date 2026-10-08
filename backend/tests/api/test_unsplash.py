@@ -1,5 +1,5 @@
 from app.routers import unsplash as unsplash_router
-from app.schemas import Photo, PaginatedPhotos, Urls, Links
+from app.schemas import Links, PaginatedPhotos, Photo, Urls
 
 
 def make_photo() -> Photo:

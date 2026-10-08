@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import update, and_, func
+from sqlalchemy import and_, func, update
 from sqlalchemy.orm import Session, joinedload
 
-from ..security import CurrentUserDep
-from ..models import User, Card, List, Board, Tag
-from ..db.database import get_db
 from .. import schemas
+from ..db.database import get_db
+from ..models import Board, Card, List, Tag, User
+from ..security import CurrentUserDep
 
 router = APIRouter(
     prefix="/cards",
@@ -220,7 +220,7 @@ def detach_tag(
         Tag.board_id == card.list.board_id
     ).first()
 
-    if not tag or not tag in card.tags:
+    if not tag or tag not in card.tags:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Tag not found"

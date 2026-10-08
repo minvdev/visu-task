@@ -12,11 +12,11 @@ cached and the exception is propagated to the caller.
 """
 
 import asyncio
-import cachetools
 import functools
-from cachetools.keys import hashkey
 from typing import Any
 
+import cachetools
+from cachetools.keys import hashkey
 
 _MISSING = object()
 

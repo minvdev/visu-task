@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
 from app import schemas
-from app.services import unsplash as unsplash_service
 from app.security import CurrentUserDep
+from app.services import unsplash as unsplash_service
 
 router = APIRouter(
     prefix="/unsplash",

@@ -1,5 +1,5 @@
 from app.db.database import SessionLocal
-from app.models import User, Board, List, Card, Tag
+from app.models import Board, Card, List, Tag, User
 from app.security import get_password_hash, verify_password
 
 db = SessionLocal()

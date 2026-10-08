@@ -1,12 +1,11 @@
+import fastapi
+import httpx
 import pytest
 import respx
-import httpx
-import fastapi
 
-from app.services import unsplash as unsplash_service
 from app.core.config import settings
-from app.schemas import Photo, PaginatedPhotos
-
+from app.schemas import PaginatedPhotos, Photo
+from app.services import unsplash as unsplash_service
 
 PHOTOS_URL = f"{settings.UNSPLASH_API_URL}/collections/{unsplash_service.COLLECTION_ID}/photos"
 SEARCH_URL = f"{settings.UNSPLASH_API_URL}/search/photos"

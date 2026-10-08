@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field, ConfigDict, computed_field, model_validator
-from typing import Optional, Literal, Any
+from typing import Any, Literal, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 from typing_extensions import deprecated
-from .common import UserSubschema, ListSubschema, TagSubschema, InboxList
+
+from .common import InboxList, ListSubschema, TagSubschema, UserSubschema
 from .tag import HexColor
 
 

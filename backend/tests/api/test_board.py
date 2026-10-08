@@ -1,9 +1,9 @@
 import pytest
 from sqlalchemy.orm import joinedload
 
-from app.models import Board, List, Card, Tag
-from .conftest import check_models_count, check_board_count
+from app.models import Board, Card, List, Tag
 
+from .conftest import check_board_count, check_models_count
 
 # --- BOARDS TESTS ---
 

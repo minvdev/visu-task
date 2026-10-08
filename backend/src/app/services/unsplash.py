@@ -1,13 +1,13 @@
+from typing import TypeVar
+
 import httpx
 from cachetools import TTLCache
 from fastapi import HTTPException, status
 from pydantic import BaseModel, ValidationError
-from typing import TypeVar
 
 from app.core.config import settings
+from app.schemas import PaginatedPhotos, Photo
 from app.utils.async_cache import cached
-from app.schemas import Photo, PaginatedPhotos
-
 
 COLLECTION_ID = 317099
 TTL = 3600  # 1 hour
@@ -73,7 +73,7 @@ async def get_photos(page: int, per_page: int) -> list[Photo]:
 @cached(cache=search_cache)
 async def search_photos(query: str, page: int, per_page: int) -> PaginatedPhotos:
     raw_photos = await _get(
-        f"/search/photos",
+        "/search/photos",
         params={"query": query, "page": page,
                 "per_page": per_page, "content_filter": "high"}
     )

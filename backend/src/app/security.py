@@ -1,15 +1,16 @@
-from passlib.context import CryptContext
-from datetime import timedelta, datetime, timezone
-from .core.config import settings
-from jose import jwt, JWTError
+from datetime import datetime, timedelta, timezone
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 from pydantic import ValidationError
+from sqlalchemy.orm import Session
+
+from .core.config import settings
 from .db import database
 from .models import User
 from .schemas import token as token_schema
-
 
 # --- 1. Password hashing ---
 pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")

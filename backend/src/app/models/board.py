@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship, mapped_column, Mapped
-from typing import Optional, Literal
+from typing import Literal, Optional
+
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.database import Base
 from ..models.list import List

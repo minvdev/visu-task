@@ -1,4 +1,4 @@
-from app.models import User, Board, List
+from app.models import Board, List, User
 
 
 def test_register_user(client, db_session):

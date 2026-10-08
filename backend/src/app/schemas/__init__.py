@@ -1,27 +1,8 @@
-from .user import User
-from .user import UserCreate
-
-from .token import Token
-from .token import TokenData
-
-from .board import BoardCreate
-from .board import BoardUpdate
-from .board import Board
-from .board import Inbox
-
-from .list import ListCreate
-from .list import ListUpdate
-from .list import List
-
-from .card import CardCreate
-from .card import CardUpdate
-from .card import CardMove
-from .card import Card
-
-from .tag import TagCreate
-from .tag import TagUpdate
-from .tag import Tag
-
+from .board import Board, BoardCreate, BoardUpdate, Inbox
+from .card import Card, CardCreate, CardMove, CardUpdate
 from .error import HTTPError
-
-from .unsplash import Photo, PaginatedPhotos, Urls, Links
+from .list import List, ListCreate, ListUpdate
+from .tag import Tag, TagCreate, TagUpdate
+from .token import Token, TokenData
+from .unsplash import Links, PaginatedPhotos, Photo, Urls
+from .user import User, UserCreate

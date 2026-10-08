@@ -1,8 +1,8 @@
-from pydantic import BaseModel, Field, ConfigDict
 from typing import Annotated
 
-from .common import BoardSubschema, CardSubschema
+from pydantic import BaseModel, ConfigDict, Field
 
+from .common import BoardSubschema, CardSubschema
 
 HexColor = Annotated[
     str,

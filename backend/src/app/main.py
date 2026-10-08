@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, boards, inbox, cards, users, unsplash
+
+from .routers import auth, boards, cards, inbox, unsplash, users
 from .schemas import HTTPError
 from .services import unsplash as unsplash_service
 
