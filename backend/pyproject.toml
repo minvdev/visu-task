@@ -38,3 +38,10 @@ where = ["src"]
 src = ["src"]
 line-length = 88 # Explicit default value
 indent-width = 4 # Explicit default value
+
+[tool.ruff.lint]
+select = [
+    "E", # pycode style
+    "F", # Pyflakes
+    "I", # Isort
+]
