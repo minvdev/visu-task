@@ -33,6 +33,13 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# Pytest
+[tool.pytest]
+filterwarnings = [
+    "ignore::DeprecationWarning:passlib.*",
+    "ignore::DeprecationWarning:starlette.*",
+]
+
 # Mypy
 [tool.mypy]
 plugins = ["pydantic.mypy"]
