@@ -8,7 +8,8 @@ from typing_extensions import deprecated
 
 """
 This file contains all the necessary subschemas to be maintained from a single location.
-These subschemas will be imported into the response models to be used inside of the main schemes.
+These subschemas will be imported into the response models to be used inside of the
+ main schemes.
 """
 
 
