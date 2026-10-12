@@ -30,11 +30,11 @@ def _get_client() -> httpx.AsyncClient:
     return _client
 
 
-collection_cache = TTLCache(maxsize=100, ttl=TTL)
-search_cache = TTLCache(maxsize=100, ttl=TTL)
+collection_cache: TTLCache = TTLCache(maxsize=100, ttl=TTL)
+search_cache: TTLCache = TTLCache(maxsize=100, ttl=TTL)
 
 
-def _validate(model: T, data) -> T:
+def _validate(model: type[T], data) -> T:
     try:
         return model.model_validate(data)
     except ValidationError:
