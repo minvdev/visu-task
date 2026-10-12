@@ -138,7 +138,8 @@ def test_default_tag_colors(client, auth_headers, db_session):
     2. Create a new board specifying the default_tag_colors field.
     3. Create a new board specifying the default_tag_colors field with wrong values.
     4. Get the list of boards (and verify that they was created without problems).
-    5. Get the list of tags from each board and verify that the first one have the default tags and the second one have the specified.
+    5. Get the list of tags from each board and verify that the first one have the
+        default tags and the second one have the specified.
     """
     # 1. Create Board without default tag colors
     response = client.post(
@@ -203,7 +204,8 @@ def test_default_tag_colors(client, auth_headers, db_session):
 def test_board_image_url(client, auth_headers, db_session):
     """
     1. Create board with image_url property (deprecated).
-    2. Get the board and check if was successfully transformed to background_type & bg..._value.
+    2. Get the board and check if was successfully transformed to background_type
+        & bg..._value.
     3. Check if board still having the image_url property (deprecated & computed).
     4. Updates the board with image_url and repeat 2 & 3.
     """
@@ -270,7 +272,8 @@ def test_board_background(
     client, auth_headers, db_session, bg_type, bg_value, bg_blur, expect_success
 ):
     """
-    Tests the background constraints with background_type, background_value and background_blur_hash.
+    Tests the background constraints with background_type, background_value
+        and background_blur_hash.
     """
     payload = {
         "name": "Project Alpha",
@@ -738,7 +741,8 @@ def test_tag_update_void_name(client, auth_headers):
         headers=auth_headers,
     ).json()["id"]
 
-    # 2. Update Tag to change the color and check that if no name is passed, the name was not deleted
+    # 2. Update Tag to change the color and check that if
+    # no name is passed, the name was not deleted
     tag_response = client.patch(
         f"/boards/{board_id}/tags/{tag_id}",
         json={"color": "#fff"},
@@ -756,4 +760,4 @@ def test_tag_update_void_name(client, auth_headers):
         headers=auth_headers,
     )
     assert tag_response.status_code == 200
-    assert tag_response.json()["name"] == None
+    assert tag_response.json()["name"] is None
