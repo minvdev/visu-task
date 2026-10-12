@@ -23,9 +23,7 @@ def test_register_user(client, db_session):
 
     # --- Inbox board logic verification ---
     inbox = (
-        db_session.query(Board)
-        .filter(Board.user_id == user.id, Board.is_inbox == True)
-        .first()
+        db_session.query(Board).filter(Board.user_id == user.id, Board.is_inbox).first()
     )
     assert inbox is not None
     assert inbox.name == "Inbox"
