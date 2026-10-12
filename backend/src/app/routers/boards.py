@@ -15,7 +15,8 @@ router = APIRouter(prefix="/boards", tags=["Boards"])
 # --- HELPER FUNCTIONS ---
 def get_board_or_404(board_id: int, db: Session, current_user: User) -> Board:
     """
-    Search for the board of the given id and verifies if the current user is the owner of the board.
+    Search for the board of the given id and verifies if the current user is the owner
+      of the board.
     Raise 404 if not found or not the owner.
     """
     board = db.query(Board).filter(Board.id == board_id).first()
@@ -32,7 +33,8 @@ def get_list_or_404(
 ) -> List:
     """
     Search for the list of the given `list_id` and verifies:
-    - If the board with `board_id` exists and have permission to modify it (using `get_board_or_404`).
+    - If the board with `board_id` exists and have permission to modify it
+      (using `get_board_or_404`).
     - If exists a list with the given `list_id`.
     - If the list belongs to the board.
 
@@ -50,7 +52,8 @@ def get_list_or_404(
     if board.id != found_list.board_id:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
-            detail=f"List with id {list_id} does not belong to board with id {board_id}.",
+            detail=f"List with id {list_id} does not belong to board "
+            f"with id {board_id}.",
         )
 
     return found_list
@@ -59,7 +62,8 @@ def get_list_or_404(
 def get_tag_or_404(board_id: int, tag_id: int, db: Session, current_user: User) -> Tag:
     """
     Search for the tag of the given `tag_id` and verifies:
-    - If the board with `board_id` exists and have permission to modify it (using `get_board_or_404`).
+    - If the board with `board_id` exists and have permission to modify it
+      (using `get_board_or_404`).
     - If exists a tag with the given `tag_id`.
     - If the tag belongs to the board.
 
@@ -88,11 +92,14 @@ def get_card_or_404(
 ) -> Card:
     """
     Search for the card of the given `card_id` and verifies:
-    - If exists a list with the given `list_id` and belongs to the board (using `get_list_or_404`).
-    - If the board with `board_id` exists and have permission to modify it (using `get_board_or_404` that is implicity included in `get_list_or_404` call).
+    - If exists a list with the given `list_id` and belongs to the board
+      (using `get_list_or_404`).
+    - If the board with `board_id` exists and have permission to modify it
+      (using `get_board_or_404` that is implicity included in `get_list_or_404` call).
     - If exists a card with the given `card_id` and belongs to the list.
 
-    Raise 404 if any (card, list or board) is not found or if does not belong to the list and board respectively.
+    Raise 404 if any (card, list or board) is not found or if does not belong to the
+      list and board respectively.
     Check `get_list_or_404` and `get_board_or_404` for more details.
     """
     found_list = get_list_or_404(board_id, list_id, db, current_user)
@@ -160,7 +167,7 @@ def get_user_boards(db: Session = Depends(get_db), current_user: User = CurrentU
     """
     boards = (
         db.query(Board)
-        .filter(Board.user_id == current_user.id, Board.is_inbox == False)
+        .filter(Board.user_id == current_user.id, Board.is_inbox.is_(False))
         .all()
     )
 
