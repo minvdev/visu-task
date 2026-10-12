@@ -30,7 +30,8 @@ def move_card(
 ):
     """
     Move a card between lists (or the same list, within the same board or to another).
-    Also change the position of the card with (place the card at the bottom of the list if not specified).
+    Also change the position of the card with (place the card at the bottom of the list
+      if not specified).
     Verify that the current user owns both the source and destination lists.
     """
     card = (
@@ -97,7 +98,8 @@ def move_card(
                 detail="Position out of the range",
             )
 
-        # 1. Add or substract one to the range affected by the ordering according to the destination of the new position
+        # 1. Add or substract one to the range affected by the ordering according to
+        #  the destination of the new position
         db.execute(
             update(Card)
             .where(
@@ -182,7 +184,7 @@ def attach_tag(
         .filter(
             Card.id == card_id,
             Board.user_id == current_user.id,
-            Board.is_inbox == False,
+            Board.is_inbox.is_(False),
         )
         .first()
     )
@@ -235,7 +237,7 @@ def detach_tag(
         .filter(
             Card.id == card_id,
             Board.user_id == current_user.id,
-            Board.is_inbox == False,
+            Board.is_inbox.is_(False),
         )
         .first()
     )
