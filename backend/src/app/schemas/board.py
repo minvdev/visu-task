@@ -42,7 +42,8 @@ class BoardBase(BaseModel):
         # background_blur_hash
         if self.background_blur_hash and self.background_type != "image":
             raise ValueError(
-                "'background_blur_hash' cannot have a value when the background is not an image"
+                "'background_blur_hash' cannot have a value when the background is not"
+                " an image"
             )
         return self
 
@@ -89,7 +90,8 @@ class BoardUpdate(BaseModel):
         if "background_blur_hash" in fields_set and self.background_blur_hash:
             if "background_type" in fields_set and self.background_type != "image":
                 raise ValueError(
-                    "'background_blur_hash' cannot have a value when the background is not an image"
+                    "'background_blur_hash' cannot have a value when the background is"
+                    " not an image"
                 )
 
         return self
