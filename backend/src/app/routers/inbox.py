@@ -14,9 +14,7 @@ router = APIRouter(prefix="/inbox", tags=["Inbox"])
 )
 def get_inbox(db: Session = Depends(get_db), current_user: User = CurrentUserDep):
     inbox = (
-        db.query(Board)
-        .filter(Board.user_id == current_user.id, Board.is_inbox == True)
-        .first()
+        db.query(Board).filter(Board.user_id == current_user.id, Board.is_inbox).first()
     )
 
     if not inbox:
