@@ -15,7 +15,8 @@ def test_card_due_date(client, auth_headers):
 
     def fetch_card(card_id):
         """
-        Return the fetched card with the 'card_id' from a get request to "/boards/{board_id}/lists/{list_id}/cards".
+        Return the fetched card with the 'card_id' from a get request to
+        "/boards/{board_id}/lists/{list_id}/cards".
         """
         cards = client.get(
             f"/boards/{board_id}/lists/{list_id}/cards", headers=auth_headers
@@ -45,7 +46,8 @@ def test_card_due_date(client, auth_headers):
     client.patch(
         f"/boards/{board_id}/lists/{list_id}/cards/{card_id}/",
         json={
-            "text": "The due date must remain set when we send an update request without the due_date field"
+            "text": "The due date must remain set when we send an update request"
+            " without the due_date field"
         },
         headers=auth_headers,
     )
@@ -201,7 +203,8 @@ def test_move_card_security(client, auth_headers):
     Verifies error cases:
     1. Card does not exist.
     2. Destination list does not exist.
-    3. Attempt to move to a foreign board (simulated by moving to a non-existent or foreign list).
+    3. Attempt to move to a foreign board (simulated by moving to a non-existent
+        or foreign list).
     """
     # 1. Basic Setup
     res_board = client.post(
@@ -234,7 +237,8 @@ def test_move_card_security(client, auth_headers):
     # Or 403 depending on your security implementation, but 404 is common if not found.
     assert res.status_code == 404
 
-    # Case 3: Unauthorized user (create another user and try to move the first user's card)
+    # Case 3: Unauthorized user
+    # (create another user and try to move the first user's card)
     # Create user 2
     client.post(
         "/auth/register",
