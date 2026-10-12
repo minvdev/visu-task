@@ -80,7 +80,7 @@ def move_card(
     actual_card_position = card.position
     new_card_position = move_data.destination_list_position
 
-    dest_list_count = (
+    dest_list_count: int = (
         db.query(func.count(Card.id)).filter(Card.list_id == dest_list_id).scalar() or 0
     )
 
