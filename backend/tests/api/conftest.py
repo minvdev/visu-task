@@ -77,11 +77,22 @@ def auth_headers(client):
 def fill_data(client, auth_headers):
     """
     Create data for testing.
-    [Inbox]                         [First Board]                       [Second Board]
-
-    [Incoming]                      [List 1]    [List 2]                [List 3]
-
-    [Task 1] [Task 2] [Task 3]      [Task 4]    [Task 5] [Task 6]       [Task 7] [Task 8] [Task 9]
+    Inbox
+    └── Incoming
+        ├── Task1
+        ├── Task2
+        └── Task3
+    First Board
+    ├── List 1
+    │   └── Task 4
+    └── List 2
+        ├── Task 5
+        └── Task 6
+    Second Board
+    └── List 3
+        ├── Task 7
+        ├── Task 8
+        └── Task 9
     """
     default_headers, client.headers = client.headers, auth_headers
 
@@ -135,7 +146,7 @@ def fill_data(client, auth_headers):
         board_id, [f"List {i}" for i in range(lists_count, lists_count + 2)]
     )
     lists_count += 2
-    list_ids = [l["id"] for l in lists]
+    list_ids = [current_list["id"] for current_list in lists]
 
     create_cards(
         board_id,
@@ -157,7 +168,7 @@ def fill_data(client, auth_headers):
     lists = create_lists(
         board_id, [f"List {i}" for i in range(lists_count, lists_count + 1)]
     )
-    list_ids = [l["id"] for l in lists]
+    list_ids = [current_list["id"] for current_list in lists]
 
     create_cards(
         board_id,
@@ -173,9 +184,11 @@ def fill_data(client, auth_headers):
 
 def check_models_count(db, models_count: dict):
     """
-    This helpers take each model of `models_count` and assert that the database have the associated count of this item.
+    This helpers take each model of `models_count` and assert that the database have the
+      associated count of this item.
 
-    :param models_count: Dict with the models objects to be checked as keys and the expected count as values.
+    :param models_count: Dict with the models objects to be checked as keys and the
+      expected count as values.
     :type models_count: dict[SQLAlchemyModel: int]
     """
     for model, count in models_count.items():
@@ -192,9 +205,12 @@ def check_board_count(
         db: SQLAlchemy Session used to run queries.
         board: Board instance whose related objects are checked.
         board_count (int): Expected number of Board rows with board.id.
-        list_count (Optional[int]): If provided, expected number of List rows with board_id == board.id.
-        tag_count (Optional[int]): If provided, expected number of Tag rows with board_id == board.id.
-        card_count (Optional[int]): If provided, expected number of Card rows joined through List for the board.
+        list_count (Optional[int]): If provided, expected number of List rows
+          with board_id == board.id.
+        tag_count (Optional[int]): If provided, expected number of Tag rows with
+          board_id == board.id.
+        card_count (Optional[int]): If provided, expected number of Card rows joined
+          through List for the board.
     """
     boards = db.query(Board).filter(Board.id == board_id).all()
     assert len(boards) == board_count
