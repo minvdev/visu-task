@@ -53,10 +53,14 @@ def get_current_user(
 
     Behavior:
     1. Depends(oauth2_scheme) extracts the Bearer token from the Authorization header.
-    2. The token is decoded and validated (signature, algorithm, expiration) against SECRET_KEY/ALGORITHM.
-    3. The payload must contain an identifier (e.g. 'sub' or a user id) used to load the user from the database via the provided Session.
-    4. If token validation fails, is expired, or the user is not found, the function raises an HTTPException (401 Unauthorized) so the request is rejected.
-    5. On success, the function returns the SQLAlchemy User instance representing the authenticated user.
+    2. The token is decoded and validated (signature, algorithm, expiration) against
+      SECRET_KEY/ALGORITHM.
+    3. The payload must contain an identifier (e.g. 'sub' or a user id) used to load
+      the user from the database via the provided Session.
+    4. If token validation fails, is expired, or the user is not found, the function
+      raises an HTTPException (401 Unauthorized) so the request is rejected.
+    5. On success, the function returns the SQLAlchemy User instance representing the
+      authenticated user.
     """
 
     credentials_exception = HTTPException(
