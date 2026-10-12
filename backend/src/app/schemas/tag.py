@@ -22,9 +22,9 @@ class TagCreate(TagBase):
     pass
 
 
-class TagUpdate(TagBase):
+class TagUpdate(BaseModel):
     name: str | None = Field(None, min_length=0, max_length=50)
-    color: str | None = Field(None, min_length=4, max_length=7)
+    color: HexColor | None = Field(None, min_length=4, max_length=7)
 
 
 class Tag(TagBase):
