@@ -44,6 +44,7 @@ filterwarnings = [
 
 # Mypy
 [tool.mypy]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 plugins = ["pydantic.mypy"]
 
 # Ruff
