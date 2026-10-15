@@ -7,10 +7,10 @@ from passlib.context import CryptContext
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-from .core.config import settings
-from .db import database
-from .models import User
-from .schemas import token as token_schema
+from app.core.config import settings
+from app.db import database
+from app.models import User
+from app.schemas import token as token_schema
 
 # --- 1. Password hashing ---
 pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")
