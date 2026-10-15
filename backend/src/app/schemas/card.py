@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from .common import ListSubschema, TagSubschema
 
@@ -22,9 +23,11 @@ class CardUpdate(BaseModel):
 
 class CardMove(BaseModel):
     destination_list_id: int = Field(
-        ..., description="The ID of the list to which you want to move the card.")
+        ..., description="The ID of the list to which you want to move the card."
+    )
     destination_list_position: int | None = Field(
-        None, ge=1, description="The new position of the list (gather or equal than 1)")
+        None, ge=1, description="The new position of the list (gather or equal than 1)"
+    )
 
 
 class Card(CardBase):

@@ -1,15 +1,15 @@
-from pydantic import BaseModel, Field, ConfigDict
 from typing import Annotated
 
-from .common import BoardSubschema, CardSubschema
+from pydantic import BaseModel, ConfigDict, Field
 
+from .common import BoardSubschema, CardSubschema
 
 HexColor = Annotated[
     str,
     Field(
-        pattern=r'^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$',
-        description="Hex color code (e.g. #FF0000)"
-    )
+        pattern=r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+        description="Hex color code (e.g. #FF0000)",
+    ),
 ]
 
 
@@ -22,9 +22,9 @@ class TagCreate(TagBase):
     pass
 
 
-class TagUpdate(TagBase):
+class TagUpdate(BaseModel):
     name: str | None = Field(None, min_length=0, max_length=50)
-    color: str | None = Field(None, min_length=4, max_length=7)
+    color: HexColor | None = Field(None, min_length=4, max_length=7)
 
 
 class Tag(TagBase):

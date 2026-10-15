@@ -1,12 +1,15 @@
 from __future__ import annotations
-from typing import Optional, Literal
-from typing_extensions import deprecated
-from pydantic import BaseModel, ConfigDict, computed_field
+
 from datetime import datetime
+from typing import Literal, Optional
+
+from pydantic import BaseModel, ConfigDict, computed_field
+from typing_extensions import deprecated
 
 """
 This file contains all the necessary subschemas to be maintained from a single location.
-These subschemas will be imported into the response models to be used inside of the main schemes.
+These subschemas will be imported into the response models to be used inside of the
+ main schemes.
 """
 
 
@@ -26,7 +29,7 @@ class BoardSubschema(BaseModel):
     background_value: str | None
     background_blur_hash: str | None
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     @deprecated("'image_url' is deprecated")
     def image_url(self) -> str | None:

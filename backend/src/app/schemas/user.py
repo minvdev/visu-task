@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
+
 from .common import BoardSubschema
 
 

@@ -1,5 +1,4 @@
-from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -12,15 +11,12 @@ class Settings(BaseSettings):
         "#f77f00",
         "#fcbf49",
         "#00b4d8",
-        "#a7c957"
+        "#a7c957",
     ]
     UNSPLASH_API_KEY: str
     UNSPLASH_API_URL: str = "https://api.unsplash.com"
 
-    model_config = ConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
 settings = Settings()
