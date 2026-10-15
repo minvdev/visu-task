@@ -1,7 +1,13 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Column, ForeignKey, Integer, String, Table
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.database import Base
+
+if TYPE_CHECKING:
+    from app.models import Board, Card
+
 
 card_tags = Table(
     "card_tags",
@@ -18,14 +24,16 @@ card_tags = Table(
 class Tag(Base):
     __tablename__ = "tags"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), nullable=True)
-    color = Column(String(7), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str | None] = mapped_column(String(50))
+    color: Mapped[str] = mapped_column(String(7))
 
-    board_id = Column(Integer, ForeignKey("boards.id"), nullable=False)
-    board = relationship("Board", back_populates="tags")
+    board_id: Mapped[int] = mapped_column(ForeignKey("boards.id"))
+    board: Mapped["Board"] = relationship(back_populates="tags")
 
-    cards = relationship("Card", secondary=card_tags, back_populates="tags")
+    cards: Mapped[list["Card"]] = relationship(
+        secondary=card_tags, back_populates="tags"
+    )
 
-    def __str__(self):
-        return f"<{self.__class__}: {self.name if self.name else self.color}>"
+    def __str__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.name if self.name else self.color}>"

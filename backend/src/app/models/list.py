@@ -1,26 +1,30 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.database import Base
 from ..models.card import Card
+
+if TYPE_CHECKING:
+    from app.models import Board
 
 
 class List(Base):
     __tablename__ = "lists"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False)
-    position = Column(Integer, nullable=False, index=True, default=1)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(100))
+    position: Mapped[int] = mapped_column(index=True, default=1)
 
-    board_id = Column(Integer, ForeignKey("boards.id"), nullable=False)
-    board = relationship("Board", back_populates="lists")
+    board_id: Mapped[int] = mapped_column(ForeignKey("boards.id"))
+    board: Mapped["Board"] = relationship(back_populates="lists")
 
-    cards = relationship(
-        "Card",
+    cards: Mapped[list["Card"]] = relationship(
         back_populates="list",
         cascade="all, delete-orphan",
         order_by=[Card.position.asc(), Card.name.asc()],
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.__class__.__name__}: {self.name}>"
