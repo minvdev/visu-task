@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from .. import schemas
-from ..core.config import settings
-from ..db.database import get_db
-from ..models import Board, Card, List, Tag, User
-from ..schemas import common as common_schemas
-from ..security import CurrentUserDep
+from app import schemas
+from app.core.config import settings
+from app.db.database import get_db
+from app.models import Board, Card, List, Tag, User
+from app.schemas import common as common_schemas
+from app.security import CurrentUserDep
 
 router = APIRouter(prefix="/boards", tags=["Boards"])
 
