@@ -3,11 +3,12 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ..db.database import Base
-from ..models.card import Card
+from app.db.database import Base
+
+from .card import Card
 
 if TYPE_CHECKING:
-    from app.models import Board
+    from .board import Board
 
 
 class List(Base):
