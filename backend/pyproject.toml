@@ -58,4 +58,8 @@ select = [
     "E", # pycode style
     "F", # Pyflakes
     "I", # Isort
+    "TID252" # realtive imports
 ]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
