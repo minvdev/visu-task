@@ -1,19 +1,25 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from typing import TYPE_CHECKING
+
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.database import Base
+
+if TYPE_CHECKING:
+    from app.models import Board
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(64), unique=True, index=True, nullable=False)
-    email = Column(String(120), unique=True, index=True, nullable=False)
-    password_hash = Column(String(256), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    username: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    email: Mapped[str] = mapped_column(String(120), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(256))
 
-    boards = relationship("Board", back_populates="user",
-                          cascade="all, delete-orphan")
+    boards: Mapped[list["Board"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
     def __str__(self):
-        return f'<{self.__class__.__name__}: {self.username}>'
+        return f"<{self.__class__.__name__}: {self.username}>"

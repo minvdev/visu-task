@@ -1,24 +1,34 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+from datetime import datetime
+from typing import TYPE_CHECKING
+from typing import List as TypingList
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..db.database import Base
+
+if TYPE_CHECKING:
+    from .list import List
+    from .tag import Tag
 
 
 class Card(Base):
     __tablename__ = "cards"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
-    name = Column(String(100), nullable=False)
-    text = Column(String(255), nullable=True)
-    is_done = Column(Boolean, nullable=False, index=True, default=False)
-    position = Column(Integer, nullable=False, index=True, default=1)
-    due_date = Column(DateTime, nullable=True)
+    name: Mapped[str] = mapped_column(String(100))
+    text: Mapped[str | None] = mapped_column(String(255))
+    is_done: Mapped[bool] = mapped_column(index=True, default=False)
+    position: Mapped[int] = mapped_column(index=True, default=1)
+    due_date: Mapped[datetime | None] = mapped_column()
 
-    list_id = Column(Integer, ForeignKey("lists.id"), nullable=False)
-    list = relationship("List", back_populates="cards")
+    list_id: Mapped[int] = mapped_column(ForeignKey("lists.id"))
 
-    tags = relationship("Tag", secondary="card_tags", back_populates="cards")
+    tags: Mapped[TypingList["Tag"]] = relationship(
+        secondary="card_tags", back_populates="cards"
+    )
+    list: Mapped["List"] = relationship(back_populates="cards")
 
-    def __str__(self):
-        return f'<{self.__class__.__name__}: {self.name}>'
+    def __str__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.name}>"
