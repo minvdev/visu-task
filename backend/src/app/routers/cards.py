@@ -3,7 +3,7 @@ from sqlalchemy import and_, func, update
 from sqlalchemy.orm import Session, joinedload
 
 from app import schemas
-from app.db.database import get_db
+from app.db import get_db
 from app.models import Board, Card, List, Tag, User
 from app.security import CurrentUserDep
 
