@@ -3,8 +3,9 @@ from typing import TYPE_CHECKING, Literal
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ..db.database import Base
-from ..models.list import List
+from app.db.database import Base
+
+from .list import List
 
 if TYPE_CHECKING:
     from .tag import Tag
