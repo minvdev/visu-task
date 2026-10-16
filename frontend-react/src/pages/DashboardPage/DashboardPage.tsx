@@ -3,71 +3,48 @@ import styles from "./DashboardPage.module.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { boardService } from "@services/board";
-import { defaultTagColors } from "@constants/tagColors";
-import { backgrounds } from "@constants/defaultBoardBackgrounds";
+import type { BoardSubschema } from "./types";
 
+import { Board } from "./components/Board/Board";
+import { AddBoard } from "./components/AddBoard/AddBoard";
+import { Error } from "./components/Error/Error";
+import { Loading } from "./components/Loading/Loading";
 import { Heading } from "@atoms/HeadingV2/Heading";
-import { BoardCard } from "@molecules/BoardCard/BoardCard";
-import { Popover } from "@atoms/Popover/Popover";
-import { CreateBoardForm } from "@organisms/CreateBoardForm/CreateBoardForm";
-
-import type { components } from "@/types/open-api-schema";
-type Board = components["schemas"]["Board"];
 
 export const DashboardPage = () => {
+	const [sortedBoards, setBoards] = useState<
+		BoardSubschema[]
+	>([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [boards, setBoards] = useState<Board[]>([]);
-	const [isCreatePopoverOpen, setIsCreatePopoverOpen] =
-		useState(false);
-
-	const fetchBoards = async () => {
-		try {
-			const { data, error } =
-				await boardService.getBoards();
-			if (error) throw error;
-			setBoards(data);
-		} catch (error) {
-			console.log("Error loading boards: ", error);
-			throw error;
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	const [error, setError] = useState(false);
 
 	useEffect(() => {
+		async function fetchBoards() {
+			try {
+				setIsLoading(true);
+
+				const { data, error } =
+					await boardService.getBoards();
+
+				if (error) {
+					setError(true);
+					return;
+				}
+
+				setBoards(
+					data.toSorted((a, b) =>
+						a.name.localeCompare(b.name),
+					),
+				);
+			} catch (error) {
+				setError(true);
+				console.error(error);
+			} finally {
+				setIsLoading(false);
+			}
+		}
 		fetchBoards();
 	}, []);
-
-	const handleCreateBoard = async ({
-		title,
-		imageId,
-	}: {
-		title: string;
-		imageId: number;
-	}) => {
-		try {
-			const selectedBackground = backgrounds.find(
-				(bg) => bg.id === imageId,
-			);
-
-			if (!selectedBackground) return;
-
-			await boardService.createBoard({
-				name: title,
-				image_url: selectedBackground.image_url,
-				default_tag_colors: defaultTagColors.map(
-					(tag) => tag.backgroundColor,
-				),
-			});
-
-			fetchBoards();
-			setIsCreatePopoverOpen(false);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	if (isLoading) return <div>Cargando ...</div>;
 
 	return (
 		<div className={styles["container"]}>
@@ -76,49 +53,24 @@ export const DashboardPage = () => {
 			</Heading>
 
 			<div className={styles["main"]}>
-				{boards.map((board) => (
-					<Link
-						replace
-						to={{ pathname: `/boards/${board.id}` }}
-						key={board.id}
-					>
-						<BoardCard
-							src={board.image_url}
-							name={board.name}
-							className={styles["board"]}
-						/>
-					</Link>
-				))}
+				{isLoading ? (
+					<Loading />
+				) : error ? (
+					<Error />
+				) : (
+					<>
+						{sortedBoards.map((board) => (
+							<Link
+								to={`/boards/${board.id}`}
+								key={board.id}
+							>
+								<Board board={board} />
+							</Link>
+						))}
 
-				<div className={styles["popoverContainer"]}>
-					<div
-						className={styles["createBoard"]}
-						onClick={() => {
-							setIsCreatePopoverOpen(true);
-						}}
-					>
-						<BoardCard
-							name="Nuevo Tablero"
-							className={styles["board"]}
-						/>
-					</div>
-
-					{isCreatePopoverOpen && (
-						<Popover
-							onClose={() => {
-								setIsCreatePopoverOpen(false);
-							}}
-						>
-							<CreateBoardForm
-								onSubmit={handleCreateBoard}
-								onCancel={() => {
-									setIsCreatePopoverOpen(false);
-								}}
-								backgrounds={backgrounds}
-							/>
-						</Popover>
-					)}
-				</div>
+						<AddBoard />
+					</>
+				)}
 			</div>
 		</div>
 	);

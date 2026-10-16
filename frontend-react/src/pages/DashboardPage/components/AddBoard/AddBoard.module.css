@@ -1,0 +1,21 @@
+.card {
+	position: relative;
+}
+
+button.container {
+	padding: var(--space-2);
+	height: 100%;
+	width: 100%;
+	color: var(--text-primary);
+}
+
+.popPosition {
+	top: 0;
+	left: 100%;
+	margin-left: var(--space-2);
+}
+.popPositionFallback {
+	top: 0;
+	right: 100%;
+	margin-right: var(--space-2);
+}

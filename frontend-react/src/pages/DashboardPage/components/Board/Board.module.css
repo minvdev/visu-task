@@ -1,0 +1,33 @@
+button.container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	border-radius: inherit;
+	overflow: hidden;
+	position: relative;
+}
+
+.image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+button.container:hover .image {
+	filter: brightness(0.9);
+}
+
+.name {
+	position: relative;
+	margin-top: auto;
+	width: 100%;
+	padding: var(--space-2) var(--space-3);
+	font-weight: var(--font-medium);
+	font-size: var(--text-sm);
+	background-color: var(--bg-card);
+	overflow: hidden;
+	text-wrap-mode: nowrap;
+	text-overflow: ellipsis;
+}
