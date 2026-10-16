@@ -9,11 +9,14 @@ import {
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext/AuthProvider";
 
-import { Heading } from "@atoms/Heading/Heading";
+import { Heading } from "@atoms/HeadingV2/Heading";
 import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Button/Button";
-import { SearchIcon } from "@assets/icons/SearchIcon/SearchIcon";
-import { UserIcon } from "@assets/icons/UserIcon/UserIcon";
+import {
+	LucideSearch,
+	LucideCircle,
+	LucideUser,
+} from "lucide-react";
 
 import { NAVBAR_HEIGHT } from "@constants/layout";
 
@@ -48,7 +51,7 @@ export const Navbar = () => {
 					styles["wrapper"],
 				)}
 			>
-				<SearchIcon />
+				<LucideSearch size={16} />
 				<Input
 					placeholder="Buscar"
 					variants={["input-sm"]}
@@ -64,7 +67,17 @@ export const Navbar = () => {
 					styles["wrapper"],
 				)}
 			>
-				<UserIcon />
+				<LucideCircle
+					size={32}
+					className={styles["circleIcon"]}
+				>
+					<LucideUser
+						size={20}
+						x={2}
+						y={2}
+						className={styles["userIcon"]}
+					/>
+				</LucideCircle>
 				<span>{displayName}</span>
 
 				<Button

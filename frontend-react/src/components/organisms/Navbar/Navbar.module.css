@@ -44,3 +44,14 @@
 	padding: 0;
 	border: none;
 }
+
+.circleIcon {
+	fill: var(--color-primary);
+	color: var(--color-primary);
+}
+
+.userIcon {
+	fill: var(--bg-card);
+	color: var(--bg-card);
+	stroke-width: 1;
+}
