@@ -5,8 +5,8 @@ from cachetools import TTLCache
 from fastapi import HTTPException, status
 from pydantic import BaseModel, ValidationError
 
+from app import schemas
 from app.core.config import settings
-from app.schemas import PaginatedPhotos, Photo
 from app.utils.async_cache import cached
 
 COLLECTION_ID = 317099
@@ -62,16 +62,18 @@ async def _get(path: str, params: dict) -> dict | list:
 
 
 @cached(cache=collection_cache)
-async def get_photos(page: int, per_page: int) -> list[Photo]:
+async def get_photos(page: int, per_page: int) -> list[schemas.Photo]:
     raw_photos = await _get(
         f"/collections/{COLLECTION_ID}/photos",
         params={"page": page, "per_page": per_page, "order_by": "latest"},
     )
-    return [_validate(Photo, raw) for raw in raw_photos]
+    return [_validate(schemas.Photo, raw) for raw in raw_photos]
 
 
 @cached(cache=search_cache)
-async def search_photos(query: str, page: int, per_page: int) -> PaginatedPhotos:
+async def search_photos(
+    query: str, page: int, per_page: int
+) -> schemas.PaginatedPhotos:
     raw_photos = await _get(
         "/search/photos",
         params={
@@ -81,7 +83,7 @@ async def search_photos(query: str, page: int, per_page: int) -> PaginatedPhotos
             "content_filter": "high",
         },
     )
-    return _validate(PaginatedPhotos, raw_photos)
+    return _validate(schemas.PaginatedPhotos, raw_photos)
 
 
 # Lifespan function

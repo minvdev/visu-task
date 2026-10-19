@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.db.database import Base, get_db
+from app.db import Base, get_db
 from app.main import app
 from app.models import Board, Card, List, Tag
 

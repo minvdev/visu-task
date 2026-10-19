@@ -3,10 +3,11 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ..db.database import Base
+from app.db import Base
 
 if TYPE_CHECKING:
-    from app.models import Board, Card
+    from .board import Board
+    from .card import Card
 
 
 card_tags = Table(
