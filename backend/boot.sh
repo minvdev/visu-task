@@ -1,9 +1,9 @@
 #!/bin/bash
-echo "Waiting for the database to be ready"
-until alembic upgrade head; do
-    echo "Upgrade command failed, retrying in 5 secs..."
-    sleep 5
-done
+
+set -e
+
+echo "Applying database migrations"
+alembic upgrade head
 
 echo "Starting uvicorn"
 
