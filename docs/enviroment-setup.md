@@ -105,6 +105,12 @@ Docker Compose reads `compose.yaml` and the project-level `.env` file, builds th
 
 On startup, the backend waits for PostgreSQL to become available, applies the Alembic migrations, and then starts the FastAPI server.
 
+### Optional initial data
+
+Initial data loading is disabled by default. To enable it, set `LOAD_INITIAL_DATA=true`; `INIT_SQL_FILE` selects a SQL file from `backend/seeds/` and defaults to `init_data.sql`. The seed is intended only for a newly initialized, empty application database.
+
+Do not enable the seed against an existing database that has not recorded that seed in `app_seed_history`. Seed inserts can conflict with existing records, for example on primary keys. The loader runs the seed in a transaction, so a conflict rolls back the whole attempt and does not leave partial seed data or a success record, but startup will fail until the conflict is addressed. Keep initial loading disabled for existing databases. If sample data is needed there, review and adapt the SQL against that database separately; do not manually mark the seed as applied in `app_seed_history`.
+
 To stop the services, press `Ctrl+C`. To stop and remove the containers and network without deleting the database volume, run:
 
 ```bash
