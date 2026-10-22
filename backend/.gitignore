@@ -2,3 +2,8 @@
 .venv
 *.egg-info/
 build/
+
+# seed files
+*.sql
+!seeds/*.sql
+seeds/*.local.sql
