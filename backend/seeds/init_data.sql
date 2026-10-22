@@ -5,7 +5,7 @@ VALUES (
 	1,
 	'demo-user',
 	'demo@example.invalid',
-	'$argon2id$v=19$m=65536,t=3,p=4$2UNgjC6CQpgTKvFHDVzPnw$iZMYbpFJcT6vlWXHoTw4Mlspvv4E0pP8GElcoZ+VSTo'
+	'$argon2id$v=19$m=65536,t=3,p=4$KSUkBKBUyhmjtFZKaY0xRg$WtcxGGgR5Iy0npKLD3jcLFULxf+2/3QHaO813SY3BGU'
 );
 
 INSERT INTO boards (id, name, description, user_id, is_inbox)
