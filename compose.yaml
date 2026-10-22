@@ -12,7 +12,8 @@ services:
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY must be set}
 
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
     volumes:
       - ./backend:/app
@@ -31,6 +32,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init_data.sql:/docker-entrypoint-initdb.d/init_data.sql:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'pg_isready -h 127.0.0.1 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"',
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:
