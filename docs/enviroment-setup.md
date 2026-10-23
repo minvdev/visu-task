@@ -13,11 +13,12 @@ Install the following tools before proceeding:
 
 Verify the installed versions:
 
-````bash
+```bash
 git --version
 uv --version
 docker --version
 docker compose version
+```
 
 ## 2. Project setup
 
@@ -28,7 +29,7 @@ Clone the repository and enter its root directory:
 ```bash
 git clone https://github.com/minvdev/visu-task.git
 cd visu-task
-````
+```
 
 The following instructions assume that the commands are executed from the repository root unless stated otherwise.
 
