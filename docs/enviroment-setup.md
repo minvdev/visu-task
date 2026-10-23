@@ -7,17 +7,17 @@ This guide explains how to configure the development environment, install the ba
 Install the following tools before proceeding:
 
 - **Git:** required to clone the repository.
-- **Python 3.14 or later:** required by the backend. Check `backend/pyproject.toml` for the authoritative version constraint.
-- **Docker Engine and Docker Compose:** Docker must be running, and Docker Compose must be available as `docker compose`. The documented setup tested is Docker Compose v5.6.0 or later.
+- **uv:** manages the backend's Python version, virtual environment and dependencies. See the [installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+- **Python 3.14 or later (optional):** if no compatible interpreter is found, uv downloads one automatically. Check `backend/pyproject.toml` for the authoritative version constraint.
+- **Docker Engine and Docker Compose:** Docker must be running, and Docker Compose must be available as `docker compose`. The documented setup was tested with Docker Compose v5.6.0 or later.
 
 Verify the installed versions:
 
-```bash
+````bash
 git --version
-python3 --version
+uv --version
 docker --version
 docker compose version
-```
 
 ## 2. Project setup
 
@@ -28,7 +28,7 @@ Clone the repository and enter its root directory:
 ```bash
 git clone https://github.com/minvdev/visu-task.git
 cd visu-task
-```
+````
 
 The following instructions assume that the commands are executed from the repository root unless stated otherwise.
 
@@ -54,38 +54,36 @@ The database connection URL must match the environment in which the backend runs
 
 ## 3. Backend setup
 
-### 3.1. Create a virtual environment
+### 3.1. Install dependencies
 
-Enter the backend directory, create a virtual enviroment and activate it:
-
-> Create the virtual environment with the correct python version instalated.
-> You can check the python's version with `python3 --version`
+Enter the backend directory and sync the environment:
 
 ```bash
 cd backend
-python3 -m venv .venv
-source .venv/bin/activate
+uv sync
 ```
 
-The virtual environment isolates the project's Python dependencies from the system installation.
+This creates `backend/.venv` if it does not exist and installs the project in editable mode, together with the `dev` dependency group, using the versions pinned in `uv.lock`.
 
-### 3.2. Install dependencies
+### 3.2. Run the tests
 
-Install the backend package in editable mode, including the development dependency group:
+From the `backend/` directory, run:
 
 ```bash
-python3 -m pip install -e . --group dev
+uv run pytest
 ```
 
-This installs the project and its development dependencies as declared in `pyproject.toml`.
+`uv run` executes the command inside the project environment, so there is no need to activate it. If you prefer to activate it manually, run `source .venv/bin/activate` and then `pytest`.
 
-### 3.3. Run the tests
-
-From the `backend/` directory, with the virtual environment activated, run:
+### 3.3. Manage dependencies
 
 ```bash
-pytest
+uv add <package>               # runtime dependency
+uv add --group dev <package>   # development dependency
+uv remove <package>
 ```
+
+Commit both `pyproject.toml` and `uv.lock` after changing dependencies. Avoid `pip install`: it ignores `uv.lock` and leaves the environment out of sync.
 
 ## 4. Run the application with Docker Compose
 
@@ -101,6 +99,8 @@ Build the required images and start the services:
 docker compose up --build
 ```
 
+The backend image installs its dependencies with uv from uv.lock, so the lockfile must be committed.
+
 Docker Compose reads `compose.yaml` and the project-level `.env` file, builds the backend image if necessary, and starts the configured services.
 
 On startup, the backend waits for PostgreSQL to become available, applies the Alembic migrations, and then starts the FastAPI server.
@@ -111,8 +111,8 @@ Initial data loading is disabled by default. To enable it, set `LOAD_INITIAL_DAT
 
 The seed creates a development account for manual API testing:
 
-| Field | Value |
-| --- | --- |
+| Field    | Value       |
+| -------- | ----------- |
 | Username | `demo-user` |
 | Password | `demo-user` |
 
@@ -139,5 +139,12 @@ Run these commands from the repository root:
 | `docker compose logs -f`    | Follow service logs                        |
 | `docker compose ps`         | Show service status                        |
 | `docker compose down`       | Stop and remove containers and the network |
+
+Run these commands from `backend/`:
+
+| Command         | Purpose                                                             |
+| --------------- | ------------------------------------------------------------------- |
+| `uv sync`       | Install the project and its dependencies, including the `dev` group |
+| `uv run pytest` | Run the test suite in the project environment                       |
 
 For additional configuration details, consult the relevant `.env.example` files and `backend/pyproject.toml`.
