@@ -1,6 +1,10 @@
 [project]
 name = "visutask-backend"
 version = "0.1.0"
+description = "Kanban like api project"
+authors = [
+    { name = "Álvaro Martínez", email = "minvdev@gmail.com" }
+]
 requires-python = ">=3.14"
 dependencies = [
     "alembic~=1.17.1",
@@ -27,13 +31,14 @@ dev = [
     "types-passlib~=1.7.7",
     "types-python-jose~=3.5.0",
 ]
-
+                                                                                                      
 [build-system]
-requires = ["setuptools>=64"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.uv.build-backend]
+module-name = "app"
+module-root = "src"
 
 # Pytest
 [tool.pytest]
