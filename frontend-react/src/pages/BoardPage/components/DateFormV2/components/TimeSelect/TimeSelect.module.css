@@ -1,0 +1,36 @@
+.dropdow {
+	overflow: hidden;
+
+	position: absolute;
+	top: 100%;
+	left: 0;
+	margin-top: var(--space-1);
+	background-color: #fff;
+	width: 100%;
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-overlay);
+}
+.list {
+	padding: var(--space-1) 0;
+	overflow-y: auto;
+	height: 100%;
+}
+
+.option {
+	padding: var(--space-1) var(--space-2) var(--space-1)
+		var(--space-3);
+	width: 100%;
+	justify-content: start;
+}
+.option:hover {
+	background-color: var(--black-alpha-10);
+	box-shadow: inset 2px 0 0 0 var(--color-primary-hover);
+}
+.option:active {
+	background-color: var(--black-alpha-20);
+}
+.option.selected {
+	color: var(--color-primary);
+	background-color: var(--primary-alpha);
+	box-shadow: inset 2px 0 0 0 var(--color-primary-hover);
+}

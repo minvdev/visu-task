@@ -1,0 +1,31 @@
+.textarea {
+	width: 100%;
+	border: none;
+	background-color: transparent;
+	font: var(--font-sans);
+	font-size: var(--text-base);
+	line-height: inherit;
+	color: inherit;
+	outline: none;
+	resize: none;
+	field-sizing: content;
+	min-height: 1lh;
+	max-width: 100%;
+}
+
+.default {
+	padding: var(--space-3);
+	border-radius: var(--radius-xs);
+	outline: 1px ridge var(--border);
+}
+
+.default:hover {
+	background-color: var(--bg-input-hover);
+	outline: 1px ridge var(--border-light);
+}
+
+.default:focus {
+	box-shadow: var(--shadow-lg);
+	background-color: var(--bg-input);
+	outline: 2px ridge var(--border-focus);
+}

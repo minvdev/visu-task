@@ -1,0 +1,93 @@
+@import "./primitives.css";
+
+:root {
+	/* Fondos */
+	--bg-app: var(--gray-50);
+	--bg-card: var(--gray-100);
+	--bg-input: #ffffff;
+	--bg-input-hover: var(--gray-50);
+	--bg-overlay: rgba(0, 0, 0, 0.5);
+
+	--bg-inbox: var(--brand-100);
+	--bg-inbox-tab: var(--brand-200);
+
+	--bg-column: var(--gray-150);
+	--bg-column-hover: var(--gray-250);
+
+	--bg-task: var(--gray-50);
+	--bg-new-task: var(--gray-100);
+	--bg-dark: var(--gray-700);
+	--bg-toggle-active: var(--gray-850);
+	--bg-toggle-active-hover: #3b3d42;
+
+	/* Textos */
+	--text-title: var(--gray-800);
+	--text-primary: var(--gray-700);
+	--text-secondary: var(--gray-500);
+	--text-tertiary: var(--gray-400);
+	--text-dark: var(--gray-850);
+	--text-on-brand: #ffffff;
+
+	/* Bordes */
+	--border: var(--gray-300);
+	--border-light: var(--gray-200);
+	--border-focus: var(--brand-500);
+	--border-hover: var(--gray-400);
+	--border-active: var(--gray-500);
+
+	/* Radius */
+	--radius-xs: 2px;
+	--radius-sm: 4px;
+	--radius-md: 6px;
+	--radius-lg: 8px;
+	--radius-xl: 10px;
+	--radius-xxl: 14px;
+
+	/* Acciones - Primario */
+	--color-primary: var(--brand-500);
+	--color-primary-hover: var(--brand-600);
+	--color-primary-active: var(--brand-700);
+	--color-primary-disabled: var(--brand-300);
+
+	/* Acciones - Peligro */
+	--color-danger: var(--danger-500);
+	--color-danger-hover: var(--danger-600);
+	--color-danger-active: var(--danger-700);
+	--color-danger-disabled: var(--danger-300);
+
+	/* Acciones - Éxito */
+	--color-success: var(--success-500);
+	--color-success-hover: #16a34a;
+	--color-success-active: #15803d;
+
+	/* Acciones - Advertencia */
+	--color-warning: var(--warning-500);
+	--color-warning-hover: #d97706;
+	--color-warning-active: #b45309;
+
+	/* Sombras */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -2px rgba(0, 0, 0, 0.1);
+	--shadow-lg:
+		0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -4px rgba(0, 0, 0, 0.1);
+	--shadow-surface:
+		0px 1px 1px rgba(30, 31, 33, 0.25),
+		0px 0px 1px rgba(30, 31, 33, 0.3);
+	--shadow-overlay:
+		0px 8px 12px rgba(30, 31, 33, 0.149),
+		0px 0px 1px rgba(30, 31, 33, 0.31);
+
+	/* color overlays */
+	--white-alpha-10: rgba(255, 255, 255, 0.1);
+	--white-alpha-20: rgba(255, 255, 255, 0.2);
+	--white-alpha-40: rgba(255, 255, 255, 0.4);
+	--white-alpha-60: rgba(255, 255, 255, 0.6);
+	--black-alpha-10: rgba(0, 0, 0, 0.1);
+	--black-alpha-20: rgba(0, 0, 0, 0.2);
+	--black-alpha-40: rgba(0, 0, 0, 0.4);
+	--black-alpha-60: rgba(0, 0, 0, 0.6);
+	--primary-alpha: rgba(147, 197, 253, 0.3);
+}

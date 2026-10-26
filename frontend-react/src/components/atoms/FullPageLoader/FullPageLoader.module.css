@@ -1,0 +1,111 @@
+.container {
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.spinner {
+	width: var(--space-12);
+	aspect-ratio: 1;
+	border-radius: 50%;
+	border: var(--space-1) solid var(--color-primary);
+	animation:
+		spinner-clip 800ms infinite linear alternate,
+		spinner-rotate 1600ms infinite linear;
+}
+
+@keyframes spinner-clip {
+	0% {
+		clip-path: polygon(
+			50% 50%,
+			0 0,
+			50% 0%,
+			50% 0%,
+			50% 0%,
+			50% 0%,
+			50% 0%
+		);
+	}
+	12.5% {
+		clip-path: polygon(
+			50% 50%,
+			0 0,
+			50% 0%,
+			100% 0%,
+			100% 0%,
+			100% 0%,
+			100% 0%
+		);
+	}
+	25% {
+		clip-path: polygon(
+			50% 50%,
+			0 0,
+			50% 0%,
+			100% 0%,
+			100% 100%,
+			100% 100%,
+			100% 100%
+		);
+	}
+	50% {
+		clip-path: polygon(
+			50% 50%,
+			0 0,
+			50% 0%,
+			100% 0%,
+			100% 100%,
+			50% 100%,
+			0% 100%
+		);
+	}
+	62.5% {
+		clip-path: polygon(
+			50% 50%,
+			100% 0,
+			100% 0%,
+			100% 0%,
+			100% 100%,
+			50% 100%,
+			0% 100%
+		);
+	}
+	75% {
+		clip-path: polygon(
+			50% 50%,
+			100% 100%,
+			100% 100%,
+			100% 100%,
+			100% 100%,
+			50% 100%,
+			0% 100%
+		);
+	}
+	100% {
+		clip-path: polygon(
+			50% 50%,
+			50% 100%,
+			50% 100%,
+			50% 100%,
+			50% 100%,
+			50% 100%,
+			0% 100%
+		);
+	}
+}
+@keyframes spinner-rotate {
+	0% {
+		transform: scaleY(1) rotate(0deg);
+	}
+	49.99% {
+		transform: scaleY(1) rotate(135deg);
+	}
+	50% {
+		transform: scaleY(-1) rotate(0deg);
+	}
+	100% {
+		transform: scaleY(-1) rotate(-135deg);
+	}
+}

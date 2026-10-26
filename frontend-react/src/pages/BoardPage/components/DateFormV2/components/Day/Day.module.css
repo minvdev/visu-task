@@ -1,0 +1,30 @@
+.day {
+	width: 4ch;
+	text-align: center;
+	border-radius: var(--radius-sm);
+	padding: var(--space-1) var(--space-2);
+}
+.day:hover {
+	background-color: var(--black-alpha-10);
+}
+.day.today {
+	color: var(--color-primary);
+	position: relative;
+}
+.day.today:after {
+	content: "";
+	position: absolute;
+	bottom: var(--space-1);
+	left: var(--space-1);
+	right: var(--space-1);
+	height: 2px;
+	border-radius: 1px;
+	background-color: currentColor;
+}
+.day.otherMonth {
+	color: var(--text-secondary);
+}
+.day.selected {
+	color: var(--color-primary);
+	background-color: var(--primary-alpha);
+}

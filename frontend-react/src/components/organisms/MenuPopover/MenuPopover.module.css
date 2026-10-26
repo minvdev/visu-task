@@ -1,0 +1,15 @@
+.popover {
+	padding: 0;
+	border-radius: var(--radius-xl);
+	margin-top: var(--space-2);
+}
+
+.popoverLocation {
+	top: 100%;
+	left: 0;
+}
+
+.popoverFallbackLocation {
+	top: 100%;
+	right: 0;
+}

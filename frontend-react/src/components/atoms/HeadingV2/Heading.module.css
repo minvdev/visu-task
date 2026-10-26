@@ -1,0 +1,30 @@
+.heading {
+	margin: 0;
+	color: var(--text-title);
+	line-height: var(--leading-tight);
+}
+
+h1.heading {
+	font-size: var(--text-2xl);
+}
+h2.heading {
+	font-size: var(--text-xl);
+}
+h3.heading {
+	color: var(--text-primary);
+	font-size: var(--text-lg);
+}
+h4.heading {
+	color: var(--text-primary);
+	font-size: var(--text-sm);
+	font-weight: var(--font-bold);
+}
+h5.heading {
+	color: var(--text-secondary);
+	font-size: var(--text-xs);
+	font-weight: var(--font-bold);
+}
+h6.heading {
+	color: var(--text-secondary);
+	font-size: var(--text-xs);
+}

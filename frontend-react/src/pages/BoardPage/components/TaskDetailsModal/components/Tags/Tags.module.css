@@ -1,0 +1,48 @@
+.heading {
+	margin-bottom: var(--space-1);
+}
+
+.main {
+	position: relative;
+}
+.popover {
+	padding: 0;
+	max-height: var(--modal-item-max-height);
+	min-height: 0;
+}
+.popoverLoc {
+	top: calc(100% - var(--popover-offset, 0));
+	margin-top: var(
+		--space-2
+	); /* popover style object in DueDate.tsx depends on this, if change here, change there */
+	left: calc(-1 * var(--space-1));
+}
+
+.tagsContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+}
+
+button.tagWrapper {
+	max-width: 100%;
+}
+.tag.tag {
+	height: 32px;
+	min-width: 56px;
+	padding: 0 var(--space-4);
+	font-weight: var(--font-bold);
+}
+
+button.add {
+	background-color: transparent;
+	width: 32px;
+	height: 32px;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--border);
+	color: var(--text-secondary);
+}
+button.add:hover {
+	filter: brightness(0.9);
+	background-color: var(--black-alpha-10);
+}

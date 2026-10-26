@@ -1,0 +1,9 @@
+.image {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.defaultFilter {
+	filter: invert(0.2);
+}
