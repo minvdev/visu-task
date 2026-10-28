@@ -1,0 +1,62 @@
+.button {
+	border: none;
+	cursor: pointer;
+	padding: var(--space-3);
+	font-size: var(--text-sm);
+	font-weight: var(--font-medium);
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		"Open Sans",
+		"Helvetica Neue",
+		sans-serif;
+	border-radius: var(--radius-md);
+	transition:
+		background-image 100ms ease,
+		background-color 100ms ease;
+}
+.button:hover {
+	background-image: linear-gradient(var(--black-alpha-10));
+}
+.button:active {
+	background-image: linear-gradient(var(--black-alpha-20));
+	transform: scale(0.97) translateY(1px);
+}
+.button:disabled {
+	cursor: not-allowed;
+	background-image: linear-gradient(var(--white-alpha-40));
+	transform: none;
+	transition: none;
+}
+
+.button-md {
+	padding: var(--space-2) var(--space-3);
+}
+
+.button-sm {
+	padding: var(--space-1) var(--space-2);
+}
+
+.primary {
+	background-color: var(--color-primary);
+	color: white;
+}
+
+.danger {
+	background-color: var(--color-danger);
+	color: white;
+}
+
+.transparent {
+	background-color: transparent;
+	color: var(--text-secondary);
+	border: 1px var(--border) solid;
+}
+.transparent:hover {
+	background-color: var(--white-alpha-10);
+}

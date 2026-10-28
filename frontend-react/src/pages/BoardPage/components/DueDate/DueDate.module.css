@@ -1,0 +1,47 @@
+/* Date variant */
+.dateContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+	color: var(--gray-600);
+	padding: 2px var(--space-1);
+	border-radius: var(--radius-sm);
+	width: max-content;
+}
+.date {
+	font-size: var(--text-xs);
+	line-height: var(--text-xs);
+	word-spacing: -1px;
+}
+
+/* Status variant */
+.statusContainer {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--gray-600);
+}
+.statusLabel {
+	padding: 1px var(--space-1);
+	border-radius: var(--radius-xs);
+	font-size: var(--text-sm);
+	line-height: var(--text-sm);
+}
+
+/* Global status */
+.completed {
+	color: #fff;
+	background-color: #5b7f24;
+}
+.expired {
+	color: var(--danger-700);
+	background-color: var(--danger-100);
+}
+.upcoming {
+	color: var(--gray-800);
+	background-color: var(--warning-200);
+}
+.in-time {
+	color: var(--gray-600);
+	background-color: transparent;
+}

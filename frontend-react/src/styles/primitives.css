@@ -1,0 +1,49 @@
+:root {
+	/* --- NEUTROS (Grises) --- */
+	/* texto, bordes y fondos. */
+
+	--gray-50: #f9fafb;
+	--gray-100: #f3f4f6; /* Fondos de página */
+	--gray-150: #f0f1f3;
+	--gray-200: #e5e7eb; /* Bordes suaves */
+	--gray-250: #dddee1;
+	--gray-300: #d1d5db; /* Bordes fuertes */
+	--gray-400: #9ca3af; /* Iconos inactivos */
+	--gray-500: #6b7280; /* Texto secundario */
+	--gray-600: #4b5563;
+	--gray-700: #374151; /* Texto principal */
+	--gray-800: #1f2937;
+	--gray-850: #292a2e; /* Textos oscuros */
+	--gray-900: #111827; /* Títulos muy oscuros */
+
+	/* --- PRIMARIO --- */
+	/* botones principales, enlaces y estados activos. */
+	--brand-50: #eff6ff;
+	--brand-100: #dbeafe;
+	--brand-200: #bfdbfe;
+	--brand-300: #93c5fd;
+	--brand-400: #60a5fa;
+	--brand-450: #4c94f8;
+	--brand-500: #3b82f6; /* Tu color principal estándar */
+	--brand-600: #2563eb; /* hover color */
+	--brand-700: #1d4ed8; /* active color */
+
+	/* --- PELIGRO / ERROR (Rojo) --- */
+	--danger-50: #fef2f2;
+	--danger-100: #fee2e2;
+	--danger-200: #fecaca;
+	--danger-300: #fca5a5;
+	--danger-500: #ef4444; /* Rojo estándar */
+	--danger-600: #dc2626; /* Rojo hover */
+	--danger-700: #b91c1c; /* Rojo active */
+
+	/* --- ÉXITO (Verde) --- */
+	--success-50: #f0fdf4;
+	--success-500: #22c55e;
+	--success-900: #5b7f24;
+
+	/* --- ADVERTENCIA (Amarillo/Ámbar) --- */
+	--warning-50: #fffbeb;
+	--warning-200: #fbc828;
+	--warning-500: #f59e0b;
+}

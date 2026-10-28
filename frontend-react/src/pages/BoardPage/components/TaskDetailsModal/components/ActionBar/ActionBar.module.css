@@ -1,0 +1,30 @@
+.container {
+	color: var(--text-primary);
+
+	display: flex;
+	gap: var(--space-2);
+}
+
+.relative {
+	position: relative;
+}
+
+button.item {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: var(--space-8);
+	height: var(--space-8);
+
+	border-radius: 50%;
+	color: inherit;
+}
+.item:hover,
+.itemHover {
+	background-color: var(--black-alpha-10);
+}
+
+.menu {
+	width: 230px;
+}

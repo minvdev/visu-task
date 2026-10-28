@@ -1,0 +1,16 @@
+/* Applies to button icons '<<' '<' '>' '>>' */
+button.chevron {
+	width: var(--space-6);
+	height: var(--space-6);
+	color: var(--text-secondary);
+	border-radius: var(--radius-sm);
+	transition:
+		background-color 100ms ease,
+		color 100ms ease;
+}
+button.chevron:hover {
+	background-color: var(--black-alpha-10);
+}
+button.chevron:active {
+	background-color: var(--black-alpha-20);
+}

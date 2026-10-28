@@ -1,0 +1,17 @@
+.layout {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background-color: var(--bg-app);
+}
+
+.header {
+	flex-shrink: 0;
+}
+
+.main {
+	background-color: inherit;
+	flex-grow: 1;
+	overflow: auto;
+	padding: var(--space-6);
+}

@@ -1,0 +1,46 @@
+.navbar {
+	width: 100%;
+	height: var(--navbar-height, 50px);
+	padding: var(--space-1) var(--space-6);
+
+	display: grid;
+	grid-template-areas: "logo searchBar actions";
+	grid-template-columns: 1fr 8fr 1fr;
+	gap: var(--space-2);
+	align-items: center;
+
+	background-color: var(--bg-card);
+	border-bottom: var(--border);
+	box-shadow: var(--shadow-lg);
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: var(--space-1) var(--space-2);
+}
+
+.logo {
+	grid-area: logo;
+	justify-self: start;
+}
+
+.searchBar {
+	grid-area: searchBar;
+	width: 100%;
+	max-width: 400px;
+	justify-self: center;
+}
+
+.actions {
+	grid-area: actions;
+	justify-self: end;
+	display: flex;
+	gap: var(--space-4);
+	align-items: center;
+	padding: 0;
+	border: none;
+}

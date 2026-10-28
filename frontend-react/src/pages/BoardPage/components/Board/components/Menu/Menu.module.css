@@ -1,0 +1,15 @@
+.popover {
+	padding: 0;
+	border-radius: var(--radius-xl);
+}
+
+.popoverBottom {
+	top: 0;
+	right: 0;
+	margin-top: var(--space-2);
+}
+
+.form {
+	/* --maxFormHeight comes from useMenu */
+	max-height: var(--max-form-height, 60vh);
+}
